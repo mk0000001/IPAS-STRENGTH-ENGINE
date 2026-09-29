@@ -1,5 +1,9 @@
 # 시스템 검증 결과와 적용 한계
 
+[한국어](#한국어) · [English](#english)
+
+## 한국어
+
 검증일: 2026-09-25. 공개 엔진과 이를 사용하는 PrintOps 통합 앱의 현재 릴리스를 점검했다. 이 문서는 검증 범위를 밝히는 기록이며 무결함 인증이나 출력물의 구조 안전 인증이 아니다.
 
 관련 문서: [논문·자료의 핵심 근거](research-evidence.md), [공정 근거 API](../PROCESS_EVIDENCE.md).
@@ -60,3 +64,49 @@ python -m unittest discover -s tests
 - 논문 원문 전수 대조. 핵심 검토 출처와 미확인 조건은 연구 근거 문서에 개별 표시한다.
 
 따라서 현재 제공 가능한 결론은 **기능 회귀시험과 표적 운영 검증을 통과했고 확인된 오매칭·과거수치 재사용·배포 불일치를 수정했다**는 것이다. 소프트웨어 시험과 재료/구조의 실증 검증은 별도로 유지한다.
+
+
+---
+
+## English
+
+### System validation and scope
+
+This is the **2026-09-25** validation record for the public engines and their PrintOps host application. It is a dated record, not a claim that later releases have the same test count, a defect-free certificate, or a structural safety certification. See the [research evidence](research-evidence.md) and [process API](../PROCESS_EVIDENCE.md).
+
+The G-code engine parses files, active materials, modal motion, layers and process statistics; it does not set strength or prices. The strength engine screens constrictions and connected local sections and reports literature comparisons and uncalibrated scenarios. The quote engine applies host-supplied policies using Decimal arithmetic. The host manages projects, file versions, uploads, jobs, material references, viewers, reports and storage. Public packages do not contain production rates, credentials or user files.
+
+### Corrections in this audit
+
+1. Mixed active PLA products could inherit Bambu PLA Basic's reference when only one matching profile was present. Matching now requires the normalized active identities to agree on the ordinary grade. Mixed, partially unknown and Silk/Matte/Tough profiles do not inherit the base-grade value.
+2. Historical PDF values without material identity metadata could appear revalidated. They are now withheld as `REFERENCE_NOT_REVALIDATED` and are not reused for new load calculations. Saved estimates remain unchanged.
+3. The storage worker was running an older image. After checking its idle queue, API, analysis, viewer and storage services were aligned and their source hashes/native modules checked. Deployment checks now include storage.
+
+The preceding Bambu ABS fix was also regression-tested: the base product uses the same manufacturer's tensile XY/Z references and annealing conditions, rather than a different brand's unresolved evidence. ABS-GF/CF/HF/+ do not inherit ordinary ABS values.
+
+### Executed checks
+
+|Check|Recorded result|Limitation|
+|---|---|---|
+|Host application|168 passed, 1 skipped, isolated test DB|Covers project/version handling, uploads/cancellation/recovery, catalog quote inputs, discounts, energy, material/geometry/viewer/PDF paths. Not physical printing on every machine.|
+|Built G-code / strength / quote packages|26 / 54 / 7 passed|Run in the Docker image with native G-code modules loaded. Not a fracture prediction accuracy test.|
+|Browser formatting|The Node-dependent skipped test passed separately with local Node; JS syntax checks passed|Null/zero reference and force formatting.|
+|Existing live analyses|Two existing analyses returned Bambu ABS references and six geometry candidates|No fresh upload or full corpus rescan.|
+|Browser|Target reference/conditions/viewer visible; no horizontal overflow at 390 px; no observed console errors|Targeted UI checks, not all device/screen combinations.|
+|Detailed PDF|All five pages of an existing estimate rendered and inspected|Costs, model/detail images, layer/section/scenario fields and material caveats. Visibility is not physical validation.|
+|Runtime|API/DB healthy; four app services on matching image/source hashes; no restart/OOM flags|Point-in-time observation, not long-term reliability.|
+|Queues|No RUNNING job stale for more than 10 minutes; no failed analyses in the preceding seven days|DB status check, no prolonged load test.|
+|Backup|Recent archive present; SHA-256 and PostgreSQL archive catalog checks passed|No complete fresh-environment/database/user-file restoration drill.|
+|Energy|Existing profile API for three machines working|Forecast energy is not metered consumption of the proposed job. Cross-machine transfer remains model-based.|
+
+### Performance interpretation
+
+Earlier isolated runs on the same server with a four-CPU/1536 MiB limit measured 22.271 → 21.931 s for a 3MF containing approximately 40.7 MB of G-code, and 106.148 → 104.492 s for approximately 320.4 MB of G-code. Archive extraction was included. Full result JSON and SHA-256 matched.
+
+One run per version cannot distinguish the roughly 1.5% differences from variability. The smaller case uses the serial path, so its change must not be attributed to checkpoint optimization. An earlier pipeline attempt was reverted after showing no improvement. These results do **not** establish a 50% time reduction or fourfold viewer speedup.
+
+### Reproduction and outstanding work
+
+After installing each package's dependencies, run `python -m unittest discover -s tests` in its root. Strength geometry needs NumPy, SciPy and Shapely; native G-code compilation follows that repository's README. These commands reproduce public package tests, not the private host's production database/policy/files.
+
+Still outstanding: physical validation of user-part failure loads and locations with real fixtures/contact/voids/notches; cross-grade/batch/process calibration and independent holdouts; new-machine energy measurements; sustained concurrency and complete recovery drills; and full-text verification of every listed source. Software regression tests and targeted operational checks must remain distinct from material/structural empirical validation.

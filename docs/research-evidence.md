@@ -1,5 +1,9 @@
 # 연구 근거와 실증 범위
 
+[한국어](#한국어) · [English](#english)
+
+## 한국어
+
 기준일: 2026-09-25. 이 문서는 검토한 연구자료의 자체 요약이다. 논문 전문·그림·원시 시험파일은 복제하지 않으며, 원문과 공식 데이터 저장소로 연결한다. `S`와 `W` 번호는 검토 자료의 출처 식별자이며 논문 수나 독립 실험 수를 뜻하지 않는다.
 
 **현재 엔진은 임의 출력물의 파단하중이나 가장 먼저 파손될 위치를 실증적으로 검증한 모델이 아니다.** 논문 관측값, 제조사 소재 참조, 기하학적 비교, 미보정 하중 시나리오를 구분한다. 단위가 같더라도 인장·층간 전단·굽힘·파괴인성은 서로 대체하지 않는다.
@@ -94,3 +98,78 @@ Fbaseline = 4 × mean(UTS) × Znet / S
 독립 검증을 위해서는 동일 제품 grade·배치·건조/조습·열처리, 방향과 raster 정의, 실제 공정조건, 시험 표준과 치수·면적 정의, 지지·가력점, 원 하중 곡선, 반복수와 분산을 함께 확보해야 한다. 위치 정확도를 평가하려면 같은 입력 형상의 관측 파괴 위치와 실제 하중·구속 label이 필요하다.
 
 모델을 보정할 때는 학습과 평가 조건을 사전에 분리하고, 같은 조건의 반복 시편 검증과 미사용 raster·노치·제품·실험실로의 일반화 검증을 구분해야 한다. 현재 문헌 목록과 조건부 비교만으로 범용 정확도, 예측구간 또는 인증된 안전계수를 제시하지 않는다.
+
+
+---
+
+## English
+
+### Evidence summary and limits
+
+This English section summarizes the core evidence and decisions in the Korean source matrix above. Source IDs, DOI links, conditions and unresolved items remain traceable there. The historical audit scope is not a claim that every listed paper was read in full. **The engine is not empirically validated to predict the first failure location or breaking load of an arbitrary printed part.** Tensile, interlayer shear, bending and fracture-toughness quantities are not interchangeable merely because some share units.
+
+Current process evidence (`GCODE_PROCESS_EVIDENCE_V3_THERMAL_CONTEXT`) preserves conditions, returns `factor_status=NOT_APPLIED`, `is_prediction=false` and `effective_mpa=null`. Identity factors are compatibility placeholders, not predictions. Literature comparisons (`PRIMARY_LITERATURE_COMPARISONS_V1`) have no calibrated transfer coefficient to the target part. Capacity scenarios (`CAPACITY_SCENARIO_V4_GEOMETRY_QUALIFIED`) remain `empirically_validated=false` and `is_failure_prediction=false`, with no calibration-source list or prediction interval.
+
+Per-tool temperature/flow slots are retained; conflicting or incomplete lists do not produce a representative scalar. A minimum-layer-time setting is not measured local return time, and nozzle setpoint is not measured substrate/bond temperature. Total duration divided by layer count is not used to invent local thermal history.
+
+Nominal 100% infill is not evidence of void-free solid material. Sparse axial scenarios use uncalibrated rectangular shell/core assumptions, pattern constants and core exponent 1.4. Sparse/unknown bending is withheld because area fraction does not determine inertia. Layer-volume area proxies are not connected sections and are not converted to force. Net-material/contact-basis stress is not multiplied by gross-envelope area; unknown basis permits only the existing uncalibrated scenario. The legacy API name `allowable_mpa` does not certify a design allowable or safety factor.
+
+### Primary studies used for comparisons
+
+|Source|Verified observation / context|Use and limitation|
+|---|---|---|
+|S050, Stojković et al. (2023), [10.3390/ma16134574](https://doi.org/10.3390/ma16134574)|Unannealed PrimaSelect PLA PRO, ASTM D638-14 Type I; 210°C nozzle, 60°C bed, 50 mm/s, 75% cubic, 0.6 mm walls/top/bottom. At 0.1/0.2 mm layer height: 32.15/30.07 MPa. The 32.15 value is reconstructed as 33.37−1.22.|Layer-height comparison only. Axis, moisture and relevant n/variance are incompletely established. Ratio 0.93530 is not a target-part correction.|
+|S088, Padovano et al. (2020), [10.3390/app10093170](https://doi.org/10.3390/app10093170)|ULTEM 9085, Fortus 450mc, 100% infill, three walls, 0.508 mm line width, zero air gap, ±45° raster. Table 3 XY/X 65.9±0.7 and XZ/X 73.0±1.3 MPa, n=5 each.|Same tensile X direction, different build placement. Both means share a Tukey group; their difference alone does not establish significance. No validated engine reference for this grade.|
+|S028 (2023; author attribution not verified), [10.1016/j.jmrt.2022.12.147](https://doi.org/10.1016/j.jmrt.2022.12.147)|Necking-shaped pure-shear test, 90° print-surface angle. Table 2 PLA 25.74±1.03 (n=10), ABS 23.01±1.63 (n=10), PC 30.16±1.64 MPa (n=9).|Interlayer **shear**, not tensile reference stress or bending breaking load. Grade and some conditions remain unknown.|
+|S026, Seppala et al. (2017), [10.1039/C7SM00950J](https://doi.org/10.1039/C7SM00950J)|Thermal history, weld formation and mode III fracture energy.|Supports recording thermal history; supplies no universal speed penalty or interchangeable MPa value.|
+|S109, Haque et al. (2025), [10.1016/j.hybadv.2025.100502](https://doi.org/10.1016/j.hybadv.2025.100502)|Publisher-indexed Methods/Tables 3–4 inspected. Of 36 pairs among nine extracted settings, none isolated a single variable while holding others fixed.|Cannot identify independent infill/speed/pattern effects. Matrix/geometry extraction incomplete; maximum values are not independent validation labels.|
+|Ben Amor et al. (2024), [10.35219/awet.2024.10](https://doi.org/10.35219/awet.2024.10)|Raise3D Premium PLA, Section 4.2/Table 6: 10/30/60/80/100% infill → 19/21/24/27/34 MPa.|Source of the PLA within-range interpolation. Replaying the same lookup is not independent validation; no guaranteed target pattern/wall/brand match or invented Z correction.|
+
+### Thermal history and stress-area definition
+
+W011, Lambiase et al. (2024), [10.1007/s00170-024-14111-8](https://doi.org/10.1007/s00170-024-14111-8), uses RS PRO PLA and a 3×3 design of 2000/3000/4000 **mm/min** and 21/63/105 s return times controlled by G04 dwell, n=6 per condition. The settings include 210/60°C nozzle/bed, 0.4/0.5/0.2 mm nozzle/line/layer, 100% rectilinear and 100% fan. The conclusion's 25.5/21.1 MPa summaries were not established as fixed-condition speed pairs; all Figure 10 dispersion was not transcribed. No universal time coefficient is applied.
+
+W012, Moetazedian et al. (2023), [10.1089/3dp.2021.0112](https://doi.org/10.1089/3dp.2021.0112), studies 3DXTECH/NatureWorks 4043D PLA on a RepRap X400. Baseline: 210°C, 1000 mm/min, 10 s; 0.4/0.5/0.2 mm nozzle/line/layer. Variables are controlled separately with extrusion adjusted to maintain bead geometry; mechanical tests n=5 at 0.5 mm/min. Stress uses microscopy-measured **actual Z fracture contact area** in single-bead walls. Near-bulk contact strength cannot be transferred to whole-part envelope strength. It is not a complete three-factor factorial, and some bulk comparisons share lineage with W013. Full appendix verification is incomplete.
+
+W013, Allum et al. (2020), [10.1016/j.addma.2020.101297](https://doi.org/10.1016/j.addma.2020.101297), examines five layer-height and line-width variations each, F/Z directions, 0.4 mm nozzle/210°C, 1000 mm/min, bed 60°C. The 94.5%/64.8% load-bearing-area fractions in particular Figure 14 F/Z conditions are not universal factors for 100% infill. Local bond stress is distinct from whole-part capacity; complete group n/variance transcription remains unfinished.
+
+### ASA and ASA-CF raw-data diagnostic
+
+W027, Cicero et al. (2024), [10.3390/ma17215207](https://doi.org/10.3390/ma17215207), pairs with W028 [Zenodo 14065523](https://zenodo.org/records/14065523). W029, Cicero et al. (2025), [10.3390/jcs9040185](https://doi.org/10.3390/jcs9040185), pairs with W030 [Zenodo 14882928](https://zenodo.org/records/14882928). These are two experimental lineages from related investigators/projects, not four independent studies or independent-laboratory replication.
+
+The 3DJake ASA and ASA-CF10 (10 wt.% CF) specimens use corresponding flat-build conditions: 0.2 mm layers, 0.42 mm lines, 100% infill, 250°C nozzle/90°C bed, 40 mm/s. Tensile ASTM D638 and SENB ASTM D6068 tests use room-temperature 1 mm/min loading; notches are machined after printing, with razor-formed crack-like defects. Direct full-PDF/figure verification of W029 remains incomplete.
+
+Eight official XLSX files were matched to public MD5 checksums and additionally logged with SHA-256. Of 162 specimen sheets, 18 tensile and 143 SENB had usable observations; one empty sheet was excluded, not zero-filled. The separate diagnostic used mean UTS from matched material/raster tensile groups (n=3) and actual specimen dimensions:
+
+```text
+UTS = peak tensile force / tensile specimen area
+Znet = B × (W − a)^2 / 6
+Fbaseline = 4 × mean(UTS) × Znet / S
+```
+
+B is SENB thickness, W width, a notch depth and S the verified 40 mm span. Tensile-sheet a/b dimensions are not SENB a. File labels 30/60 and 45/45 were explicitly normalized to 30/−60 and 45/−45 using the paper. Targets are observed curve maxima, not automatically crack-initiation or final fracture loads.
+
+Group means of specimen-wise predicted/observed ratios were ASA 0.384–0.663 and ASA-CF 0.438–0.685; these are not ratios of group mean loads. This unfitted nominal-stress baseline is a diagnostic of a separate physical assumption, not whole-engine accuracy. It does not solve notch concentration, cracking, plasticity or TCD, reconstruct source G-code/post-machining fixtures, or demonstrate weak-location accuracy. Fitted critical-distance replay must be separated from independent holdouts.
+
+### Manufacturer references and evidence audits
+
+The host's recorded raw XY/Z tensile references, before its 0.85 margin, are:
+
+|Product|XY / Z MPa|Recorded conditions / limits|
+|---|---:|---|
+|[eSUN ABS](https://www.esun3d.com/abs-product)|42.23 / 16.97|Detailed standard/temperature/post-processing not structured in the reference. Separate from ABS+. Generic ABS is a family-level substitute, not verified spool identity.|
+|[eSUN PLA Basic](https://www.esun3d.com/media/esun/catalog/certification/product/PLA-Basic/PLA-Basic-TDS-EN-_2026.6.5.pdf)|64.27 / 32.34|Bambu P1S, 0.4 mm nozzle, 220°C, 65°C bed, 100% infill manufacturer specimen. Generic PLA substitute, not a target-part match certificate.|
+|[Bambu PLA Basic](https://c.cdnmp.net/712781591/content/Bambu_PLA_Basic_Technical_Data_Sheet.pdf)|35 / 31|220°C nozzle, 35°C bed, 100% infill, 55°C/8 h annealing/drying. Explicit Basic grade only.|
+|[Bambu ABS TDS V3](https://store.bblcdn.com/s7/default/23b4cf2b83d5470bb96d19970b5f3ae8/Bambu_ABS_Technical_Data_Sheet_V3.pdf)|33 / 28|ISO 527 / GB/T 1040; 260°C nozzle, 80°C bed, 200 mm/s, 100% infill, **80°C/12 h annealing/drying**. Not unannealed-part strength.|
+
+This translation does not claim a new complete TDS audit. The 0.85 margin is applied once and is `UNVALIDATED_INTERNAL_MARGIN`, not experimentally calibrated, a statistical lower bound or a certified safety factor. Displaying XY as X and Y does not prove equal actual-part directional strength. The eSUN PETG 34.77/28.65 MPa check was same-manufacturer-source transcription, not independent prediction validation.
+
+The initial bundle contained 200 sources/134 numerical rows (19 numerical sources), with 12 manifest entries checked. Test method was missing in 128 rows, n in 129, SD in 118. At that audit's matching standard, there were zero comparable independent validation rows and two same-source replays. This is not 200 full-text readings or 134 independent labels.
+
+The supplement contained 38 sources/148 rows (14 numerical sources), with seven manifest entries and hash/byte counts, JSONL/CSV fields/order, foreign keys and units checked. Audit classification: 131 submitted direct-report claims, nine derived statistics, six abstract, one conclusion and one model-derived row. n was missing in 121; both SD and CI in 114. All submitted rows lacked structured page/table/figure locators; later checks targeted only selected sources. File integrity does not establish source truth. Duplicate lineage includes W020=S027, W037=S186, W038=S051 and W019 in an earlier follow-up, plus the paper/data pairs above.
+
+Historical V1 identity-factor discrepancies for S050/S088 are old model-expressiveness diagnostics, not current V3 error rates: V2 withdrew those corrections and V3 continues to withhold predictions. Lookup replay, unit conversions, matching hashes and passing regression tests do not substitute for predictive validation.
+
+### Evidence still required
+
+Independent validation needs matched grade/batch, conditioning/annealing, orientation/raster definitions, actual process conditions, test standards/dimensions/area basis, fixtures/load points, raw curves and repeat counts/dispersion. Weak-location validation additionally needs observed fracture locations and real load/restraint labels for the same input shape. Calibration and evaluation conditions must be split in advance, with repeated-specimen checks distinguished from unseen raster/notch/product/laboratory generalization. The current evidence does not establish universal accuracy, prediction intervals or a certified safety factor.
