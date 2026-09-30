@@ -6,7 +6,7 @@
 
 검증일: 2026-09-25. 공개 엔진과 이를 사용하는 PrintOps 통합 앱의 현재 릴리스를 점검했다. 이 문서는 검증 범위를 밝히는 기록이며 무결함 인증이나 출력물의 구조 안전 인증이 아니다.
 
-후속 기록: [2026-09-30 통합 검증](release-validation-20260930.md), [2026-09-30 추가 성능 검증](performance-validation-20260930.md). 아래 내용은 9월 25일 당시의 기록이다.
+후속 기록: [2026-09-30 통합 검증](release-validation-20260930.md), [2026-09-30 추가 성능 검증](performance-validation-20260930.md), [2026-10-01 API 지연 수정](api-latency-validation-20261001.md). 아래 내용은 9월 25일 당시의 기록이다.
 
 관련 문서: [논문·자료의 핵심 근거](research-evidence.md), [공정 근거 API](../PROCESS_EVIDENCE.md).
 
@@ -75,7 +75,8 @@ python -m unittest discover -s tests
 ### System validation and scope
 
 Later records: [2026-09-30 integration validation](release-validation-20260930.md) and
-[additional performance validation](performance-validation-20260930.md). The following
+[additional performance validation](performance-validation-20260930.md), and
+[API latency repair](api-latency-validation-20261001.md). The following
 sections retain their original September 25 scope.
 
 This is the **2026-09-25** validation record for the public engines and their PrintOps host application. It is a dated record, not a claim that later releases have the same test count, a defect-free certificate, or a structural safety certification. See the [research evidence](research-evidence.md) and [process API](../PROCESS_EVIDENCE.md).

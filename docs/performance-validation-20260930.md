@@ -2,6 +2,9 @@
 
 ## 한국어
 
+후속 수정: [2026-10-01 상태 API 지연 검증](api-latency-validation-20261001.md).
+아래 기록은 수정 전 측정과 당시 남은 문제를 보존한다.
+
 이 문서는 앞선 [통합 검증](release-validation-20260930.md) 이후의 추가 성능 변경을
 기록한다. 강도 수식·소재 참고값·가격 정책은 이번 변경 대상이 아니다. 실물 파단하중의
 새 실증 보정이나 모든 파일에서 동일한 속도 향상을 주장하지 않는다.
@@ -84,6 +87,9 @@ G-code 36개·strength 54개·quote 13개 모두 통과했다. 운영 네 서비
 프린터 구성, 비공개 요율과 인증자료는 공개하지 않는다.
 
 ## English
+
+Follow-up: [2026-10-01 status API latency repair](api-latency-validation-20261001.md).
+The record below preserves the earlier measurements and unresolved state at that time.
 
 This record covers additional performance changes after the earlier integration review.
 Strength equations, material references and pricing policies are unchanged. It is not new
