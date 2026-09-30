@@ -8,7 +8,7 @@
 
 엔진 패키지를 변경한 도달 가능한 비병합 커밋 기준이다. 병합된 개발 이력은 포함하고 문서 전용·시험 전용·호스트 앱 변경과 자동 생성 `_version.py`는 제외한다. 개정 수는 기능 수나 정확도 검증 횟수가 아니다. 버전은 `0.<코드 개정 수>.<릴리스 메타데이터 수정>`이며 과거 결과의 버전이 없으면 미상으로 남긴다.
 
-[논문·자료의 핵심 근거](docs/research-evidence.md) · [시스템 검증과 한계](docs/system-validation.md) · [2026-09-30 통합 검증 / Integration validation](docs/release-validation-20260930.md) · [공정 API](PROCESS_EVIDENCE.md)
+[논문·자료의 핵심 근거](docs/research-evidence.md) · [시스템 검증과 한계](docs/system-validation.md) · [2026-09-30 통합 검증](docs/release-validation-20260930.md) · [추가 성능 검증](docs/performance-validation-20260930.md) · [공정 API](PROCESS_EVIDENCE.md)
 
 **실험적 형상 선별·문헌 비교·조건부 하중 시나리오 엔진이다. 임의 출력물의 실제 파손 위치나 파단하중을 실증 검증한 예측 모델이 아니다.** 소재 참고값, 기하학적 선별, 가정한 하중 계산은 별도 출력이다.
 
@@ -39,7 +39,7 @@ Release: **v0.11.0** · 11 recorded code revisions (10 updates after initial imp
 Count includes reachable non-merge commits touching the engine package, including merged development history; excludes documentation-only, tests-only, host-app changes and generated _version.py. It counts commits, not individual features or validated accuracy. Version convention: 0.<code revision count>.<release metadata fix>. Past results without a recorded version remain unknown.
 
 
-Public documentation: [research evidence and sources](docs/research-evidence.md) · [system validation and limitations](docs/system-validation.md) · [process API](PROCESS_EVIDENCE.md).
+Public documentation: [research evidence and sources](docs/research-evidence.md) · [system validation and limitations](docs/system-validation.md) · [integration validation](docs/release-validation-20260930.md) · [additional performance validation](docs/performance-validation-20260930.md) · [process API](PROCESS_EVIDENCE.md).
 
 Current contracts are `GCODE_PROCESS_EVIDENCE_V3_THERMAL_CONTEXT` and `CAPACITY_SCENARIO_V4_GEOMETRY_QUALIFIED`. Material references, geometric screening and hypothetical load scenarios are separate outputs; none is a calibrated whole-part failure prediction.
 
