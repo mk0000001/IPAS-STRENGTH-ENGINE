@@ -1,9 +1,9 @@
 {
   "counting_rule": "Reachable non-merge commits modifying the engine package, excluding _version.py; initial import counts as revision 1. Docs, tests-only and host-app changes excluded. Not individual feature counts.",
-  "version": "0.11.0",
-  "revision_count": 11,
-  "update_count": 10,
-  "source_commit": "476e625bfa3e39c43f4c6dd4c77861ab7ad9b3f5",
+  "version": "0.12.0",
+  "revision_count": 12,
+  "update_count": 11,
+  "source_commit": "e5ce64d2ac3ecfd8657b21b9d2c15aa1642d59b7",
   "commits": [
     {
       "commit": "b8d3aeeabebb80addc05a50ca25e2ad3e000a61d",
@@ -48,6 +48,10 @@
     {
       "commit": "476e625bfa3e39c43f4c6dd4c77861ab7ad9b3f5",
       "subject": "Qualify section stress basis and preserve per-tool process context"
+    },
+    {
+      "commit": "e5ce64d2ac3ecfd8657b21b9d2c15aa1642d59b7",
+      "subject": "Require explicit deposition load cases and gate process calibration on compatible evidence"
     }
   ]
 }

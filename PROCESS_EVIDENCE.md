@@ -6,6 +6,8 @@
 
 현재 계약은 `process.VERSION = GCODE_PROCESS_EVIDENCE_V3_THERMAL_CONTEXT`다. V2에서 범용 속도·층 높이 감쇠계수를 철회했고 V3는 도구별 온도·유량 문맥을 보존한다. 문헌의 시험편에서 대상 부품으로 전이할 보정식은 검증되지 않았다. 출처와 제한은 [연구 근거](docs/research-evidence.md)에 정리했다.
 
+2026-10-01: [소재별 연구 범위와 공정 보정 승인 조건](docs/process-calibration.md)을 추가했다. 수치 catalog와 추가 검토 논문을 별도로 표시하며, 연구 계보 단위 분리·면적 정의·등급·시험 조건을 충족하지 않으면 보정식 적용을 보류한다. 공개 시편 180개를 사용한 진단에서도 정확도 향상이 입증되지 않아 승인 모델은 0개다.
+
 `process_adjustment(analysis, directional_mpa, *, reference_context=None)`는 두 위치 인자를 유지하고 다음 값을 반환한다.
 
 - `status: UNCALIBRATED_PROCESS_MODEL`, `factor_status: NOT_APPLIED`, `is_prediction: false`.
@@ -26,6 +28,8 @@ S050의 32.15 MPa는 보고된 33.37−1.22로 역산한 비열처리 기준값�
 지수·패턴 계수·임의 사전값을 적합하지 않았다. NumPy·SciPy·Shapely 설치 후 `python -m unittest discover -s tests`로 시험한다. 소프트웨어 시험 통과가 물리적 예측 정확도의 검증은 아니다. [시스템 검증](docs/system-validation.md)을 함께 확인한다.
 
 ## English
+
+2026-10-01: added [material coverage and calibration gates](docs/process-calibration.md). Numerical observations and additional reviewed studies are reported separately. Study-lineage splits, area definitions, grades and test context gate transfer eligibility. The 180-specimen diagnostic did not demonstrate improvement; no transfer model is approved.
 
 Current contract: `process.VERSION = GCODE_PROCESS_EVIDENCE_V3_THERMAL_CONTEXT`. Universal speed and layer-height knockdowns were retired in V2; V3 additionally preserves per-tool thermal/flow context. The audit did not establish calibrated transfers between published reference coupons and target parts. See the [research evidence review](docs/research-evidence.md) for public sources and their limits.
 
