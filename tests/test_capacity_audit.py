@@ -17,7 +17,7 @@ class CapacityAudit(unittest.TestCase):
                                         'wall_loops':0,'perimeters':4}})
         self.assertEqual(read['infill_percent'],0)
         self.assertEqual(read['walls'],0)
-        self.assertEqual(self.calculate(0,0)['axial_capacity_n'],0.)
+        self.assertIsNone(self.calculate(0,0)['axial_capacity_n'])
 
     def test_actual_line_width_takes_precedence_over_nozzle(self):
         read=settings({'configuration':{'line_width':.8,'nozzle_diameter':.4}})
@@ -30,17 +30,17 @@ class CapacityAudit(unittest.TestCase):
             self.assertEqual(read['line_width_mm'],.8)
             self.assertEqual(read['line_width_source'],'GCODE_LINE_WIDTH')
 
-    def test_more_walls_do_not_reduce_same_section_axial_scenario(self):
+    def test_wall_count_alone_does_not_establish_a_connected_section(self):
         values=[self.calculate(walls=n)['axial_capacity_n'] for n in (0,1,2,3,4)]
-        self.assertEqual(values,sorted(values))
+        self.assertEqual(values,[None]*5)
 
     def test_full_density_is_not_penalized_by_pattern_name(self):
         values=[self.calculate(100,pattern=p)['axial_capacity_n'] for p in ('grid','gyroid','lightning')]
-        self.assertEqual(values,[1000.]*3)
+        self.assertEqual(values,[None]*3)
 
     def test_sparse_area_factor_is_not_applied_to_bending_inertia(self):
         result=self.calculate()
-        self.assertIsNotNone(result['axial_capacity_n'])
+        self.assertIsNone(result['axial_capacity_n'])
         self.assertIsNone(result['bending_capacity_nmm'])
         self.assertIsNone(result['governing_capacity_n'])
         self.assertFalse(result['is_failure_prediction'])
@@ -51,10 +51,10 @@ class CapacityAudit(unittest.TestCase):
         self.assertIsNone(result['axial_capacity_n'])
         self.assertFalse(result['assumes_solid_section'])
 
-    def test_nominal_solid_section_matches_analytic_units(self):
+    def test_nominal_solid_section_does_not_supply_inertia(self):
         result=self.calculate(100)
-        self.assertAlmostEqual(result['bending_capacity_nmm'],10000/6)
-        self.assertAlmostEqual(result['bending_force_n'],1000/6)
+        self.assertIsNone(result['bending_capacity_nmm'])
+        self.assertIsNone(result['bending_force_n'])
 
     def test_full_infill_does_not_establish_contact_or_void_geometry(self):
         result=self.calculate(100)
@@ -69,7 +69,7 @@ class CapacityAudit(unittest.TestCase):
         for basis in ('INTERLAYER_CONTACT','NET_MATERIAL'):
             result=capacity_for_candidate(self.candidate,{'Z':10.},
                 {'configuration':{'sparse_infill_density':100}},10.,reference_area_basis=basis)
-            self.assertEqual(result['calculation_status'],'INCOMPATIBLE_STRESS_AREA_BASIS')
+            self.assertEqual(result['calculation_status'],'LOAD_CASE_AND_DEPOSITION_REQUIRED')
             for key in ('axial_capacity_n','bending_force_n','governing_capacity_n'):
                 self.assertIsNone(result[key])
 
@@ -90,7 +90,7 @@ class CapacityAudit(unittest.TestCase):
         self.assertFalse(result['validation']['source_grade_transfer_validated'])
         self.assertIsNone(result['prediction_interval_n'])
         self.assertEqual(result['material_reference_mpa'],10.)
-        self.assertFalse(result['section_knockdown_reasons'][0]['empirically_validated'])
+        self.assertEqual(result['section_knockdown_reasons'],[])
 
 
 if __name__=='__main__':unittest.main()

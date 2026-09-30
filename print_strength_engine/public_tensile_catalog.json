@@ -1,0 +1,832 @@
+[
+  {
+    "source_id": "W027_W028",
+    "doi": "10.3390/ma17215207",
+    "source_url": "https://zenodo.org/records/14065523",
+    "locator": "UC_FRADDCO_TensileTests_ASA.xlsx; raster-labelled sheets",
+    "property": "tensile_strength",
+    "material_family": "ASA",
+    "material_grade": "3DJake ASA",
+    "comparison_variable": "raster_angles_deg",
+    "source_context": {
+      "printer": null,
+      "nozzle_c": 250,
+      "bed_c": 90,
+      "speed_mm_s": 40,
+      "speed_basis": "PRINT_SETTING",
+      "infill_percent": 100,
+      "layer_height_mm": 0.2,
+      "line_width_mm": 0.42,
+      "orientation": "FLAT_BUILD",
+      "stress_area_basis": "GROSS_COUPON",
+      "test_standard": "ASTM D638",
+      "moisture_condition": null,
+      "annealing": null,
+      "batch_id": null
+    },
+    "observations": [
+      {
+        "raster_angles_deg": [
+          0,
+          90
+        ],
+        "value_mpa": 19.406688922278683,
+        "sd_mpa": 0.9850280653504947,
+        "n": 3,
+        "value_kind": "DERIVED_FROM_PUBLIC_RAW_CURVES",
+        "derivation": "Arithmetic mean of specimen max(raw load N)/(measured width mm * measured thickness mm)",
+        "specimens": [
+          "UC_FRADDCO_TensileTests_ASA.xlsx#0-90_1",
+          "UC_FRADDCO_TensileTests_ASA.xlsx#0-90_2",
+          "UC_FRADDCO_TensileTests_ASA.xlsx#0-90_3"
+        ]
+      },
+      {
+        "raster_angles_deg": [
+          30,
+          -60
+        ],
+        "value_mpa": 16.51552615404723,
+        "sd_mpa": 0.11127814373153382,
+        "n": 3,
+        "value_kind": "DERIVED_FROM_PUBLIC_RAW_CURVES",
+        "derivation": "Arithmetic mean of specimen max(raw load N)/(measured width mm * measured thickness mm)",
+        "specimens": [
+          "UC_FRADDCO_TensileTests_ASA.xlsx#30-60_1",
+          "UC_FRADDCO_TensileTests_ASA.xlsx#30-60_2",
+          "UC_FRADDCO_TensileTests_ASA.xlsx#30-60_3"
+        ]
+      },
+      {
+        "raster_angles_deg": [
+          45,
+          -45
+        ],
+        "value_mpa": 18.509924019433864,
+        "sd_mpa": 0.7201785455862022,
+        "n": 3,
+        "value_kind": "DERIVED_FROM_PUBLIC_RAW_CURVES",
+        "derivation": "Arithmetic mean of specimen max(raw load N)/(measured width mm * measured thickness mm)",
+        "specimens": [
+          "UC_FRADDCO_TensileTests_ASA.xlsx#45-45_1",
+          "UC_FRADDCO_TensileTests_ASA.xlsx#45-45_2",
+          "UC_FRADDCO_TensileTests_ASA.xlsx#45-45_3"
+        ]
+      }
+    ],
+    "observed_ratio": null,
+    "ratio_definition": null,
+    "statistical_comparison": "WITHIN_CAMPAIGN_MEAN_AND_SAMPLE_SD",
+    "raw_file_provenance": {
+      "file": "UC_FRADDCO_TensileTests_ASA.xlsx",
+      "url": "https://zenodo.org/records/14065523/files/UC_FRADDCO_TensileTests_ASA.xlsx?download=1",
+      "record": 14065523,
+      "bytes": 377305,
+      "sha256": "f2a6ca65c89a2cc7ad1bf860d4fde61be628d6850c26a727897548d6d0394b94",
+      "md5": "e14fd985fb799ccf36883e644f360ace",
+      "expected_checksum": "md5:e14fd985fb799ccf36883e644f360ace"
+    },
+    "extraction_report": {
+      "file": "strength-supplement-fracture-benchmark-20260925.json",
+      "sha256": "3ef4c43ed761b86f46a09654611089ea6f9b825e4097862a56a1bf9d2ba7cb17"
+    },
+    "specimen_records": [
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA.xlsx",
+        "sheet": "0-90_1",
+        "material": "ASA",
+        "orientation": "0/90",
+        "orientation_raw": "0/90",
+        "orientation_mapping": "EXACT_LABEL",
+        "lineage": "W027_W028",
+        "metadata": {
+          "Raster orient.": "0/90",
+          "Test num.": 1,
+          "L (mm)": 50,
+          "a (mm)": 9.73,
+          "b (mm)": 5.09
+        },
+        "sample_count": 909,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 946.7,
+        "peak_displacement_mm": 1.3676253687315647,
+        "peak_cell": "A675",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 49.5257,
+        "uts_mpa": 19.115328001421485,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA.xlsx",
+        "sheet": "0-90_2",
+        "material": "ASA",
+        "orientation": "0/90",
+        "orientation_raw": "0/90",
+        "orientation_mapping": "EXACT_LABEL",
+        "lineage": "W027_W028",
+        "metadata": {
+          "Raster orient.": "0/90",
+          "Test num.": 2,
+          "L (mm)": 50,
+          "a (mm)": 9.63,
+          "b (mm)": 5
+        },
+        "sample_count": 960,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 895.6,
+        "peak_displacement_mm": 1.2309999999999999,
+        "peak_cell": "A637",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 48.150000000000006,
+        "uts_mpa": 18.600207684319834,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA.xlsx",
+        "sheet": "0-90_3",
+        "material": "ASA",
+        "orientation": "0/90",
+        "orientation_raw": "0/90",
+        "orientation_mapping": "EXACT_LABEL",
+        "lineage": "W027_W028",
+        "metadata": {
+          "Raster orient.": "0/90",
+          "Test num.": 3,
+          "L (mm)": 50,
+          "a (mm)": 9.61,
+          "b (mm)": 5.15
+        },
+        "sample_count": 1008,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 1014.8000000000001,
+        "peak_displacement_mm": 1.428,
+        "peak_cell": "A600",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 49.4915,
+        "uts_mpa": 20.504531081094733,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA.xlsx",
+        "sheet": "30-60_1",
+        "material": "ASA",
+        "orientation": "30/-60",
+        "orientation_raw": "30/60",
+        "orientation_mapping": "COMPANION_PAPER_SIGNED_RASTER_30/-60",
+        "lineage": "W027_W028",
+        "metadata": {
+          "Raster orient.": "30/60",
+          "Test num.": 1,
+          "L (mm)": 50,
+          "a (mm)": 9.58,
+          "b (mm)": 5.12
+        },
+        "sample_count": 965,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 804.7,
+        "peak_displacement_mm": 1.4669999999999999,
+        "peak_cell": "A517",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 49.0496,
+        "uts_mpa": 16.40584224947808,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA.xlsx",
+        "sheet": "30-60_2",
+        "material": "ASA",
+        "orientation": "30/-60",
+        "orientation_raw": "30/60",
+        "orientation_mapping": "COMPANION_PAPER_SIGNED_RASTER_30/-60",
+        "lineage": "W027_W028",
+        "metadata": {
+          "Raster orient.": "30/60",
+          "Test num.": 2,
+          "L (mm)": 50,
+          "a (mm)": 9.56,
+          "b (mm)": 5.13
+        },
+        "sample_count": 968,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 815.5,
+        "peak_displacement_mm": 1.537,
+        "peak_cell": "A539",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 49.0428,
+        "uts_mpa": 16.628332803184158,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA.xlsx",
+        "sheet": "30-60_3",
+        "material": "ASA",
+        "orientation": "30/-60",
+        "orientation_raw": "30/60",
+        "orientation_mapping": "COMPANION_PAPER_SIGNED_RASTER_30/-60",
+        "lineage": "W027_W028",
+        "metadata": {
+          "Raster orient.": "30/60",
+          "Test num.": 3,
+          "L (mm)": 50,
+          "a (mm)": 9.58,
+          "b (mm)": 5.19
+        },
+        "sample_count": 973,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 821,
+        "peak_displacement_mm": 1.4360000000000002,
+        "peak_cell": "A526",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 49.720200000000006,
+        "uts_mpa": 16.512403409479447,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA.xlsx",
+        "sheet": "45-45_1",
+        "material": "ASA",
+        "orientation": "45/-45",
+        "orientation_raw": "45/45",
+        "orientation_mapping": "COMPANION_PAPER_SIGNED_RASTER_45/-45",
+        "lineage": "W027_W028",
+        "metadata": {
+          "Raster orient.": "45/45",
+          "Test num.": 1,
+          "L (mm)": 50,
+          "a (mm)": 9.15,
+          "b (mm)": 4.9
+        },
+        "sample_count": 779,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 867,
+        "peak_displacement_mm": 2.081,
+        "peak_cell": "A326",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 44.83500000000001,
+        "uts_mpa": 19.33757109401137,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA.xlsx",
+        "sheet": "45-45_2",
+        "material": "ASA",
+        "orientation": "45/-45",
+        "orientation_raw": "45/45",
+        "orientation_mapping": "COMPANION_PAPER_SIGNED_RASTER_45/-45",
+        "lineage": "W027_W028",
+        "metadata": {
+          "Raster orient.": "45/45",
+          "Test num.": 2,
+          "L (mm)": 50,
+          "a (mm)": 9.18,
+          "b (mm)": 5.07
+        },
+        "sample_count": 961,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 845.5,
+        "peak_displacement_mm": 2.2270000000000003,
+        "peak_cell": "A524",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 46.5426,
+        "uts_mpa": 18.16615315861168,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA.xlsx",
+        "sheet": "45-45_3",
+        "material": "ASA",
+        "orientation": "45/-45",
+        "orientation_raw": "45/45",
+        "orientation_mapping": "COMPANION_PAPER_SIGNED_RASTER_45/-45",
+        "lineage": "W027_W028",
+        "metadata": {
+          "Raster orient.": "45/45",
+          "Test num.": 3,
+          "L (mm)": 50,
+          "a (mm)": 9.49,
+          "b (mm)": 5.06
+        },
+        "sample_count": 972,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 865.6,
+        "peak_displacement_mm": 2.176,
+        "peak_cell": "A636",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 48.0194,
+        "uts_mpa": 18.02604780567854,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      }
+    ],
+    "limitations": [
+      "Tensile coupon peak engineering stress is not arbitrary-part failure stress.",
+      "One experimental lineage per grade; related investigators are not independent laboratory replication.",
+      "Moisture, annealing and independently identifiable production batches are not established.",
+      "No cross-grade transfer, Z-direction estimate or temperature/speed correction is applied.",
+      "Source data and paper form one experimental lineage, not two independent validation datasets."
+    ]
+  },
+  {
+    "source_id": "W029_W030",
+    "doi": "10.3390/jcs9040185",
+    "source_url": "https://zenodo.org/records/14882928",
+    "locator": "UC_FRADDCO_TensileTests_ASA-CF.xlsx; raster-labelled sheets",
+    "property": "tensile_strength",
+    "material_family": "ASA-CF",
+    "material_grade": "3DJake ASA-CF10",
+    "comparison_variable": "raster_angles_deg",
+    "source_context": {
+      "printer": null,
+      "nozzle_c": 250,
+      "bed_c": 90,
+      "speed_mm_s": 40,
+      "speed_basis": "PRINT_SETTING",
+      "infill_percent": 100,
+      "layer_height_mm": 0.2,
+      "line_width_mm": 0.42,
+      "orientation": "FLAT_BUILD",
+      "stress_area_basis": "GROSS_COUPON",
+      "test_standard": "ASTM D638",
+      "moisture_condition": null,
+      "annealing": null,
+      "batch_id": null
+    },
+    "observations": [
+      {
+        "raster_angles_deg": [
+          0,
+          90
+        ],
+        "value_mpa": 37.5204511532666,
+        "sd_mpa": 0.41364760865714967,
+        "n": 3,
+        "value_kind": "DERIVED_FROM_PUBLIC_RAW_CURVES",
+        "derivation": "Arithmetic mean of specimen max(raw load N)/(measured width mm * measured thickness mm)",
+        "specimens": [
+          "UC_FRADDCO_TensileTests_ASA-CF.xlsx#0-90_1",
+          "UC_FRADDCO_TensileTests_ASA-CF.xlsx#0-90_2",
+          "UC_FRADDCO_TensileTests_ASA-CF.xlsx#0-90_3"
+        ]
+      },
+      {
+        "raster_angles_deg": [
+          30,
+          -60
+        ],
+        "value_mpa": 40.00342090760821,
+        "sd_mpa": 6.288707325968714,
+        "n": 3,
+        "value_kind": "DERIVED_FROM_PUBLIC_RAW_CURVES",
+        "derivation": "Arithmetic mean of specimen max(raw load N)/(measured width mm * measured thickness mm)",
+        "specimens": [
+          "UC_FRADDCO_TensileTests_ASA-CF.xlsx#30-60_1",
+          "UC_FRADDCO_TensileTests_ASA-CF.xlsx#30-60_2",
+          "UC_FRADDCO_TensileTests_ASA-CF.xlsx#30-60_3"
+        ]
+      },
+      {
+        "raster_angles_deg": [
+          45,
+          -45
+        ],
+        "value_mpa": 30.618539149269775,
+        "sd_mpa": 1.813948843502314,
+        "n": 3,
+        "value_kind": "DERIVED_FROM_PUBLIC_RAW_CURVES",
+        "derivation": "Arithmetic mean of specimen max(raw load N)/(measured width mm * measured thickness mm)",
+        "specimens": [
+          "UC_FRADDCO_TensileTests_ASA-CF.xlsx#45-45_1",
+          "UC_FRADDCO_TensileTests_ASA-CF.xlsx#45-45_2",
+          "UC_FRADDCO_TensileTests_ASA-CF.xlsx#45-45_3"
+        ]
+      }
+    ],
+    "observed_ratio": null,
+    "ratio_definition": null,
+    "statistical_comparison": "WITHIN_CAMPAIGN_MEAN_AND_SAMPLE_SD",
+    "raw_file_provenance": {
+      "file": "UC_FRADDCO_TensileTests_ASA-CF.xlsx",
+      "url": "https://zenodo.org/records/14882928/files/UC_FRADDCO_TensileTests_ASA-CF.xlsx?download=1",
+      "record": 14882928,
+      "bytes": 649851,
+      "sha256": "e95589cb5358cf6c4b6f52ddffb5a07192dcedf7aa8b2c4d8613a7f0b8d4c5fe",
+      "md5": "13941aec0a957f53de3349f6e599cb57",
+      "expected_checksum": "md5:13941aec0a957f53de3349f6e599cb57"
+    },
+    "extraction_report": {
+      "file": "strength-supplement-fracture-benchmark-20260925.json",
+      "sha256": "3ef4c43ed761b86f46a09654611089ea6f9b825e4097862a56a1bf9d2ba7cb17"
+    },
+    "specimen_records": [
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA-CF.xlsx",
+        "sheet": "0-90_1",
+        "material": "ASA-CF",
+        "orientation": "0/90",
+        "orientation_raw": "0/90",
+        "orientation_mapping": "EXACT_LABEL",
+        "lineage": "W029_W030",
+        "metadata": {
+          "Raster orient.": "0/90",
+          "Test num.": 1,
+          "L (mm)": 50,
+          "a (mm)": 10.16,
+          "b (mm)": 5.04
+        },
+        "sample_count": 971,
+        "missing_load_rows_ignored": [
+          {
+            "row": 997,
+            "displacement_value": 0.8179390667089912
+          },
+          {
+            "row": 998,
+            "displacement_value": 0.8186989979905537
+          },
+          {
+            "row": 999,
+            "displacement_value": 0.8204721709808673
+          },
+          {
+            "row": 1000,
+            "displacement_value": 0.8212321022624298
+          },
+          {
+            "row": 1001,
+            "displacement_value": 0.8222453439711801
+          },
+          {
+            "row": 1002,
+            "displacement_value": 0.8235118961071191
+          },
+          {
+            "row": 1003,
+            "displacement_value": 0.8247784482430571
+          },
+          {
+            "row": 1004,
+            "displacement_value": 0.825031758670244
+          },
+          {
+            "row": 1005,
+            "displacement_value": 0.8262983108061821
+          },
+          {
+            "row": 1006,
+            "displacement_value": 0.8283247942236835
+          },
+          {
+            "row": 1007,
+            "displacement_value": 0.8300979625573843
+          },
+          {
+            "row": 1008,
+            "displacement_value": 0.8308578938389468
+          },
+          {
+            "row": 1009,
+            "displacement_value": 0.8316178251205093
+          },
+          {
+            "row": 1010,
+            "displacement_value": 0.8336443085380107
+          },
+          {
+            "row": 1011,
+            "displacement_value": 1.6120669672321841
+          },
+          {
+            "row": 1012,
+            "displacement_value": 1.5674843506736145
+          },
+          {
+            "row": 1013,
+            "displacement_value": 1.5598850378579856
+          },
+          {
+            "row": 1014,
+            "displacement_value": 1.5558320756795965
+          },
+          {
+            "row": 1015,
+            "displacement_value": 1.554312213116471
+          },
+          {
+            "row": 1016,
+            "displacement_value": 1.5515257984174071
+          },
+          {
+            "row": 1017,
+            "displacement_value": 1.5492460045727183
+          },
+          {
+            "row": 1018,
+            "displacement_value": 1.5472195211552173
+          },
+          {
+            "row": 1019,
+            "displacement_value": 1.5446864168833412
+          },
+          {
+            "row": 1020,
+            "displacement_value": 1.5439264856017783
+          },
+          {
+            "row": 1021,
+            "displacement_value": 1.5424066276952657
+          },
+          {
+            "row": 1022,
+            "displacement_value": 1.5419000068408906
+          },
+          {
+            "row": 1023,
+            "displacement_value": 1.540126833850577
+          },
+          {
+            "row": 1024,
+            "displacement_value": 1.539366902569014
+          },
+          {
+            "row": 1025,
+            "displacement_value": 1.5383536608602637
+          },
+          {
+            "row": 1026,
+            "displacement_value": 5.043155455516258
+          },
+          {
+            "row": 1027,
+            "displacement_value": 5.043155455516258
+          },
+          {
+            "row": 1028,
+            "displacement_value": "#REF!"
+          }
+        ],
+        "missing_displacement_rows": [],
+        "peak_load_n": 1932.25178957556,
+        "peak_displacement_mm": 0.7941278958665805,
+        "peak_cell": "A977",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 51.2064,
+        "uts_mpa": 37.73457594315476,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA-CF.xlsx",
+        "sheet": "0-90_2",
+        "material": "ASA-CF",
+        "orientation": "0/90",
+        "orientation_raw": "0/90",
+        "orientation_mapping": "EXACT_LABEL",
+        "lineage": "W029_W030",
+        "metadata": {
+          "Raster orient.": "0/90",
+          "Test num.": 2,
+          "L (mm)": 50,
+          "a (mm)": 10.2,
+          "b (mm)": 5.08
+        },
+        "sample_count": 969,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 1919.453030880286,
+        "peak_displacement_mm": 0.9225562405411885,
+        "peak_cell": "A958",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 51.815999999999995,
+        "uts_mpa": 37.043635766564115,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA-CF.xlsx",
+        "sheet": "0-90_3",
+        "material": "ASA-CF",
+        "orientation": "0/90",
+        "orientation_raw": "0/90",
+        "orientation_mapping": "EXACT_LABEL",
+        "lineage": "W029_W030",
+        "metadata": {
+          "Raster orient.": "0/90",
+          "Test num.": 3,
+          "L (mm)": 50,
+          "a (mm)": 10.15,
+          "b (mm)": 5.04
+        },
+        "sample_count": 1005,
+        "missing_load_rows_ignored": [
+          {
+            "row": 1033,
+            "displacement_value": 5.011491666087644
+          },
+          {
+            "row": 1034,
+            "displacement_value": 5.011491666087644
+          },
+          {
+            "row": 1035,
+            "displacement_value": "#REF!"
+          }
+        ],
+        "missing_displacement_rows": [],
+        "peak_load_n": 1932.83439936714,
+        "peak_displacement_mm": 0.9494071365098504,
+        "peak_cell": "A980",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 51.156,
+        "uts_mpa": 37.78314175008093,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA-CF.xlsx",
+        "sheet": "30-60_1",
+        "material": "ASA-CF",
+        "orientation": "30/-60",
+        "orientation_raw": "30/60",
+        "orientation_mapping": "COMPANION_PAPER_SIGNED_RASTER_30/-60",
+        "lineage": "W029_W030",
+        "metadata": {
+          "Raster orient.": "30/60",
+          "Test num.": 1,
+          "L (mm)": 50,
+          "a (mm)": 9.62,
+          "b (mm)": 4.22
+        },
+        "sample_count": 995,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 1791.7799329346883,
+        "peak_displacement_mm": 0.9575130655232416,
+        "peak_cell": "A997",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 40.596399999999996,
+        "uts_mpa": 44.13642423797894,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA-CF.xlsx",
+        "sheet": "30-60_2",
+        "material": "ASA-CF",
+        "orientation": "30/-60",
+        "orientation_raw": "30/60",
+        "orientation_mapping": "COMPANION_PAPER_SIGNED_RASTER_30/-60",
+        "lineage": "W029_W030",
+        "metadata": {
+          "Raster orient.": "30/60",
+          "Test num.": 2,
+          "L (mm)": 50,
+          "a (mm)": 9.62,
+          "b (mm)": 4.21
+        },
+        "sample_count": 978,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 1745.868821975714,
+        "peak_displacement_mm": 0.9836040302103406,
+        "peak_cell": "A976",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 40.5002,
+        "uts_mpa": 43.10765927021876,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA-CF.xlsx",
+        "sheet": "30-60_3",
+        "material": "ASA-CF",
+        "orientation": "30/-60",
+        "orientation_raw": "30/60",
+        "orientation_mapping": "COMPANION_PAPER_SIGNED_RASTER_30/-60",
+        "lineage": "W029_W030",
+        "metadata": {
+          "Raster orient.": "30/60",
+          "Test num.": 3,
+          "L (mm)": 50,
+          "a (mm)": 10.17,
+          "b (mm)": 5.26
+        },
+        "sample_count": 970,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 1752.800544143096,
+        "peak_displacement_mm": 0.903811273585917,
+        "peak_cell": "A973",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 53.4942,
+        "uts_mpa": 32.76617921462693,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA-CF.xlsx",
+        "sheet": "45-45_1",
+        "material": "ASA-CF",
+        "orientation": "45/-45",
+        "orientation_raw": "45/45",
+        "orientation_mapping": "COMPANION_PAPER_SIGNED_RASTER_45/-45",
+        "lineage": "W029_W030",
+        "metadata": {
+          "Raster orient.": "45/45",
+          "Test num.": 1,
+          "L (mm)": 50,
+          "a (mm)": 9.53,
+          "b (mm)": 4.89
+        },
+        "sample_count": 957,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 1524.4838323092479,
+        "peak_displacement_mm": 0.901784794825029,
+        "peak_cell": "A937",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 46.601699999999994,
+        "uts_mpa": 32.71305193392619,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA-CF.xlsx",
+        "sheet": "45-45_2",
+        "material": "ASA-CF",
+        "orientation": "45/-45",
+        "orientation_raw": "45/45",
+        "orientation_mapping": "COMPANION_PAPER_SIGNED_RASTER_45/-45",
+        "lineage": "W029_W030",
+        "metadata": {
+          "Raster orient.": "45/45",
+          "Test num.": 2,
+          "L (mm)": 50,
+          "a (mm)": 10.15,
+          "b (mm)": 5.17
+        },
+        "sample_count": 951,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 1551.078533079046,
+        "peak_displacement_mm": 0.9527001674066762,
+        "peak_cell": "A935",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 52.475500000000004,
+        "uts_mpa": 29.558146812875457,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      },
+      {
+        "file": "UC_FRADDCO_TensileTests_ASA-CF.xlsx",
+        "sheet": "45-45_3",
+        "material": "ASA-CF",
+        "orientation": "45/-45",
+        "orientation_raw": "45/45",
+        "orientation_mapping": "COMPANION_PAPER_SIGNED_RASTER_45/-45",
+        "lineage": "W029_W030",
+        "metadata": {
+          "Raster orient.": "45/45",
+          "Test num.": 3,
+          "L (mm)": 50,
+          "a (mm)": 10.15,
+          "b (mm)": 5.18
+        },
+        "sample_count": 936,
+        "missing_load_rows_ignored": [],
+        "missing_displacement_rows": [],
+        "peak_load_n": 1555.4599820428807,
+        "peak_displacement_mm": 0.8762004463356927,
+        "peak_cell": "A936",
+        "processing": "MAX_RAW_LOAD_NO_SMOOTHING",
+        "test_kind": "TENSILE",
+        "area_mm2": 52.577,
+        "uts_mpa": 29.584418701007678,
+        "stress_definition": "PEAK_ENGINEERING_STRESS_N_PER_MM2_NOT_STRESS_AT_BREAK"
+      }
+    ],
+    "limitations": [
+      "Tensile coupon peak engineering stress is not arbitrary-part failure stress.",
+      "One experimental lineage per grade; related investigators are not independent laboratory replication.",
+      "Moisture, annealing and independently identifiable production batches are not established.",
+      "No cross-grade transfer, Z-direction estimate or temperature/speed correction is applied.",
+      "Source data and paper form one experimental lineage, not two independent validation datasets."
+    ]
+  }
+]

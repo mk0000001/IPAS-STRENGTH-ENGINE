@@ -4,6 +4,9 @@ Sources were checked in reports/strength-empirical-validation-20260925.md.
 Keep test property, conditions and derivation attached to every numeric value.
 """
 from copy import deepcopy
+import json
+from pathlib import Path
+from .calibration import compare_contexts
 
 VERSION = 'PRIMARY_LITERATURE_COMPARISONS_V1'
 
@@ -74,6 +77,11 @@ for _family, _mean, _sd, _n in [('PLA', 25.74, 1.03, 10), ('ABS', 23.01, 1.63, 1
                         'Grade and deposition conditions have not been independently verified.'],
     })
 
+# Public raw-curve evidence retains source hashes and individual specimen
+# calculations. These observations expand comparison coverage, not calibration.
+_CATALOG.extend(json.loads(Path(__file__).with_name('public_tensile_catalog.json').read_text(encoding='utf-8')))
+_RESEARCH_COVERAGE=json.loads(Path(__file__).with_name('research_coverage_catalog.json').read_text(encoding='utf-8'))
+
 
 def literature_comparisons(target_context, *, property_name='tensile_strength'):
     """Return same-family observations with applicability gaps, never a factor.
@@ -105,6 +113,13 @@ def literature_comparisons(target_context, *, property_name='tensile_strength'):
             elif source_value != target_value:
                 row['condition_mismatches'].append({'field': key, 'source': source_value, 'target': target_value})
         variable = row['comparison_variable']
+        source_context = dict(row['source_context'], material_family=row['material_family'],
+                              material_grade=row['material_grade'], property=row['property'])
+        row['calibration_context_match'] = compare_contexts(source_context, target,
+                                                           varying=(variable,) if variable else ())
+        row['experimental_lineage_id'] = row['doi']
+        row['runtime_calibration_eligible'] = False
+        row['calibration_blocking_reason'] = 'NO_INDEPENDENTLY_VALIDATED_TRANSFER_MODEL'
         if variable:
             observed = [o[variable] for o in row['observations']]
             row['target_within_observed_levels'] = target.get(variable) in observed
@@ -118,3 +133,52 @@ def literature_comparisons(target_context, *, property_name='tensile_strength'):
             row['applicability'] = 'PROPERTY_OBSERVATION_ONLY'
         rows.append(row)
     return rows
+
+
+def evidence_coverage(target_context, *, property_name='tensile_strength'):
+    """Every requested family gets an explicit evidence status, including gaps.
+
+    Keep property-filtered numeric observations separate from family-level
+    research coverage. A reviewed shear/load/temperature study is evidence but
+    cannot fill a tensile-process calibration gap. Candidate source URLs in an
+    INSUFFICIENT research row do not imply verified numerical observations.
+    """
+    target=target_context if isinstance(target_context,dict) else {}
+    family=str(target.get('material_family') or '').strip().upper()
+    matching=[r for r in _CATALOG if r['material_family']==family and r['property']==property_name]
+    other=sorted({r['property'] for r in _CATALOG if r['material_family']==family and r['property']!=property_name})
+    researched=next((deepcopy(r) for r in _RESEARCH_COVERAGE['materials'] if r['material_family']==family),None)
+    numeric_status='COMPARISON_EVIDENCE_ONLY' if matching else 'NO_MATCHING_CURATED_PROPERTY_EVIDENCE'
+    status=numeric_status
+    if not matching and researched:
+        status=('RESEARCH_COMPARISON_ONLY' if researched['status']=='COMPARISON_ONLY'
+                else 'RESEARCH_REVIEWED_INSUFFICIENT')
+    return {'version':VERSION,'material_family':family or None,'property':property_name,
+            'status':status,
+            'experimental_lineages':sorted({r['doi'] for r in matching}),
+            'comparison_count':len(matching),'other_properties_available':other,
+            'approved_transfer_models':0,'effective_mpa':None,
+            'grade_identity_verified':target.get('grade_identity_verified') is True,
+            'scope':'NUMERIC_CATALOG_AND_REGISTERED_MATERIAL_RESEARCH_COVERAGE',
+            'curated_numeric_catalog':{
+                'status':numeric_status,'property':property_name,'comparison_count':len(matching),
+                'source_urls':sorted({r['source_url'] for r in matching}),
+                'is_runtime_calibration':False},
+            'researched_comparison_evidence':{
+                'status':researched['status'] if researched else 'NOT_IN_REGISTERED_MATERIAL_RESEARCH_MATRIX',
+                'source_urls':researched['source_urls'] if researched else [],
+                'reason':researched['reason'] if researched else 'No registered-material research row; numeric catalog is reported separately.',
+                'scope':'FAMILY_LEVEL_RESEARCH_MULTIPLE_PROPERTIES',
+                'requested_property_match':'NOT_ASSERTED_BY_FAMILY_COVERAGE',
+                'is_runtime_calibration':False,'independent_holdout_n':0},
+            'research_manifest':{
+                'version':_RESEARCH_COVERAGE['version'],
+                'registered_material_count':_RESEARCH_COVERAGE['registered_material_count'],
+                'source_coverage_sha256':_RESEARCH_COVERAGE['source_coverage_sha256'],
+                'source_manifest_sha256':_RESEARCH_COVERAGE['source_manifest_sha256']},
+            'registered_material_coverage':deepcopy(_RESEARCH_COVERAGE['materials'])}
+
+
+def research_coverage_catalog():
+    """Portable all-registered-material research matrix plus acquisition hashes."""
+    return deepcopy(_RESEARCH_COVERAGE)

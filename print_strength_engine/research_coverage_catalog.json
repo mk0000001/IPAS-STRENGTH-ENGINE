@@ -1,0 +1,238 @@
+{
+  "version": "REGISTERED_MATERIAL_RESEARCH_COVERAGE_20261001",
+  "scope": "RESEARCH_COVERAGE_NOT_RUNTIME_CALIBRATION",
+  "registered_material_count": 18,
+  "independent_study_holdouts": 0,
+  "independent_batch_holdouts": 0,
+  "approved_transfer_models": 0,
+  "source_coverage_sha256": "501a4f046ff9990aee480a564f9d859ed1ed62d20515d41b767e13c9708b2d0a",
+  "source_manifest_sha256": "6a1936bd653ea0af4be94be89aaeaafd8576cc8443f619ede94585ca6ce11d80",
+  "source_manifest": {
+    "process.pdf": {
+      "bytes": 1798621,
+      "sha256": "773a7faf7e94c74451ff67bbc12fef2a9284c6e415bd3fec481bdbfd2375d089"
+    },
+    "nature.xml": {
+      "bytes": 149963,
+      "sha256": "ec3cffe761f31344899e1352f0554c1dce8a31ebb2c05cb1540b5447ca9a3aee"
+    },
+    "ppa.xml": {
+      "bytes": 188825,
+      "sha256": "137c98a677b171d185195b765e2d3100c5743b933183779700d296633d6d6fa7"
+    },
+    "nature-supplement.zip": {
+      "bytes": 1587896,
+      "sha256": "648baf86776657d88eb8908bbc8601667998cb32eafbfeb950c591e7f3ef7e17"
+    },
+    "nature-supplement.docx": {
+      "bytes": 681285,
+      "sha256": "81548e0c5518b248402b8c597edde95e0a3a5eeefe2b408133cbe56c13d80464"
+    },
+    "nature-specimens.json": {
+      "bytes": 113298,
+      "sha256": "0894f75053d2c43a946871674e2b79a1bac7dfd40fc4ce7462453d52383efde7"
+    },
+    "nature-condition-summary.json": {
+      "bytes": 5288,
+      "sha256": "50e83285d2ad147b6b871c8627d927a808d8353ae5ae85051003e73fd86df79b"
+    },
+    "within-study-holdout.json": {
+      "bytes": 13585,
+      "sha256": "606243b12db9d6114874a54c1e1391381303834477bb1cccb11266b0ae7442d3"
+    },
+    "observations.json": {
+      "bytes": 46357,
+      "sha256": "e0a64a23eb7f43f0e9f80405339e7a812b9c9180f55ac313db90073f486193b0"
+    },
+    "material-coverage.json": {
+      "bytes": 7764,
+      "sha256": "501a4f046ff9990aee480a564f9d859ed1ed62d20515d41b767e13c9708b2d0a"
+    },
+    "mendeley-snapshot.json": {
+      "bytes": 4357,
+      "sha256": "dffed633700e6006f4481d944b132fbb85ae0e1d6be6ff34c759be6d97da110a"
+    },
+    "mendeley-inventory.json": {
+      "bytes": 1137875,
+      "sha256": "be0a75f971d5ebf1616eb93b05226c977ee04871b6102240ba831decb2b67d23"
+    }
+  },
+  "materials": [
+    {
+      "material_family": "PLA",
+      "status": "COMPARISON_ONLY",
+      "source_urls": [
+        "https://doi.org/10.3390/pr13092733",
+        "https://doi.org/10.1038/s41598-024-79213-5",
+        "https://doi.org/10.3390/ma16134574"
+      ],
+      "reason": "Grade/geometry/conditions do not establish target transfer.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "PETG",
+      "status": "COMPARISON_ONLY",
+      "source_urls": [
+        "https://doi.org/10.3390/pr13092733",
+        "https://doi.org/10.1038/s41598-024-79213-5",
+        "https://doi.org/10.17632/zvt28hz3kf.1"
+      ],
+      "reason": "Public PETG inventory lacks the described outcomes workbook.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "ABS",
+      "status": "COMPARISON_ONLY",
+      "source_urls": [
+        "https://doi.org/10.3390/pr13092733",
+        "https://doi.org/10.1038/s41598-024-79213-5",
+        "https://doi.org/10.1016/j.jmrt.2022.12.147"
+      ],
+      "reason": "Tensile load/stress and interlayer shear kept distinct.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "ASA",
+      "status": "COMPARISON_ONLY",
+      "source_urls": [
+        "https://doi.org/10.3390/ma17215207",
+        "https://doi.org/10.5281/zenodo.14065523"
+      ],
+      "reason": "Prior audited SENB raw data; not arbitrary-part failure validation.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "PETG-CF",
+      "status": "INSUFFICIENT",
+      "source_urls": [
+        "https://doi.org/10.1016/j.addma.2019.100922",
+        "https://doi.org/10.3390/ma16134574"
+      ],
+      "reason": "Candidate primary studies; grade-matched process rows not newly extracted.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "PETG-GF",
+      "status": "INSUFFICIENT",
+      "source_urls": [
+        "https://doi.org/10.1016/j.proeng.2017.02.245",
+        "https://doi.org/10.1007/s00170-026-19068-4"
+      ],
+      "reason": "Primary tensile/flexural candidates; no raw rows/grade match verified.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "ABS-CF",
+      "status": "INSUFFICIENT",
+      "source_urls": [
+        "https://doi.org/10.1016/j.addma.2018.02.023"
+      ],
+      "reason": "Interlayer fracture toughness is not tensile stress.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "ABS-GF",
+      "status": "INSUFFICIENT",
+      "source_urls": [
+        "https://doi.org/10.1002/pc.71317"
+      ],
+      "reason": "Short and continuous reinforcement must be separated; raw rows not acquired.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "PA6-CF",
+      "status": "INSUFFICIENT",
+      "source_urls": [
+        "https://doi.org/10.3390/polym15030507",
+        "https://doi.org/10.3390/ma15145079"
+      ],
+      "reason": "Separate short-CF tension, continuous-GF and bending; moisture/grade unresolved.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "PA6-GF",
+      "status": "INSUFFICIENT",
+      "source_urls": [
+        "https://doi.org/10.35860/iarej.862304",
+        "https://doi.org/10.1016/j.matpr.2023.04.641"
+      ],
+      "reason": "Short-GF temperature/moisture candidates; continuous-GF evidence excluded.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "PA12-CF",
+      "status": "INSUFFICIENT",
+      "source_urls": [
+        "https://doi.org/10.1016/j.compstruct.2019.02.005",
+        "https://doi.org/10.3390/polym18182239"
+      ],
+      "reason": "Fracture and tribology papers do not establish process tensile calibration.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "PA12-GF",
+      "status": "INSUFFICIENT",
+      "source_urls": [
+        "https://doi.org/10.3390/polym18182239"
+      ],
+      "reason": "FFF tribology study quotes TDS tensile values; not independent tensile validation. SLS/MJF excluded.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "PPA-CF",
+      "status": "COMPARISON_ONLY",
+      "source_urls": [
+        "https://doi.org/10.3390/polym18121422",
+        "https://doi.org/10.3390/polym17152012"
+      ],
+      "reason": "Verified specific Fiberlogy grade/test-temperature curve; not nozzle-process calibration.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "PPA-GF",
+      "status": "INSUFFICIENT",
+      "source_urls": [],
+      "reason": "No eligible primary FFF specimen-strength data verified; manufacturer listing alone insufficient.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "PPS-CF",
+      "status": "INSUFFICIENT",
+      "source_urls": [
+        "https://doi.org/10.1177/00219983231194391",
+        "https://doi.org/10.1002/pc.71040"
+      ],
+      "reason": "Discontinuous CF thermal-history candidate; full grade/process outcome matrix not acquired.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "PC",
+      "status": "COMPARISON_ONLY",
+      "source_urls": [
+        "https://doi.org/10.1016/j.jmrt.2022.12.147",
+        "https://doi.org/10.1007/s40192-020-00188-y"
+      ],
+      "reason": "Prior shear comparison/NIST benchmark; no independent tensile process prediction.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "TPU",
+      "status": "INSUFFICIENT",
+      "source_urls": [
+        "https://doi.org/10.3390/polym13162752",
+        "https://doi.org/10.1016/j.polymertesting.2020.106687"
+      ],
+      "reason": "Primary elastomer candidates; hardness, grade, strain-rate identity unresolved.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    },
+    {
+      "material_family": "TPE",
+      "status": "INSUFFICIENT",
+      "source_urls": [
+        "https://doi.org/10.1016/j.polymertesting.2020.106687"
+      ],
+      "reason": "Broad elastomer source does not verify exact registered TPE composition/grade.",
+      "supported_scope": "NONE_FOR_PROCESS_STRENGTH_PREDICTION"
+    }
+  ]
+}

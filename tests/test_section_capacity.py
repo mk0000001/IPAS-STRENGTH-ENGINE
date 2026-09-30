@@ -19,16 +19,17 @@ class SectionCapacity(unittest.TestCase):
         self.assertAlmostEqual(best['min_section_area_mm2'],5*30*.16,delta=.16*30)
         self.assertGreater(best['section_modulus_mm3'],0)
 
-    def test_capacity_uses_axis_specific_allowable_and_reports_both_units(self):
+    def test_axis_reference_does_not_become_envelope_capacity(self):
         candidate={'min_section_area_mm2':60.,'section_modulus_mm3':20.,'section_normal_axis':'Z'}
         value=capacity_for_candidate(candidate,{'X':'35.9','Y':'35.9','Z':'14.42'},
                                      {'configuration':{'sparse_infill_density':100}})
-        self.assertEqual(value['allowable_mpa'],14.42)
-        self.assertAlmostEqual(value['axial_capacity_n'],60*14.42,places=6)
-        self.assertAlmostEqual(value['axial_capacity_kgf'],60*14.42/9.80665,places=6)
-        self.assertAlmostEqual(value['bending_capacity_nmm'],20*14.42,places=6)
+        self.assertEqual(value['material_reference_mpa'],14.42)
+        self.assertIsNone(value['allowable_mpa'])
+        self.assertIsNone(value['axial_capacity_n'])
+        self.assertIsNone(value['axial_capacity_kgf'])
+        self.assertIsNone(value['bending_capacity_nmm'])
         self.assertFalse(value['is_measured'])
-        self.assertEqual(value['basis'],'SOLID_ENVELOPE_SECTION_TIMES_MATERIAL_REFERENCE')
+        self.assertEqual(value['basis'],'OUTER_ENVELOPE_GEOMETRY_ONLY')
 
     def test_capacity_is_withheld_without_section_or_material(self):
         self.assertIsNone(capacity_for_candidate({'min_section_area_mm2':None},{'Z':'10'}))

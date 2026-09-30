@@ -1,0 +1,433 @@
+{
+  "status": "COMPARISON_DATA_ONLY",
+  "catalog_sha256": "081f38bed7c9eb23b069530a0954a53348041c3b85803dcbd7bff6b5c6bf588f",
+  "is_empirical_model_accuracy_validation": false,
+  "accepted_runtime_models": 0,
+  "experimental_lineages": 2,
+  "materials": [
+    {
+      "material_family": "ASA",
+      "material_grade": "3DJake ASA",
+      "source_url": "https://zenodo.org/records/14065523",
+      "raw_file_provenance": {
+        "file": "UC_FRADDCO_TensileTests_ASA.xlsx",
+        "url": "https://zenodo.org/records/14065523/files/UC_FRADDCO_TensileTests_ASA.xlsx?download=1",
+        "record": 14065523,
+        "bytes": 377305,
+        "sha256": "f2a6ca65c89a2cc7ad1bf860d4fde61be628d6850c26a727897548d6d0394b94",
+        "md5": "e14fd985fb799ccf36883e644f360ace",
+        "expected_checksum": "md5:e14fd985fb799ccf36883e644f360ace"
+      },
+      "specimen_count": 9,
+      "arithmetic_errors": [],
+      "calibration_audit": {
+        "version": "PROCESS_CALIBRATION_AUDIT_V1",
+        "variable": "speed_mm_s",
+        "candidate": "SINGLE_VARIABLE_OLS",
+        "baseline": "TRAINING_MEAN",
+        "split": "LEAVE_ONE_EXPERIMENTAL_LINEAGE_OUT",
+        "input_sha256": "2727efbec89b564b4917c6cf741662c95382a595269c39d48304532dcfa21f01",
+        "input_rows": 9,
+        "status": "REJECTED_INPUT",
+        "accepted_for_runtime": false,
+        "is_prediction": false,
+        "exclusions": [
+          {
+            "row": 0,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 1,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 2,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 3,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 4,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 5,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 6,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 7,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 8,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          }
+        ],
+        "folds": [],
+        "replicate_policy": "AVERAGE_WITHIN_LINEAGE_BATCH_CONDITION",
+        "acceptance_rule": "At least three lineages; full holdout coverage; MAE at least 1e-12 MPa lower than training mean in every fold (numerical tie tolerance only).",
+        "limitations": [
+          "Lineage/provenance supplied by caller requires source review.",
+          "A passing candidate is not an approved model or a design allowable.",
+          "No independent-laboratory or universal-accuracy claim."
+        ],
+        "eligible_rows": 0,
+        "experimental_lineages": []
+      }
+    },
+    {
+      "material_family": "ASA-CF",
+      "material_grade": "3DJake ASA-CF10",
+      "source_url": "https://zenodo.org/records/14882928",
+      "raw_file_provenance": {
+        "file": "UC_FRADDCO_TensileTests_ASA-CF.xlsx",
+        "url": "https://zenodo.org/records/14882928/files/UC_FRADDCO_TensileTests_ASA-CF.xlsx?download=1",
+        "record": 14882928,
+        "bytes": 649851,
+        "sha256": "e95589cb5358cf6c4b6f52ddffb5a07192dcedf7aa8b2c4d8613a7f0b8d4c5fe",
+        "md5": "13941aec0a957f53de3349f6e599cb57",
+        "expected_checksum": "md5:13941aec0a957f53de3349f6e599cb57"
+      },
+      "specimen_count": 9,
+      "arithmetic_errors": [],
+      "calibration_audit": {
+        "version": "PROCESS_CALIBRATION_AUDIT_V1",
+        "variable": "speed_mm_s",
+        "candidate": "SINGLE_VARIABLE_OLS",
+        "baseline": "TRAINING_MEAN",
+        "split": "LEAVE_ONE_EXPERIMENTAL_LINEAGE_OUT",
+        "input_sha256": "27e2c55681fc243e552727ddc767327ccd9d9bd32d1f7bec4b24287c2589fdc9",
+        "input_rows": 9,
+        "status": "REJECTED_INPUT",
+        "accepted_for_runtime": false,
+        "is_prediction": false,
+        "exclusions": [
+          {
+            "row": 0,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 1,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 2,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 3,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 4,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 5,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 6,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 7,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          },
+          {
+            "row": 8,
+            "reasons": [
+              "MISSING_BATCH_ID",
+              "MISSING_CONTEXT_MOISTURE_CONDITION",
+              "MISSING_CONTEXT_ANNEALING",
+              "MISSING_CONTEXT_PRINTER",
+              "MISSING_CONTEXT_NOZZLE_DIAMETER_MM",
+              "MISSING_CONTEXT_CHAMBER_C",
+              "MISSING_CONTEXT_FAN_PERCENT",
+              "MISSING_CONTEXT_PATTERN",
+              "MISSING_CONTEXT_WALLS",
+              "MISSING_CONTEXT_FLOW_RATIO",
+              "MISSING_CONTEXT_TEST_TEMPERATURE_C",
+              "MISSING_CONTEXT_TEST_RELATIVE_HUMIDITY_PERCENT",
+              "MISSING_CONTEXT_CROSSHEAD_SPEED_MM_MIN",
+              "MISSING_CONTEXT_CONDITIONING_DURATION_H"
+            ]
+          }
+        ],
+        "folds": [],
+        "replicate_policy": "AVERAGE_WITHIN_LINEAGE_BATCH_CONDITION",
+        "acceptance_rule": "At least three lineages; full holdout coverage; MAE at least 1e-12 MPa lower than training mean in every fold (numerical tie tolerance only).",
+        "limitations": [
+          "Lineage/provenance supplied by caller requires source review.",
+          "A passing candidate is not an approved model or a design allowable.",
+          "No independent-laboratory or universal-accuracy claim."
+        ],
+        "eligible_rows": 0,
+        "experimental_lineages": []
+      }
+    }
+  ],
+  "scope": "Saved public raw-curve extraction arithmetic and calibration eligibility; no raw-file re-download.",
+  "saved_extraction_arithmetic_passed": true
+}

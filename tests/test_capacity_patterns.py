@@ -23,35 +23,29 @@ class CapacityPatterns(unittest.TestCase):
         ):
             for alias in aliases:
                 with self.subTest(pattern=alias):
-                    self.assertAlmostEqual(self.capacity(alias)['axial_capacity_n'],
-                                           self.capacity(canonical)['axial_capacity_n'])
+                    self.assertIsNone(self.capacity(alias)['axial_capacity_n'])
+                    self.assertIsNone(self.capacity(canonical)['axial_capacity_n'])
 
-    def test_unknown_patterns_report_fallback_without_substring_matching(self):
+    def test_unknown_patterns_do_not_receive_an_invented_fallback(self):
         for pattern in ('tpmsd', 'crosshatch', 'future-grid-pattern', None):
             with self.subTest(pattern=pattern):
                 value = self.capacity(pattern)
-                reason = value['section_knockdown_reasons'][0]
-                self.assertEqual(reason['pattern_efficiency'], .85)
-                self.assertIs(reason.get('pattern_efficiency_fallback'), True)
-                self.assertIsNone(reason['pattern_efficiency_key'])
-                self.assertEqual(reason['pattern'], pattern)
+                self.assertEqual(value['section_knockdown_reasons'],[])
+                self.assertIsNone(value['section_knockdown'])
+                self.assertIsNone(value['axial_capacity_n'])
 
-    def test_known_pattern_reports_coefficient_source(self):
-        reason = self.capacity('adaptivecubic')['section_knockdown_reasons'][0]
-        self.assertEqual(reason['pattern_efficiency'], .8)
-        self.assertEqual(reason['pattern_efficiency_key'], 'adaptive')
-        self.assertFalse(reason['pattern_efficiency_fallback'])
+    def test_known_pattern_name_is_metadata_not_a_strength_coefficient(self):
+        result=self.capacity('adaptivecubic')
+        self.assertEqual(result['structure_settings']['pattern'],'adaptivecubic')
+        self.assertEqual(result['section_knockdown_reasons'],[])
+        self.assertIsNone(result['axial_capacity_n'])
 
-    def test_aligned_rectilinear_preserves_family_assumption(self):
+    def test_aligned_rectilinear_does_not_inherit_unvalidated_family_strength(self):
         for pattern in ('alignedrectilinear', 'aligned rectilinear', 'aligned-rectilinear'):
             with self.subTest(pattern=pattern):
                 result = self.capacity(pattern)
-                self.assertAlmostEqual(result['axial_capacity_n'],
-                                       self.capacity('rectilinear')['axial_capacity_n'])
-                reason = result['section_knockdown_reasons'][0]
-                self.assertEqual(reason['pattern_efficiency_key'], 'rectilinear')
-                self.assertEqual(reason['pattern_efficiency_basis'],
-                                 'ASSUMED_PATTERN_FAMILY_NOT_CALIBRATED')
+                self.assertIsNone(result['axial_capacity_n'])
+                self.assertEqual(result['section_knockdown_reasons'],[])
 
 
 if __name__ == '__main__':

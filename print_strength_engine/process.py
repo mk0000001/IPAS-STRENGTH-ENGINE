@@ -2,7 +2,8 @@
 from math import isfinite
 from copy import deepcopy
 import re
-from .evidence import literature_comparisons
+from .evidence import literature_comparisons, evidence_coverage
+from .calibration import calibration_eligibility
 
 VERSION='GCODE_PROCESS_EVIDENCE_V3_THERMAL_CONTEXT'
 AXES=('X','Y','Z')
@@ -55,6 +56,8 @@ def settings(analysis):
             'line_width_mm':width,'line_width_source':width_source,
             'layer_height_mm':number(config.get('layer_height') or config.get('first_layer_height'),.01,3),
             'speed_mm_s':number(speeds.get('p50_approx'),1,2000),
+            'speed_basis':'COMMANDED_MOVE_MEDIAN' if number(speeds.get('p50_approx'),1,2000) is not None else None,
+            'nozzle_diameter_mm':number(config.get('nozzle_diameter'),.05,3),
             'nozzle_c':uniform(temperatures),'nozzle_temperatures_c':temperatures,
             'bed_c':uniform(bed_temperatures),'bed_temperatures_c':bed_temperatures,
             'flow_ratio':uniform(flows),'flow_ratios':flows,
@@ -71,6 +74,7 @@ def settings(analysis):
             'material_family':family,
             # A slicer profile name is not a verified manufacturer grade.
             'material_grade':first('filament_grade','material_grade'),
+            'grade_identity_verified':False,
             'filament_profile':first('filament_settings_id'),
             'moisture_condition':first('moisture_condition','filament_moisture'),
             'annealing':first('annealing','anneal_condition'),
@@ -85,13 +89,15 @@ def material_factors(analysis):
             'factor_status':'NOT_APPLIED','is_prediction':False,
             'factors':{axis:1. for axis in AXES},'applied':[],'settings':read,
             'literature_comparisons':literature_comparisons(read),
+            'evidence_coverage':evidence_coverage(read),
+            'calibration':calibration_eligibility(None,read),
             'limitations':['No calibrated transfer from reference coupon to target process is available.',
                            'Identity factors mean no correction applied, not unchanged physical strength.',
                            'Literature observations are not applied to target material strength or force.',
                            'Reference and target grade, thermal history, orientation and test conditions must be established.']}
 
 
-def process_adjustment(analysis,directional_mpa,*,reference_context=None):
+def process_adjustment(analysis,directional_mpa,*,reference_context=None,target_context=None,calibration_id=None):
     """Reference data and process evidence; no effective stress without calibration."""
     if not isinstance(directional_mpa,dict):return None
     report=material_factors(analysis)
@@ -103,4 +109,31 @@ def process_adjustment(analysis,directional_mpa,*,reference_context=None):
     report['adjusted']=False
     report['reference_context']=deepcopy(reference_context) if isinstance(reference_context,dict) else None
     report['target_context']=deepcopy(report['settings'])
+    # External, authenticated measurements can add context. Observed G-code
+    # fields cannot be silently overwritten with desired source conditions.
+    conflicts=[]
+    if isinstance(target_context,dict):
+        for key,value in deepcopy(target_context).items():
+            observed=report['target_context'].get(key)
+            if observed is not None and key != 'grade_identity_verified' and observed != value:
+                conflicts.append({'field':key,'gcode':observed,'supplied':value})
+            else:
+                report['target_context'][key]=value
+    reference=report['reference_context'] or {}
+    matching_context=deepcopy(reference.get('test_conditions')) if isinstance(reference.get('test_conditions'),dict) else {}
+    matching_context.update({k:v for k,v in reference.items() if k!='test_conditions'})
+    # Product name describes only the source specimen. It never establishes the
+    # target spool's identity, nor substitutes a family for a manufacturer grade.
+    if not matching_context.get('material_grade') and reference.get('reference_product'):
+        matching_context['material_grade']=reference['reference_product']
+    report['reference_matching_context']=matching_context
+    report['calibration']=calibration_eligibility(matching_context,report['target_context'],model_id=calibration_id)
+    if reference.get('internal_conservative_factor') not in (None,1,1.):
+        report['calibration']['blocking_reasons'].append('REFERENCE_CONTAINS_UNVALIDATED_INTERNAL_MARGIN')
+        report['reference_strength_kind']='MARGIN_ADJUSTED_REFERENCE_NOT_MEASURED_ALLOWABLE'
+    else:
+        report['reference_strength_kind']='REFERENCE_ONLY_NOT_MEASURED_TARGET_ALLOWABLE'
+    report['calibration']['target_context_conflicts']=conflicts
+    if conflicts:
+        report['calibration']['blocking_reasons'].append('SUPPLIED_CONTEXT_CONFLICTS_WITH_GCODE')
     return report

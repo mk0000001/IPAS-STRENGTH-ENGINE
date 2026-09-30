@@ -15,11 +15,11 @@
 |[`process.py`](../print_strength_engine/process.py), `GCODE_PROCESS_EVIDENCE_V3_THERMAL_CONTEXT`|읽힌 공정조건을 보존한다. `factor_status=NOT_APPLIED`, `is_prediction=false`, `effective_mpa=null`이다.|`factors`의 1은 호환용 미적용 표시다. 동일 강도라는 예측이나 검증 오차 계산에 사용하면 안 된다. 온도·속도·층 높이에서 강도로의 보정식은 적용하지 않는다.|
 |[`evidence.py`](../print_strength_engine/evidence.py), `PRIMARY_LITERATURE_COMPARISONS_V1`|S050·S088·S028의 조건과 관측값을 문헌 비교로 제공한다. 물성·소재군을 구분하고 불일치·미확인 조건을 남긴다.|`LITERATURE_COMPARISON_ONLY`이며 목표 제품에 적용되는 전이계수가 없다. 같은 소재군 또는 같은 인장 축만으로 grade·배치·열이력이 일치하지 않는다.|
 |[`infill.py`](../print_strength_engine/infill.py)|Ben Amor 등(2024)의 PLA 10–100% 구간을 같은 연구 내 상대응력으로 비교한다. 구간 내 선형보간은 명시적 비교 연산이다.|현재 부품의 패턴·벽 수·브랜드에 보정되지 않았다. 10% 미만 외삽, Z강도 보정, 실제 재료면적에 비율 재적용은 하지 않는다.|
-|[`capacity.py`](../print_strength_engine/capacity.py), `CAPACITY_SCENARIO_V4_GEOMETRY_QUALIFIED`|외곽 단면과 입력 참고응력으로 조건부 축력·굽힘 시나리오를 계산한다.|`empirically_validated=false`, `is_failure_prediction=false`, 보정 출처 목록은 비어 있다. 실제 하중·구속·공극·접촉면·노치·균열을 해결하지 않는다.|
+|[`capacity.py`](../print_strength_engine/capacity.py), `CAPACITY_SCENARIO_V5_EXPLICIT_LOAD_CASE_REQUIRED`|기존 외곽 단면 기반 힘 계산을 보류한다. 별도 `load_case` API는 명시적 고정·하중 조건과 완전한 경로 단면이 있어야 정상응력을 계산한다.|`is_failure_prediction=false`, 파단하중 null. 지원하지 않는 형상·조건은 보류한다. [현재 계약](../README.md).|
 
 온도·유량의 도구별 목록은 보존하며, 서로 다른 값 또는 유효하지 않은 슬롯이 섞이면 대표 스칼라를 만들지 않는다. 최소 레이어 시간 설정은 국소 재방문 시간 실측과 다르고, 노즐 설정온도는 기판·접합면 온도 실측과 다르다. 전체 출력시간을 레이어 수로 나누어 국소 열이력을 만들지 않는다.
 
-명목 100% 인필도 공극이 없다는 증거가 아니다. 하중 계산은 `solid_section_verified=false`이며 유효 재료면적·접합 접촉면적은 미확인으로 남긴다. 희소 인필 축력의 직사각형 shell/core 가정, 패턴 상수, core 지수 1.4는 실험 보정값이 아니다. 희소·미확인 인필 굽힘은 단면 관성모멘트를 확정할 수 없어 보류한다. 레이어 압출량 기반 면적 proxy는 연결된 단면이 아니므로 힘으로 환산하지 않는다.
+명목 100% 인필도 공극이 없다는 증거가 아니다. 2026-10-01 V5에서 기존 직사각형 shell/core 축력 가정, 패턴 상수, core 지수 1.4 및 추정 지렛대 계산을 제거했다. 명시적 하중 API의 직사각형 증착 경로 단면도 실제 접합·공극 측정은 아니며, 제한된 보 형상에서 조건부 정상응력만 계산한다. 레이어 압출량 기반 면적 proxy는 연결된 단면이 아니므로 힘으로 환산하지 않는다. [추가 연구와 보류 검증](research-update-20261001.md)을 함께 확인한다.
 
 응력의 분모가 `NET_MATERIAL` 또는 `INTERLAYER_CONTACT`이면 외곽 면적과 곱하는 계산을 차단한다. `UNKNOWN`은 기존 미보정 시나리오만 허용하며 적합성이 검증됐다는 뜻이 아니다. API의 `allowable_mpa`라는 기존 필드명도 인증된 허용응력이나 안전계수의 근거가 되지 않는다.
 
@@ -108,11 +108,11 @@ Fbaseline = 4 × mean(UTS) × Znet / S
 
 This English section summarizes the core evidence and decisions in the Korean source matrix above. Source IDs, DOI links, conditions and unresolved items remain traceable there. The historical audit scope is not a claim that every listed paper was read in full. **The engine is not empirically validated to predict the first failure location or breaking load of an arbitrary printed part.** Tensile, interlayer shear, bending and fracture-toughness quantities are not interchangeable merely because some share units.
 
-Current process evidence (`GCODE_PROCESS_EVIDENCE_V3_THERMAL_CONTEXT`) preserves conditions, returns `factor_status=NOT_APPLIED`, `is_prediction=false` and `effective_mpa=null`. Identity factors are compatibility placeholders, not predictions. Literature comparisons (`PRIMARY_LITERATURE_COMPARISONS_V1`) have no calibrated transfer coefficient to the target part. Capacity scenarios (`CAPACITY_SCENARIO_V4_GEOMETRY_QUALIFIED`) remain `empirically_validated=false` and `is_failure_prediction=false`, with no calibration-source list or prediction interval.
+Current process evidence (`GCODE_PROCESS_EVIDENCE_V3_THERMAL_CONTEXT`) preserves conditions, returns `factor_status=NOT_APPLIED`, `is_prediction=false` and `effective_mpa=null`. Identity factors are compatibility placeholders, not predictions. Literature comparisons have no approved transfer coefficient to the target part. Capacity V5 (`CAPACITY_SCENARIO_V5_EXPLICIT_LOAD_CASE_REQUIRED`) withholds legacy force scenarios. The separate explicit-load API returns conditional normal stress for supported complete geometry only, never a validated failure load. See [new research](research-update-20261001.md).
 
 Per-tool temperature/flow slots are retained; conflicting or incomplete lists do not produce a representative scalar. A minimum-layer-time setting is not measured local return time, and nozzle setpoint is not measured substrate/bond temperature. Total duration divided by layer count is not used to invent local thermal history.
 
-Nominal 100% infill is not evidence of void-free solid material. Sparse axial scenarios use uncalibrated rectangular shell/core assumptions, pattern constants and core exponent 1.4. Sparse/unknown bending is withheld because area fraction does not determine inertia. Layer-volume area proxies are not connected sections and are not converted to force. Net-material/contact-basis stress is not multiplied by gross-envelope area; unknown basis permits only the existing uncalibrated scenario. The legacy API name `allowable_mpa` does not certify a design allowable or safety factor.
+Nominal 100% infill is not evidence of void-free material. On 2026-10-01 V5 removed the legacy shell/core force assumption, pattern constants, core exponent 1.4 and guessed lever. Rectangular deposition sections in the explicit-load API still do not measure actual welds or voids. Layer-volume proxies are not connected sections and are not converted to force. Unknown-area material references cannot establish net-material stress margins. The legacy API name `allowable_mpa` does not certify a design allowable or safety factor.
 
 ### Primary studies used for comparisons
 
