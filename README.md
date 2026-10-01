@@ -2,7 +2,7 @@
 
 ## 한국어
 
-릴리스 **v0.12.0** · 코드 개정 12회(최초 등록 이후 업데이트 11회). [커밋 집계](VERSION_HISTORY.json). 패키지 변경 비병합 커밋을 세며 문서·시험 전용 변경과 자동 생성 버전 파일은 제외합니다. 개정 수는 정확도 검증 횟수가 아닙니다.
+릴리스 **v0.13.0** · 코드 개정 13회(최초 등록 이후 업데이트 12회). [커밋 집계](VERSION_HISTORY.json). 패키지 변경 비병합 커밋을 세며 문서·시험 전용 변경과 자동 생성 버전 파일은 제외합니다. 개정 수는 정확도 검증 횟수가 아닙니다.
 
 **형상 선별·문헌 비교·명시적 하중 조건의 정상응력 계산 도구입니다. 임의 출력물의 실제 파단하중이나 가장 먼저 부러질 위치를 검증한 예측 모델이 아닙니다.**
 
@@ -23,7 +23,7 @@ python -m unittest discover -s tests
 
 ## English
 
-Release **v0.12.0** · 12 package code revisions (11 updates after initial import). [Commit ledger](VERSION_HISTORY.json). Reachable non-merge package commits are counted; documentation-only, tests-only and generated version metadata changes are excluded. Revision count is not a validation rating.
+Release **v0.13.0** · 13 package code revisions (12 updates after initial import). [Commit ledger](VERSION_HISTORY.json). Reachable non-merge package commits are counted; documentation-only, tests-only and generated version metadata changes are excluded. Revision count is not a validation rating.
 
 **Geometry screening, literature comparison and conditional normal-stress calculation under explicit loads—not a validated predictor of arbitrary part failure or fracture location.**
 
