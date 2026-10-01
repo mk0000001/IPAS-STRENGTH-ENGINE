@@ -31,7 +31,7 @@
 ### 구현 검증
 
 - 공개 G-code/강도/가격 엔진 시험은 각각 36/107/22개 통과했다.
-- 통합 이미지 시험은 261개 통과, 환경 조건에 따른 5개 제외, 13개 서브테스트 통과였다.
+- 통합 이미지 시험은 262개 통과, 환경 조건에 따른 5개 제외, 13개 서브테스트 통과였다.
 - FusRock 공식 특성표가 포함된 상세 PDF를 실제 생성하고 텍스트 경계와 3페이지 렌더링을 확인했다.
 - 운영 배포 후 API·분석·뷰어·작업 서비스가 동일 이미지와 소스 해시, 강도 엔진 v0.13.0을 보고했다. 기존 FusRock ABS 분석 조회도 새 공식 제품 참조로 재계산됐다.
 
@@ -68,7 +68,7 @@ Some source fields may have labels that do not match their physical scale. For e
 ### Implementation verification
 
 - The public G-code, strength and quote suites passed 36, 107 and 22 tests respectively.
-- The integrated image passed 261 tests, skipped 5 environment-dependent cases and passed 13 subtests.
+- The integrated image passed 262 tests, skipped 5 environment-dependent cases and passed 13 subtests.
 - A detailed PDF containing the FusRock facts table was generated and checked for text bounds and three-page rendering.
 - After deployment, API, analysis, viewer and worker services reported one image, matching source hashes and strength engine v0.13.0. An existing FusRock ABS analysis also refreshed to the new exact-product reference.
 
