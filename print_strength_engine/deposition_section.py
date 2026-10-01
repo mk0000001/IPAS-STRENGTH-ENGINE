@@ -123,8 +123,10 @@ def prismatic_section(geometry,case):
     """Check every prism boundary; coordinate compression preserves real gaps."""
     boxes=road_boxes(geometry)
     bounds=[[min(b[i][0] for b in boxes),max(b[i][1] for b in boxes)] for i in range(3)]
-    fixed=case['fixed_region_mm'];point=case['load_point_mm'];center=[(a+b)/2 for a,b in fixed]
-    axis=max(range(3),key=lambda i:abs(point[i]-center[i]));u=(axis+1)%3;v=(axis+2)%3
+    fixed=case['fixed_region_mm'];point=case['load_point_mm']
+    # A supported slender beam's material length exceeds every transverse
+    # extent. Empty fixture space must not rotate its inferred longitudinal axis.
+    axis=max(range(3),key=lambda i:bounds[i][1]-bounds[i][0]);u=(axis+1)%3;v=(axis+2)%3
     epsilon=COORDINATE_TOLERANCE_MM
     if abs(point[axis]-bounds[axis][1])<=epsilon:
         sign=1;face=fixed[axis][1]

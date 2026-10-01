@@ -11,8 +11,10 @@ AXES=('X','Y','Z')
 
 def number(value,low,high):
     if isinstance(value,(list,tuple)):
-        value=value[0] if value else None
-    try:value=float(str(value).split(',')[0].strip().rstrip('%'))
+        return uniform([number(item,low,high) for item in value])
+    if isinstance(value,str) and re.search('[,;]',value):
+        return uniform([number(item,low,high) for item in re.split('[,;]',value)])
+    try:value=float(str(value).strip().rstrip('%'))
     except (TypeError,ValueError):return None
     return value if isfinite(value) and low<=value<=high else None
 
@@ -41,11 +43,21 @@ def settings(analysis):
     families={part.strip(' \"').upper() for value in family_values if value is not None
               for part in re.split('[,;]',str(value)) if part.strip(' \"')}
     family=next(iter(families)) if len(families)==1 else None
-    width=next((value for key in ('outer_wall_line_width','external_perimeter_extrusion_width','line_width','extrusion_width')
-                if '%' not in str(config.get(key)) and (value:=number(config.get(key),.05,3)) is not None),None)
-    width_source='GCODE_LINE_WIDTH'
-    if width is None:
-        width=number(config.get('nozzle_diameter'),.05,3) or number(analysis.get('nozzle_diameter_mm'),.05,3)
+    nozzle_value=first('nozzle_diameter')
+    if nozzle_value is None:nozzle_value=analysis.get('nozzle_diameter_mm')
+    nozzles=numeric_values(nozzle_value,.05,3)
+    width_values=[]
+    for key in ('outer_wall_line_width','external_perimeter_extrusion_width','line_width','extrusion_width'):
+        raw=config.get(key)
+        if '%' in str(raw):continue
+        values=numeric_values(raw,.05,3)
+        # Auto/zero dimensions can fall through to a configured absolute width.
+        # A mixed valid/invalid tool list instead retains its uncertainty.
+        if any(value is not None for value in values):width_values=values;break
+    width=uniform(width_values)
+    width_source='GCODE_LINE_WIDTH' if width is not None else 'UNKNOWN'
+    if not width_values:
+        width=uniform(nozzles)
         width_source='NOZZLE_DIAMETER_ASSUMPTION' if width is not None else 'UNKNOWN'
     temperatures=numeric_values(first('nozzle_temperature','temperature'),50,600)
     bed_temperatures=numeric_values(first('bed_temperature'),0,300)
@@ -53,11 +65,11 @@ def settings(analysis):
     return {'infill_percent':number(first('sparse_infill_density','fill_density'),0,100),
             'pattern':(str(config.get('sparse_infill_pattern') or config.get('fill_pattern') or '').strip().lower() or None),
             'walls':number(first('wall_loops','perimeters'),0,40),
-            'line_width_mm':width,'line_width_source':width_source,
+            'line_width_mm':width,'line_width_source':width_source,'line_widths_mm':width_values,
             'layer_height_mm':number(config.get('layer_height') or config.get('first_layer_height'),.01,3),
             'speed_mm_s':number(speeds.get('p50_approx'),1,2000),
             'speed_basis':'COMMANDED_MOVE_MEDIAN' if number(speeds.get('p50_approx'),1,2000) is not None else None,
-            'nozzle_diameter_mm':number(config.get('nozzle_diameter'),.05,3),
+            'nozzle_diameter_mm':uniform(nozzles),'nozzle_diameters_mm':nozzles,
             'nozzle_c':uniform(temperatures),'nozzle_temperatures_c':temperatures,
             'bed_c':uniform(bed_temperatures),'bed_temperatures_c':bed_temperatures,
             'flow_ratio':uniform(flows),'flow_ratios':flows,
