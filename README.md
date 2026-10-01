@@ -2,7 +2,7 @@
 
 ## 한국어
 
-릴리스 **v0.13.0** · 코드 개정 13회(최초 등록 이후 업데이트 12회). [커밋 집계](VERSION_HISTORY.json). 패키지 변경 비병합 커밋을 세며 문서·시험 전용 변경과 자동 생성 버전 파일은 제외합니다. 개정 수는 정확도 검증 횟수가 아닙니다.
+릴리스 **v0.14.0** · 코드 개정 14회(최초 등록 이후 업데이트 13회). [커밋 집계](VERSION_HISTORY.json). 패키지 변경 비병합 커밋을 세며 문서·시험 전용 변경과 자동 생성 버전 파일은 제외합니다. 개정 수는 정확도 검증 횟수가 아닙니다.
 
 **형상 선별·문헌 비교·명시적 하중 조건의 정상응력 계산 도구입니다. 임의 출력물의 실제 파단하중이나 가장 먼저 부러질 위치를 검증한 예측 모델이 아닙니다.**
 
@@ -13,7 +13,7 @@
 - 문헌 응력의 면적 정의가 확인되지 않으면 재료 순단면의 응력과 비교하지 않습니다. 공정 보정은 소재 등급·시험 조건·면적 정의·연구 계보를 확인해야 합니다. 승인된 보정 모델은 없으며 `effective_mpa=null`입니다. 기존 0.85 계수는 실측 보정값이 아닙니다.
 - 등록 소재 18개를 검토했습니다. 공개 실험 180개 중 학습 108개, 동일 연구 내 보류 54개, 별도 패턴 18개 제외의 진단에서 후보와 학습 평균 기준선의 MAE가 모두 0.802253 MPa였습니다. 정확도 향상을 입증하지 못했으며 부품 또는 독립 연구 검증으로 해석하지 않습니다.
 
-[FusRock 공식 소재 카탈로그](docs/fusrock-official-catalog-20261001.md) · [새 연구 검토](docs/research-update-20261001.md) · [보정 승인 조건](docs/process-calibration.md) · [기존 논문 근거](docs/research-evidence.md) · [시스템 검증](docs/system-validation.md) · [공정 API](PROCESS_EVIDENCE.md)
+[강도·뷰어 통합 검토](docs/strength-viewer-audit-20261002.md) · [FusRock 공식 소재 카탈로그](docs/fusrock-official-catalog-20261001.md) · [새 연구 검토](docs/research-update-20261001.md) · [보정 승인 조건](docs/process-calibration.md) · [기존 논문 근거](docs/research-evidence.md) · [시스템 검증](docs/system-validation.md) · [공정 API](PROCESS_EVIDENCE.md)
 
 NumPy·SciPy·Shapely 2를 설치한 뒤 시험합니다.
 
@@ -23,7 +23,7 @@ python -m unittest discover -s tests
 
 ## English
 
-Release **v0.13.0** · 13 package code revisions (12 updates after initial import). [Commit ledger](VERSION_HISTORY.json). Reachable non-merge package commits are counted; documentation-only, tests-only and generated version metadata changes are excluded. Revision count is not a validation rating.
+Release **v0.14.0** · 14 package code revisions (13 updates after initial import). [Commit ledger](VERSION_HISTORY.json). Reachable non-merge package commits are counted; documentation-only, tests-only and generated version metadata changes are excluded. Revision count is not a validation rating.
 
 **Geometry screening, literature comparison and conditional normal-stress calculation under explicit loads—not a validated predictor of arbitrary part failure or fracture location.**
 
@@ -34,6 +34,6 @@ Release **v0.13.0** · 13 package code revisions (12 updates after initial impor
 - Unknown reference area definitions cannot be compared with net-material stress. Calibration requires compatible grade, test conditions, area definition and study lineage. No transfer model is approved; `effective_mpa=null`. The existing 0.85 reference margin is not experimental calibration.
 - All 18 registered material families were reviewed. A within-study diagnostic split of 180 public specimens used 108 for training, 54 held out and 18 excluded for a different pattern. Candidate and training-mean baseline both achieved MAE 0.802253 MPa: no evidence of improvement, and no independent-study or part-level validation.
 
-[FusRock official catalogue](docs/fusrock-official-catalog-20261001.md) · [New research](docs/research-update-20261001.md) · [Calibration gates](docs/process-calibration.md) · [Earlier evidence](docs/research-evidence.md) · [System validation](docs/system-validation.md) · [Process API](PROCESS_EVIDENCE.md)
+[Strength/viewer integration audit](docs/strength-viewer-audit-20261002.md) · [FusRock official catalogue](docs/fusrock-official-catalog-20261001.md) · [New research](docs/research-update-20261001.md) · [Calibration gates](docs/process-calibration.md) · [Earlier evidence](docs/research-evidence.md) · [System validation](docs/system-validation.md) · [Process API](PROCESS_EVIDENCE.md)
 
 Tests require NumPy, SciPy and Shapely 2; run the command above.
