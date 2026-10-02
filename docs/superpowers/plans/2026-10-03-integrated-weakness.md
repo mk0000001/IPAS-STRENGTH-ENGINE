@@ -66,4 +66,4 @@
 - [x] Run full core/host/Node tests and independent final review; repair findings.
 - [x] Update engine/source versions, build and deploy all four services.
 - [x] Verify the original-file web result, fresh PDF, immutable costs and live hashes.
-- [ ] Publish bilingual validation/provenance and the public engine release to GitHub.
+- [x] Publish bilingual validation/provenance and the public engine release to GitHub.
