@@ -1,9 +1,9 @@
 {
   "counting_rule": "Reachable non-merge commits modifying the engine package, excluding _version.py; initial import counts as revision 1. Docs, tests-only and host-app changes excluded. Not individual feature counts.",
-  "version": "0.15.0",
-  "revision_count": 15,
-  "update_count": 14,
-  "source_commit": "e172b97a57b7148220a37414a1b7ecc757dc660d",
+  "version": "0.16.0",
+  "revision_count": 16,
+  "update_count": 15,
+  "source_commit": "282bdde24a7508ff6aa47e14447de19ad12aa207",
   "commits": [
     {
       "commit": "b8d3aeeabebb80addc05a50ca25e2ad3e000a61d",
@@ -64,6 +64,10 @@
     {
       "commit": "e172b97a57b7148220a37414a1b7ecc757dc660d",
       "subject": "Evaluate nominal stress across connected variable beam sections"
+    },
+    {
+      "commit": "282bdde24a7508ff6aa47e14447de19ad12aa207",
+      "subject": "Add automatic local road reference loads without force input"
     }
   ]
 }

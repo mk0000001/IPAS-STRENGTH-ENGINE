@@ -8,6 +8,8 @@
 
 후속 기록: [2026-10-02 하중 상태·가변 단면 계산](load-status-and-variable-sections-20261002.md), [2026-10-02 강도·뷰어 통합 검토](strength-viewer-audit-20261002.md), [2026-09-30 통합 검증](release-validation-20260930.md), [2026-09-30 추가 성능 검증](performance-validation-20260930.md), [2026-10-01 API 지연 수정](api-latency-validation-20261001.md), [2026-10-01 시편 근거·명시적 하중 검증](strength-release-validation-20261001.md), [2026-10-01 FusRock 공식 소재 카탈로그](fusrock-official-catalog-20261001.md). 아래 내용은 9월 25일 당시의 기록이다.
 
+최신 기능: [2026-10-03 힘 입력 없는 자동 하중 추정](automatic-load-estimates-20261003.md).
+
 관련 문서: [논문·자료의 핵심 근거](research-evidence.md), [공정 근거 API](../PROCESS_EVIDENCE.md).
 
 ## 구성과 책임
@@ -71,6 +73,8 @@ python -m unittest discover -s tests
 ---
 
 ## English
+
+Latest feature: [2026-10-03 automatic reference loads without force input](automatic-load-estimates-20261003.md).
 
 Latest follow-ups: [2026-10-02 strength/viewer integration audit](strength-viewer-audit-20261002.md), [2026-10-01 specimen evidence and explicit-load validation](strength-release-validation-20261001.md). The older sections below are historical records, not the current capacity contract.
 
