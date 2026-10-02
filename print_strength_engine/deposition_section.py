@@ -119,7 +119,7 @@ def _properties(cells,us,vs):
             'coordinate_second_moment_mm4':[[c00,c01],[c01,c11]],'cell_count':len(cells)},rectangles
 
 
-def prismatic_section(geometry,case):
+def beam_sections(geometry,case):
     """Check every prism boundary; coordinate compression preserves real gaps."""
     boxes=road_boxes(geometry)
     bounds=[[min(b[i][0] for b in boxes),max(b[i][1] for b in boxes)] for i in range(3)]
@@ -151,20 +151,46 @@ def prismatic_section(geometry,case):
     us=sorted({x for b in boxes for x in b[u]});vs=sorted({x for b in boxes for x in b[v]})
     if (len(us)-1)*(len(vs)-1)>MAX_SECTION_CELLS:raise UnsupportedGeometry('DEPOSITION_SECTION_BUDGET_EXCEEDED')
     ui={x:i for i,x in enumerate(us)};vi={x:i for i,x in enumerate(vs)}
-    previous=None;work=0
+    previous=None;previous_properties=previous_rectangles=None;work=0;sections=[];prismatic=True
     for left,right in zip(stations,stations[1:]):
         cells,operations=_section_cells(boxes,axis,(left+right)/2,u,v,ui,vi)
         work+=operations
         if work>MAX_CELL_WORK:raise UnsupportedGeometry('DEPOSITION_CELL_BUDGET_EXCEEDED')
-        if previous is not None and cells!=previous:raise UnsupportedGeometry('NONPRISMATIC_GEOMETRY')
+        if previous is not None and not cells.intersection(previous):
+            # A shared compressed cell has positive transverse area. Merely
+            # touching along an edge/corner cannot anchor the next interval.
+            raise UnsupportedGeometry('DISCONNECTED_BEAM_INTERVALS')
+        if previous is not None and cells==previous:
+            properties,rectangles=previous_properties,previous_rectangles
+        else:
+            properties,rectangles=_properties(cells,us,vs)
+            if previous is not None:prismatic=False
         previous=cells
-    properties,rectangles=_properties(previous,us,vs)
-    if not any(a-epsilon<=point[u]<=b+epsilon and c-epsilon<=point[v]<=d+epsilon for a,b,c,d in rectangles):
+        previous_properties,previous_rectangles=properties,rectangles
+        # Keep the fixture material in the connectivity check above, while
+        # evaluating nominal stress only on the unclamped free span.
+        left=max(left,min(face,point[axis]));right=min(right,max(face,point[axis]))
+        if left<right:sections.append(({**properties},rectangles,left,right))
+    load_rectangles=sections[-1 if sign>0 else 0][1]
+    if not any(a-epsilon<=point[u]<=b+epsilon and c-epsilon<=point[v]<=d+epsilon for a,b,c,d in load_rectangles):
         raise UnsupportedGeometry('LOAD_POINT_NOT_ON_DEPOSITED_SECTION')
-    properties.update({'plane_axes':['XYZ'[u],'XYZ'[v]],'station_mm':face,
-        'geometry_basis':'UNION_OF_DECLARED_RECTANGULAR_ROAD_ENVELOPES',
-        'section_geometry_status':'CONNECTED_PRISMATIC_ROAD_ENVELOPE',
-        'checked_intervals':len(stations)-1,'bonded_contact_area_mm2':None,
-        'coordinate_tolerance_mm':COORDINATE_TOLERANCE_MM,
-        'printed_void_geometry_measured':False,'solid_infill_assumed':False})
+    for properties,rectangles,left,right in sections:
+        properties.update({'plane_axes':['XYZ'[u],'XYZ'[v]],'station_mm':(left+right)/2,
+            'station_interval_mm':[left,right],
+            'geometry_basis':'UNION_OF_DECLARED_RECTANGULAR_ROAD_ENVELOPES',
+            'section_geometry_status':'CONNECTED_PRISMATIC_ROAD_ENVELOPE' if prismatic else
+                                      'CONNECTED_PIECEWISE_PRISMATIC_ROAD_ENVELOPE',
+            'checked_intervals':len(stations)-1,'bonded_contact_area_mm2':None,
+            'coordinate_tolerance_mm':COORDINATE_TOLERANCE_MM,
+            'printed_void_geometry_measured':False,'solid_infill_assumed':False})
+    return sections,axis,u,v,sign,face,span
+
+
+def prismatic_section(geometry,case):
+    """Retain the original constant-section helper contract for callers."""
+    sections,axis,u,v,sign,face,span=beam_sections(geometry,case)
+    properties,rectangles,_,_=sections[0]
+    if properties['section_geometry_status']!='CONNECTED_PRISMATIC_ROAD_ENVELOPE':
+        raise UnsupportedGeometry('NONPRISMATIC_GEOMETRY')
+    properties={**properties,'station_mm':face}
     return properties,rectangles,axis,u,v,sign,face,span

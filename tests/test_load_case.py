@@ -26,6 +26,14 @@ def load(height=2,force=2):
             'load_point_mm':[100,0,height/2],'direction':[0,0,-1],'force_n':force}
 
 
+def stepped_beam():
+    """10 x 2 mm to 2 x 2 mm at x=50; overlapping material at the step."""
+    geometry=beam()
+    for segment in geometry['segments']:
+        if abs(segment['start'][1])>.5:segment['end'][0]=50
+    return geometry
+
+
 class LoadCaseTests(unittest.TestCase):
     def evaluate(self,case=None,geometry=None,**kwargs):
         self.assertIsNotNone(evaluate_load_case,'explicit load-case engine is missing')
@@ -177,9 +185,50 @@ class LoadCaseTests(unittest.TestCase):
         case=load();case['load_point_mm'][1]=1
         self.assertIn('TORSION_NOT_SUPPORTED',self.evaluate(case)['assessment_gaps'])
 
-    def test_nonprismatic_section_is_withheld(self):
+    def test_stepped_section_checks_both_sides_of_every_boundary(self):
+        result=self.evaluate(load(force=1),stepped_beam())
+        self.assertEqual(result['status'],'CONDITIONAL_NORMAL_STRESS')
+        # Wide fixture section: 90/(10*2**3/12)=13.5 MPa/N.
+        # Narrow side of x=50: 50/(2*2**3/12)=37.5 MPa/N.
+        self.assertAlmostEqual(result['normal_stress_per_n_mpa'],37.5)
+        self.assertAlmostEqual(result['critical_section']['station_mm'],50)
+        self.assertAlmostEqual(result['section']['area_mm2'],4)
+        self.assertEqual(result['section']['section_geometry_status'],'CONNECTED_PIECEWISE_PRISMATIC_ROAD_ENVELOPE')
+        self.assertEqual(len(result['section_profile']),2)
+        self.assertFalse(result['is_failure_prediction'])
+        self.assertIsNone(result['failure_load_n'])
+
+    def test_stepped_axial_stress_uses_each_local_area(self):
+        case=load(force=100);case['direction']=[1,0,0]
+        result=self.evaluate(case,stepped_beam())
+        self.assertEqual(result['status'],'CONDITIONAL_NORMAL_STRESS')
+        self.assertAlmostEqual(result['normal_stress_mpa'],25)
+
+    def test_reverse_stepped_cantilever_preserves_critical_response(self):
+        geometry=stepped_beam()
+        for segment in geometry['segments']:
+            for key in ('start','end'):segment[key][0]=100-segment[key][0]
+        case=load(force=1);case['fixed_region_mm'][0]=[90,101];case['load_point_mm'][0]=0
+        result=self.evaluate(case,geometry)
+        self.assertEqual(result['status'],'CONDITIONAL_NORMAL_STRESS')
+        self.assertAlmostEqual(result['normal_stress_per_n_mpa'],37.5)
+        self.assertAlmostEqual(result['critical_section']['station_mm'],50)
+
+    def test_neighboring_intervals_need_positive_area_contact(self):
+        geometry=beam(2,2)
+        for segment in geometry['segments']:segment['end'][0]=50
+        for segment in beam(2,2)['segments']:
+            segment['start'][0]=50
+            segment['start'][1]+=2;segment['end'][1]+=2
+            geometry['segments'].append(segment)
+        case=load(force=1);case['load_point_mm'][1]=2
+        result=self.evaluate(case,geometry)
+        self.assertEqual(result['status'],'WITHHELD')
+        self.assertIn('DISCONNECTED_BEAM_INTERVALS',result['assessment_gaps'])
+
+    def test_varying_section_with_unsolved_torsion_is_withheld(self):
         geometry=beam();geometry['segments'][0]['end'][0]=50
-        self.assertIn('NONPRISMATIC_GEOMETRY',self.evaluate(geometry=geometry)['assessment_gaps'])
+        self.assertIn('TORSION_NOT_SUPPORTED',self.evaluate(geometry=geometry)['assessment_gaps'])
 
     def test_invalid_nonfinite_load_is_rejected_before_geometry(self):
         self.assertIsNotNone(validate_load_case)
