@@ -54,6 +54,11 @@ class SectionRegressions(unittest.TestCase):
             self.assertEqual(b['position_mm'][axis], b['section_station_mm'])
             self.assertAlmostEqual(b['bending_section_station_mm']-a['bending_section_station_mm'],
                                    [100,200,300][axis])
+            for plane in range(3):
+                for edge in range(2):
+                    self.assertAlmostEqual(b['section_window_bounds_mm'][plane][edge]-a['section_window_bounds_mm'][plane][edge],
+                                           [100,200,300][plane])
+            self.assertTrue(all(low<=a['position_mm'][plane]<=high for plane,(low,high) in enumerate(a['section_window_bounds_mm'])))
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 """Finished-part thin-region screening from outer contours; not FEA or failure load."""
 import math
-VERSION='LOCAL_OUTER_ENVELOPE_V4_CONNECTED_PRINCIPAL_SECTIONS'
+VERSION='LOCAL_OUTER_ENVELOPE_V5_DECLARED_SECTION_WINDOWS'
 AXIS_NAMES=('Z','Y','X')
 
 
@@ -67,6 +67,7 @@ def section_metrics(solid,part,spacing,threshold_mm,axis=None,component_labels=N
             'axial_section_station_mm':float((int(low[axis])+station+.5)*spacing),
             'bending_section_station_mm':float((int(low[axis])+bending_station+.5)*spacing),
             'bending_section_area_mm2':round(bending_area,4),
+            'section_window_bounds_mm':[[float(low[i]*spacing),float(high[i]*spacing)] for i in (2,1,0)],
             **bending_properties,
             'section_basis':'SEPARATE_AREA_AND_PRINCIPAL_BENDING_MINIMA',
             'section_scope':'CROPPED_FACE_CONNECTED_MATERIAL_COMPONENT'}
@@ -129,6 +130,8 @@ def screen_solid(solid,origin_xyz,spacing_mm,*,threshold_mm=2.4,max_candidates=6
                 # share the world coordinate system used by bounds and markers.
                 for field in ('section_station_mm','axial_section_station_mm','bending_section_station_mm'):
                     section[field]=round(section[field]+float(origin_xyz[2-axis]),3)
+                section['section_window_bounds_mm']=[[edge+float(origin_xyz[i]) for edge in pair]
+                                                     for i,pair in enumerate(section['section_window_bounds_mm'])]
                 position[2-axis]=section['section_station_mm']
                 candidates[-1]['z_mm']=position[2]
                 candidates[-1].update(section)
