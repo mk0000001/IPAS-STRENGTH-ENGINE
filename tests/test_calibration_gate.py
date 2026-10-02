@@ -206,7 +206,7 @@ class CalibrationGateTests(unittest.TestCase):
             self.assertFalse(report['researched_comparison_evidence']['is_runtime_calibration'])
 
     def test_new_comparison_sources_do_not_masquerade_as_numeric_tensile_catalog(self):
-        for family in ('ABS','PETG','PPA-CF'):
+        for family in ('PETG','PPA-CF'):
             report=evidence_coverage({'material_family':family})
             self.assertEqual(report['status'],'RESEARCH_COMPARISON_ONLY')
             self.assertEqual(report['curated_numeric_catalog']['comparison_count'],0)
@@ -217,6 +217,10 @@ class CalibrationGateTests(unittest.TestCase):
         self.assertEqual(pc['comparison_count'],0)
         self.assertIn('interlayer_shear_strength',pc['other_properties_available'])
         self.assertEqual(evidence_coverage({'material_family':'PPA-GF'})['status'],'RESEARCH_REVIEWED_INSUFFICIENT')
+        abs_report=evidence_coverage({'material_family':'ABS'})
+        self.assertEqual(abs_report['status'],'COMPARISON_EVIDENCE_ONLY')
+        self.assertGreater(abs_report['curated_numeric_catalog']['comparison_count'],0)
+        self.assertIsNone(abs_report['effective_mpa'])
 
     def test_research_catalog_copies_and_nonregistered_numeric_sources(self):
         report=evidence_coverage({'material_family':'ASA-CF'})

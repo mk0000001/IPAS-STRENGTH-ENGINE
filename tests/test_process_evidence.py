@@ -56,7 +56,9 @@ class ProcessEvidence(unittest.TestCase):
         self.assertEqual(row['target_context']['nozzle_c'], 220)
 
     def test_shear_cannot_enter_tensile_comparisons(self):
-        self.assertEqual(self.evidence({'material_family': 'ABS'}), [])
+        tensile=self.evidence({'material_family':'ABS'})
+        self.assertTrue(tensile)
+        self.assertTrue(all(row['property']=='tensile_strength' and row['source_id']!='S028' for row in tensile))
         rows = self.evidence({'material_family': 'ABS'}, property_name='interlayer_shear_strength')
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]['observations'][0]['value_mpa'], 23.01)

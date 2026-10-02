@@ -1,0 +1,484 @@
+{
+  "schema": "research-derived-condition-aggregates-v1",
+  "review_date": "2026-10-03",
+  "purpose": "small reproducible extraction audit, not an approved runtime calibration model",
+  "study_lineage": {
+    "id": "nesheim-2025-ir-pa6cf",
+    "paper_doi": "10.1016/j.addma.2025.104705",
+    "dataset_doi": "10.17632/pdfz6y8bmh.1",
+    "dataset_version": 1,
+    "dataset_url": "https://data.mendeley.com/datasets/pdfz6y8bmh/1",
+    "license": "CC BY 4.0",
+    "institutional_abstract_url": "https://research-information.bris.ac.uk/en/publications/identifying-thermal-effects-during-3d-printing-by-comparing-in-la/",
+    "paper_and_dataset_independent_study_count": 1,
+    "article_full_methods_verified": false
+  },
+  "verified_abstract_domain": {
+    "material_family": "carbon-fiber-reinforced polyamide 6",
+    "single_wall_thickness_mm": 0.8,
+    "layer_height_mm": 0.3,
+    "speed_min_mm_per_s": 3,
+    "speed_max_mm_per_s": 50,
+    "heater_nominal_power_W_approximate": 40,
+    "treatments": [
+      "noheat",
+      "preheat",
+      "postheat"
+    ],
+    "property": "interlayer tensile ultimate stress"
+  },
+  "unknown_required_context": [
+    "exact trade grade",
+    "filament batch",
+    "conditioning and residual moisture",
+    "bed temperature",
+    "chamber temperature",
+    "mechanical test speed",
+    "complete specimen geometry and gauge definition",
+    "actual vs nominal area definition",
+    "per-specimen failure-location flag"
+  ],
+  "official_manifest_verification": {
+    "all_eight_sha256_matched": true,
+    "original_source_files_replicated_in_repository": false,
+    "author_python_executed": false,
+    "files": [
+      {
+        "name": "Thermal and strength data.xlsx",
+        "file_id": "44641240-0f0c-4871-8239-730d271b7d3b",
+        "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/44641240-0f0c-4871-8239-730d271b7d3b/file_downloaded",
+        "byte_count": 66784,
+        "sha256": "1a69d48f14e487daed92188675ef381c2e094347b0e9a770e54565357a1e176a",
+        "sha256_matches_official_manifest": true
+      },
+      {
+        "name": "temp_plot.py",
+        "file_id": "fb0f1275-2373-4662-b4e7-52657e83bcb6",
+        "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/fb0f1275-2373-4662-b4e7-52657e83bcb6/file_downloaded",
+        "byte_count": 16008,
+        "sha256": "93cac13e70888b27f4fedd07129e6f0ee197ac06ff8f2f99be77e52121121118",
+        "sha256_matches_official_manifest": true
+      },
+      {
+        "name": "Strength_noheat.csv",
+        "file_id": "a97a41a1-b766-4304-a25e-a8ff50d9cb57",
+        "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/a97a41a1-b766-4304-a25e-a8ff50d9cb57/file_downloaded",
+        "byte_count": 635,
+        "sha256": "c08d9923acfdea427effcaa77d9bca784f40c747cd0387aba057054b2a32d530",
+        "sha256_matches_official_manifest": true
+      },
+      {
+        "name": "Strength_postheat.csv",
+        "file_id": "70bdc9fc-7cc1-42d8-b1c5-139f1bc25787",
+        "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/70bdc9fc-7cc1-42d8-b1c5-139f1bc25787/file_downloaded",
+        "byte_count": 1080,
+        "sha256": "a3a7c972563f5a5d5d79a2b54b5ded833ae51164e367dfe9cbebf49c42c2a593",
+        "sha256_matches_official_manifest": true
+      },
+      {
+        "name": "Strength_preheat.csv",
+        "file_id": "730e7d63-c522-42c3-b814-7ba3b42a558c",
+        "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/730e7d63-c522-42c3-b814-7ba3b42a558c/file_downloaded",
+        "byte_count": 1259,
+        "sha256": "4ec57e26d1d49a7988e23624de3c0c33c0275d5642c298714015fd564718ebe7",
+        "sha256_matches_official_manifest": true
+      },
+      {
+        "name": "Temp_noheat.csv",
+        "file_id": "4f6f8de2-00b5-4636-b143-7c430dfef01c",
+        "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/4f6f8de2-00b5-4636-b143-7c430dfef01c/file_downloaded",
+        "byte_count": 810,
+        "sha256": "6e60c16182620a4b6265e36b49a619d0a068ebdef88648b628be5f7db8192737",
+        "sha256_matches_official_manifest": true
+      },
+      {
+        "name": "Temp_postheat.csv",
+        "file_id": "2d9645e6-0a7f-4116-a837-466c275bc7f1",
+        "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/2d9645e6-0a7f-4116-a837-466c275bc7f1/file_downloaded",
+        "byte_count": 1064,
+        "sha256": "3316271a3c63a808169097d34c0bfeb14b28904cb3b6e555891c2fa324bf88ff",
+        "sha256_matches_official_manifest": true
+      },
+      {
+        "name": "Temp_preheat.csv",
+        "file_id": "4ba84c16-c2ab-4570-a605-30ef5bdeb324",
+        "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/4ba84c16-c2ab-4570-a605-30ef5bdeb324/file_downloaded",
+        "byte_count": 1054,
+        "sha256": "8908caf08c9d3b7cd171e4d45527d60fe5b6c0bec2363973217b657eb774e376",
+        "sha256_matches_official_manifest": true
+      }
+    ]
+  },
+  "numeric_csv_record_counts": {
+    "noheat": 24,
+    "postheat": 39,
+    "preheat": 45
+  },
+  "total_numeric_csv_records": 108,
+  "all_numeric_records_mechanically_eligible": false,
+  "selected_condition_aggregates": [
+    {
+      "treatment": "noheat",
+      "speed_mm_per_s": 20,
+      "n_numeric_csv_records": 6,
+      "uts_mean_MPa": 8.061488602157706,
+      "uts_sample_sd_MPa": 0.7091833491009693,
+      "computation": "mean and sample stdev of Load/Area; no weighting or zero imputation",
+      "source_locator": {
+        "file": "Strength_noheat.csv",
+        "csv_rows_1_based": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "speed_header_column_1_based": 1,
+        "load_column_1_based": 1,
+        "reported_area_column_1_based": 2,
+        "reported_uts_column_1_based": 3
+      },
+      "max_abs_recomputed_minus_reported_uts_MPa": 3.33333360913457e-10,
+      "area_basis": "source Area; actual bonded fracture area not verified",
+      "calibration_eligible": false
+    },
+    {
+      "treatment": "postheat",
+      "speed_mm_per_s": 20,
+      "n_numeric_csv_records": 6,
+      "uts_mean_MPa": 14.92022192385672,
+      "uts_sample_sd_MPa": 1.6931983261676111,
+      "computation": "mean and sample stdev of Load/Area; no weighting or zero imputation",
+      "source_locator": {
+        "file": "Strength_postheat.csv",
+        "csv_rows_1_based": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "speed_header_column_1_based": 10,
+        "load_column_1_based": 10,
+        "reported_area_column_1_based": 11,
+        "reported_uts_column_1_based": 12
+      },
+      "max_abs_recomputed_minus_reported_uts_MPa": 4.628100569448179e-09,
+      "area_basis": "source Area; actual bonded fracture area not verified",
+      "calibration_eligible": false
+    },
+    {
+      "treatment": "preheat",
+      "speed_mm_per_s": 20,
+      "n_numeric_csv_records": 6,
+      "uts_mean_MPa": 25.439461377753766,
+      "uts_sample_sd_MPa": 1.2317651715879445,
+      "computation": "mean and sample stdev of Load/Area; no weighting or zero imputation",
+      "source_locator": {
+        "file": "Strength_preheat.csv",
+        "csv_rows_1_based": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "speed_header_column_1_based": 10,
+        "load_column_1_based": 10,
+        "reported_area_column_1_based": 11,
+        "reported_uts_column_1_based": 12
+      },
+      "max_abs_recomputed_minus_reported_uts_MPa": 4.796749664137678e-09,
+      "area_basis": "source Area; actual bonded fracture area not verified",
+      "calibration_eligible": false
+    },
+    {
+      "treatment": "noheat",
+      "speed_mm_per_s": 30,
+      "n_numeric_csv_records": 6,
+      "uts_mean_MPa": 8.97573158414528,
+      "uts_sample_sd_MPa": 0.7089601417612613,
+      "computation": "mean and sample stdev of Load/Area; no weighting or zero imputation",
+      "source_locator": {
+        "file": "Strength_noheat.csv",
+        "csv_rows_1_based": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "speed_header_column_1_based": 4,
+        "load_column_1_based": 4,
+        "reported_area_column_1_based": 5,
+        "reported_uts_column_1_based": 6
+      },
+      "max_abs_recomputed_minus_reported_uts_MPa": 4.918021545563533e-10,
+      "area_basis": "source Area; actual bonded fracture area not verified",
+      "calibration_eligible": false
+    },
+    {
+      "treatment": "postheat",
+      "speed_mm_per_s": 30,
+      "n_numeric_csv_records": 6,
+      "uts_mean_MPa": 18.928492505775466,
+      "uts_sample_sd_MPa": 1.1211075635281265,
+      "computation": "mean and sample stdev of Load/Area; no weighting or zero imputation",
+      "source_locator": {
+        "file": "Strength_postheat.csv",
+        "csv_rows_1_based": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "speed_header_column_1_based": 13,
+        "load_column_1_based": 13,
+        "reported_area_column_1_based": 14,
+        "reported_uts_column_1_based": 15
+      },
+      "max_abs_recomputed_minus_reported_uts_MPa": 4.7967461114239995e-09,
+      "area_basis": "source Area; actual bonded fracture area not verified",
+      "calibration_eligible": false
+    },
+    {
+      "treatment": "preheat",
+      "speed_mm_per_s": 30,
+      "n_numeric_csv_records": 6,
+      "uts_mean_MPa": 25.555826501821738,
+      "uts_sample_sd_MPa": 0.9888583711078746,
+      "computation": "mean and sample stdev of Load/Area; no weighting or zero imputation",
+      "source_locator": {
+        "file": "Strength_preheat.csv",
+        "csv_rows_1_based": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "speed_header_column_1_based": 13,
+        "load_column_1_based": 13,
+        "reported_area_column_1_based": 14,
+        "reported_uts_column_1_based": 15
+      },
+      "max_abs_recomputed_minus_reported_uts_MPa": 4.1935486194688565e-09,
+      "area_basis": "source Area; actual bonded fracture area not verified",
+      "calibration_eligible": false
+    },
+    {
+      "treatment": "noheat",
+      "speed_mm_per_s": 40,
+      "n_numeric_csv_records": 6,
+      "uts_mean_MPa": 11.671750206042617,
+      "uts_sample_sd_MPa": 1.3645226651958116,
+      "computation": "mean and sample stdev of Load/Area; no weighting or zero imputation",
+      "source_locator": {
+        "file": "Strength_noheat.csv",
+        "csv_rows_1_based": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "speed_header_column_1_based": 7,
+        "load_column_1_based": 7,
+        "reported_area_column_1_based": 8,
+        "reported_uts_column_1_based": 9
+      },
+      "max_abs_recomputed_minus_reported_uts_MPa": 4.516129692433424e-09,
+      "area_basis": "source Area; actual bonded fracture area not verified",
+      "calibration_eligible": false
+    },
+    {
+      "treatment": "postheat",
+      "speed_mm_per_s": 40,
+      "n_numeric_csv_records": 5,
+      "uts_mean_MPa": 21.424642384981492,
+      "uts_sample_sd_MPa": 1.4810893967654313,
+      "computation": "mean and sample stdev of Load/Area; no weighting or zero imputation",
+      "source_locator": {
+        "file": "Strength_postheat.csv",
+        "csv_rows_1_based": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "speed_header_column_1_based": 16,
+        "load_column_1_based": 16,
+        "reported_area_column_1_based": 17,
+        "reported_uts_column_1_based": 18
+      },
+      "max_abs_recomputed_minus_reported_uts_MPa": 4.91803220370457e-09,
+      "area_basis": "source Area; actual bonded fracture area not verified",
+      "calibration_eligible": false
+    },
+    {
+      "treatment": "preheat",
+      "speed_mm_per_s": 40,
+      "n_numeric_csv_records": 6,
+      "uts_mean_MPa": 26.314368888674252,
+      "uts_sample_sd_MPa": 2.462483976643426,
+      "computation": "mean and sample stdev of Load/Area; no weighting or zero imputation",
+      "source_locator": {
+        "file": "Strength_preheat.csv",
+        "csv_rows_1_based": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "speed_header_column_1_based": 16,
+        "load_column_1_based": 16,
+        "reported_area_column_1_based": 17,
+        "reported_uts_column_1_based": 18
+      },
+      "max_abs_recomputed_minus_reported_uts_MPa": 4.34343760957745e-09,
+      "area_basis": "source Area; actual bonded fracture area not verified",
+      "calibration_eligible": false
+    },
+    {
+      "treatment": "noheat",
+      "speed_mm_per_s": 50,
+      "n_numeric_csv_records": 6,
+      "uts_mean_MPa": 7.165672238560457,
+      "uts_sample_sd_MPa": 0.8365235162789262,
+      "computation": "mean and sample stdev of Load/Area; no weighting or zero imputation",
+      "source_locator": {
+        "file": "Strength_noheat.csv",
+        "csv_rows_1_based": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "speed_header_column_1_based": 10,
+        "load_column_1_based": 10,
+        "reported_area_column_1_based": 11,
+        "reported_uts_column_1_based": 12
+      },
+      "max_abs_recomputed_minus_reported_uts_MPa": 3.801652326274052e-10,
+      "area_basis": "source Area; actual bonded fracture area not verified",
+      "calibration_eligible": false
+    },
+    {
+      "treatment": "postheat",
+      "speed_mm_per_s": 50,
+      "n_numeric_csv_records": 5,
+      "uts_mean_MPa": 16.990540501626977,
+      "uts_sample_sd_MPa": 3.9094102565956432,
+      "computation": "mean and sample stdev of Load/Area; no weighting or zero imputation",
+      "source_locator": {
+        "file": "Strength_postheat.csv",
+        "csv_rows_1_based": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "speed_header_column_1_based": 19,
+        "load_column_1_based": 19,
+        "reported_area_column_1_based": 20,
+        "reported_uts_column_1_based": 21
+      },
+      "max_abs_recomputed_minus_reported_uts_MPa": 4.87603202259379e-09,
+      "area_basis": "source Area; actual bonded fracture area not verified",
+      "calibration_eligible": false
+    },
+    {
+      "treatment": "preheat",
+      "speed_mm_per_s": 50,
+      "n_numeric_csv_records": 6,
+      "uts_mean_MPa": 20.852081619392703,
+      "uts_sample_sd_MPa": 1.792028560764445,
+      "computation": "mean and sample stdev of Load/Area; no weighting or zero imputation",
+      "source_locator": {
+        "file": "Strength_preheat.csv",
+        "csv_rows_1_based": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "speed_header_column_1_based": 19,
+        "load_column_1_based": 19,
+        "reported_area_column_1_based": 20,
+        "reported_uts_column_1_based": 21
+      },
+      "max_abs_recomputed_minus_reported_uts_MPa": 4.95935026378902e-09,
+      "area_basis": "source Area; actual bonded fracture area not verified",
+      "calibration_eligible": false
+    }
+  ],
+  "within_study_comparisons": [
+    {
+      "speed_mm_per_s": 20,
+      "preheat_mean_over_noheat_mean": 3.1556778943959234,
+      "postheat_mean_over_noheat_mean": 1.850802334430298,
+      "scope": "within this heater/specimen/material study only; no runtime multiplier authorized"
+    },
+    {
+      "speed_mm_per_s": 30,
+      "preheat_mean_over_noheat_mean": 2.847213763272903,
+      "postheat_mean_over_noheat_mean": 2.1088523345785797,
+      "scope": "within this heater/specimen/material study only; no runtime multiplier authorized"
+    },
+    {
+      "speed_mm_per_s": 40,
+      "preheat_mean_over_noheat_mean": 2.2545349604081624,
+      "postheat_mean_over_noheat_mean": 1.8355980899839406,
+      "scope": "within this heater/specimen/material study only; no runtime multiplier authorized"
+    },
+    {
+      "speed_mm_per_s": 50,
+      "preheat_mean_over_noheat_mean": 2.9099965676886397,
+      "postheat_mean_over_noheat_mean": 2.3711021012370894,
+      "scope": "within this heater/specimen/material study only; no runtime multiplier authorized"
+    }
+  ],
+  "source_discrepancies": [
+    {
+      "locator": "Thermal and strength data.xlsx, Strength data!D11:D12",
+      "detail": "3 mm/s preheat workbook statistics reference D6:D10 (five observations); CSV contains eight numeric observations. B30 legend Broke in gripper and cell styles imply exclusion but CSV lacks per-specimen flag. Excluded from selected aggregates and calibration."
+    },
+    {
+      "locator": "Thermal and strength data.xlsx, Thermal data, right summary",
+      "detail": "Some noheat 6 mm/s summary formula cells reference 12 mm/s cells; some 30 mm/s summaries differ from complete original rows. Summary temperatures not ingested."
+    },
+    {
+      "locator": "temp_plot.py",
+      "detail": "Tnozzle=300 is an author script constant, not verified measured nozzle data. Heater efficiency 0.85 is a study modelling assumption, not an empirical part-strength margin."
+    }
+  ],
+  "non_imputation_rules": [
+    "TOO WEAK and missing conditions are not zero MPa",
+    "abstract maxima are not condition means",
+    "no fracture energy inferred from UTS",
+    "no sample-count multiplication of independent study lineages"
+  ],
+  "runtime_factor_approved": false,
+  "approved_model_records_added": 0,
+  "transfer_limits": [
+    "different heater, specimen geometry, grade or drying are outside demonstrated condition comparisons",
+    "coupon tensile contrasts do not establish arbitrary part crack-opening resistance or failure force",
+    "temperature summaries and 3 mm/s preheat exclusions require clarification before calibration"
+  ]
+}

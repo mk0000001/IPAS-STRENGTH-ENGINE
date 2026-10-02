@@ -1,0 +1,263 @@
+[
+  {
+    "source_id": "P20261003_BELEI_30",
+    "doi": "10.3390/polym14071292",
+    "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9002508/",
+    "locator": "Table 2 C1/C5 or C3/C7; Methods 2.1-2.4",
+    "property": "tensile_strength",
+    "material_family": "PAHT-CF",
+    "material_grade": "BASF Ultrafuse PAHT CF15",
+    "comparison_variable": "nozzle_c",
+    "source_context": {
+      "nozzle_diameter_mm": 0.6,
+      "bed_c": 100,
+      "layer_height_mm": 0.4,
+      "speed_mm_s": 30,
+      "speed_basis": "PRINT_SETTING",
+      "raster_angles_deg": [
+        0,
+        90
+      ],
+      "test_standard": "ISO 527 I-BA",
+      "crosshead_speed_mm_min": 2,
+      "stress_area_basis": "INITIAL_COUPON_CROSS_SECTION",
+      "moisture_condition": null,
+      "walls": null,
+      "flow_ratio": null
+    },
+    "observations": [
+      {
+        "nozzle_c": 240,
+        "value_mpa": 97.0,
+        "sd_mpa": null,
+        "n": 4,
+        "value_kind": "REPORTED_CONDITION_MEAN",
+        "dispersion_definition": "REPORTED_PLUS_MINUS_NOT_CONFIRMED_SD"
+      },
+      {
+        "nozzle_c": 280,
+        "value_mpa": 89.2,
+        "sd_mpa": null,
+        "n": 4,
+        "value_kind": "REPORTED_CONDITION_MEAN",
+        "dispersion_definition": "REPORTED_PLUS_MINUS_NOT_CONFIRMED_SD"
+      }
+    ],
+    "observed_ratio": 0.9195876288659794,
+    "ratio_definition": "280 / 240 C within fixed speed/bed/layer condition",
+    "statistical_comparison": "CONDITIONAL_MEAN_COMPARISON_ONLY",
+    "limitations": [
+      "Nozzle effect changes sign between 30 and 80 mm/s; independent multipliers are invalid.",
+      "PAHT resin identity must not be replaced with PA6 or FusRock grade.",
+      "No independently validated target-part transfer model."
+    ]
+  },
+  {
+    "source_id": "P20261003_BELEI_80",
+    "doi": "10.3390/polym14071292",
+    "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9002508/",
+    "locator": "Table 2 C1/C5 or C3/C7; Methods 2.1-2.4",
+    "property": "tensile_strength",
+    "material_family": "PAHT-CF",
+    "material_grade": "BASF Ultrafuse PAHT CF15",
+    "comparison_variable": "nozzle_c",
+    "source_context": {
+      "nozzle_diameter_mm": 0.6,
+      "bed_c": 100,
+      "layer_height_mm": 0.4,
+      "speed_mm_s": 80,
+      "speed_basis": "PRINT_SETTING",
+      "raster_angles_deg": [
+        0,
+        90
+      ],
+      "test_standard": "ISO 527 I-BA",
+      "crosshead_speed_mm_min": 2,
+      "stress_area_basis": "INITIAL_COUPON_CROSS_SECTION",
+      "moisture_condition": null,
+      "walls": null,
+      "flow_ratio": null
+    },
+    "observations": [
+      {
+        "nozzle_c": 240,
+        "value_mpa": 91.0,
+        "sd_mpa": null,
+        "n": 4,
+        "value_kind": "REPORTED_CONDITION_MEAN",
+        "dispersion_definition": "REPORTED_PLUS_MINUS_NOT_CONFIRMED_SD"
+      },
+      {
+        "nozzle_c": 280,
+        "value_mpa": 100.2,
+        "sd_mpa": null,
+        "n": 4,
+        "value_kind": "REPORTED_CONDITION_MEAN",
+        "dispersion_definition": "REPORTED_PLUS_MINUS_NOT_CONFIRMED_SD"
+      }
+    ],
+    "observed_ratio": 1.1010989010989012,
+    "ratio_definition": "280 / 240 C within fixed speed/bed/layer condition",
+    "statistical_comparison": "CONDITIONAL_MEAN_COMPARISON_ONLY",
+    "limitations": [
+      "Nozzle effect changes sign between 30 and 80 mm/s; independent multipliers are invalid.",
+      "PAHT resin identity must not be replaced with PA6 or FusRock grade.",
+      "No independently validated target-part transfer model."
+    ]
+  },
+  {
+    "source_id": "P20261003_NESHEIM_40",
+    "doi": "10.1016/j.addma.2025.104705",
+    "source_url": "https://data.mendeley.com/datasets/pdfz6y8bmh/1",
+    "locator": "Source CSV, 40 mm/s numeric specimen records; derived condition means",
+    "property": "tensile_strength",
+    "material_family": "PA6-CF",
+    "material_grade": null,
+    "comparison_variable": "local_ir_treatment",
+    "source_context": {
+      "walls": 1,
+      "wall_thickness_mm": 0.8,
+      "layer_height_mm": 0.3,
+      "speed_mm_s": 40,
+      "speed_basis": "PRINT_SETTING",
+      "nozzle_c": null,
+      "bed_c": null,
+      "chamber_c": null,
+      "stress_area_basis": null,
+      "moisture_condition": null,
+      "test_standard": null
+    },
+    "observations": [
+      {
+        "local_ir_treatment": "noheat",
+        "value_mpa": 11.671750206042617,
+        "sd_mpa": 1.3645226651958116,
+        "n": 6,
+        "value_kind": "DERIVED_FROM_PUBLIC_NUMERIC_SPECIMEN_RECORDS",
+        "source_locator": {
+          "file": "Strength_noheat.csv",
+          "csv_rows_1_based": [
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "speed_header_column_1_based": 7,
+          "load_column_1_based": 7,
+          "reported_area_column_1_based": 8,
+          "reported_uts_column_1_based": 9
+        }
+      },
+      {
+        "local_ir_treatment": "postheat",
+        "value_mpa": 21.424642384981492,
+        "sd_mpa": 1.4810893967654313,
+        "n": 5,
+        "value_kind": "DERIVED_FROM_PUBLIC_NUMERIC_SPECIMEN_RECORDS",
+        "source_locator": {
+          "file": "Strength_postheat.csv",
+          "csv_rows_1_based": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "speed_header_column_1_based": 16,
+          "load_column_1_based": 16,
+          "reported_area_column_1_based": 17,
+          "reported_uts_column_1_based": 18
+        }
+      },
+      {
+        "local_ir_treatment": "preheat",
+        "value_mpa": 26.314368888674252,
+        "sd_mpa": 2.462483976643426,
+        "n": 6,
+        "value_kind": "DERIVED_FROM_PUBLIC_NUMERIC_SPECIMEN_RECORDS",
+        "source_locator": {
+          "file": "Strength_preheat.csv",
+          "csv_rows_1_based": [
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "speed_header_column_1_based": 16,
+          "load_column_1_based": 16,
+          "reported_area_column_1_based": 17,
+          "reported_uts_column_1_based": 18
+        }
+      }
+    ],
+    "observed_ratio": null,
+    "ratio_definition": null,
+    "statistical_comparison": "WITHIN_STUDY_DESCRIPTIVE_NOT_TRANSFER",
+    "source_manifest_sha256_verified": true,
+    "limitations": [
+      "Exact trade grade, conditioning, test speed and nominal versus actual area unresolved.",
+      "Heater treatment is not a nozzle-temperature multiplier.",
+      "Excluded 3 mm/s condition due inconsistent CSV/XLSX exclusions.",
+      "No runtime calibration approved."
+    ]
+  },
+  {
+    "source_id": "P20261003_MARKOVIC_ABS",
+    "doi": "10.1089/3dp.2023.0170",
+    "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11669824/",
+    "locator": "Tables and Methods; EFR controlled conditions",
+    "property": "tensile_strength",
+    "material_family": "ABS",
+    "material_grade": "Devil Design ABS",
+    "comparison_variable": "flow_ratio",
+    "source_context": {
+      "nozzle_c": 235,
+      "bed_c": 90,
+      "layer_height_mm": 0.09,
+      "nozzle_diameter_mm": 0.4,
+      "test_standard": "ISO 527 5A",
+      "crosshead_speed_mm_min": 10,
+      "orientation": "FLAT_BUILD",
+      "speed_mm_s": null,
+      "walls": null,
+      "stress_area_basis": null,
+      "moisture_condition": null
+    },
+    "observations": [
+      {
+        "flow_ratio": 1.0,
+        "value_mpa": 31.1,
+        "sd_mpa": 1.7,
+        "n": 5,
+        "value_kind": "REPORTED"
+      },
+      {
+        "flow_ratio": 1.25,
+        "value_mpa": 36.4,
+        "sd_mpa": 1.4,
+        "n": 5,
+        "value_kind": "REPORTED"
+      },
+      {
+        "flow_ratio": 1.5,
+        "value_mpa": 34.4,
+        "sd_mpa": 1.6,
+        "n": 5,
+        "value_kind": "REPORTED"
+      }
+    ],
+    "observed_ratio": null,
+    "ratio_definition": null,
+    "statistical_comparison": "DESCRIPTIVE_MEANS_WITH_REPORTED_SD",
+    "limitations": [
+      "Greater extrusion is not monotonically stronger.",
+      "Outer layers in this paper are top/bottom solid layers, not perimeter wall count.",
+      "Slicer flow is already represented in E; never multiply it into E again.",
+      "No FusRock or target-part calibration."
+    ]
+  }
+]

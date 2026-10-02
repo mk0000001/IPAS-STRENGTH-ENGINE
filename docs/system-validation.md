@@ -1,5 +1,9 @@
 # 시스템 검증 결과와 적용 한계
 
+최신 공정 요인 검증: [원본 명령 체적·온도·벽과 취약부 계산](process-aware-weakness-validation-20261003.md).
+
+Latest process-aware validation: [source-command volume, temperatures, walls and weakness scenarios](process-aware-weakness-validation-20261003.md).
+
 최신 통합 검증(2026-10-03): [끝 연결부·층간 접촉·원자료/예상 하중 분리](integrated-weakness-validation-20261003.md), [1차 문헌·실측자료 근거](weakness-research-redesign-20261003.md). 아래 기록은 이전 점검 이력입니다.
 
 Latest integrated validation (2026-10-03): [terminal roots, layer contact and separate material/load inputs](integrated-weakness-validation-20261003.md), [primary evidence](weakness-research-redesign-20261003.md). Entries below are historical.

@@ -7,7 +7,7 @@ shared local reference scenario is the only numeric load-ranking basis here.
 from copy import deepcopy
 from math import isfinite
 
-VERSION='INTEGRATED_WEAKNESS_V1_MECHANISM_EVIDENCE'
+VERSION='INTEGRATED_WEAKNESS_V2_LOCAL_PROCESS_CONTEXT'
 GEOMETRY_BASIS='GEOMETRIC_SECTION_COMPARISON'
 LOAD_BASIS='COMPARABLE_LOCAL_25MM_REFERENCE_LOADS'
 
@@ -39,22 +39,27 @@ def _load_key(candidate):
     from .capacity import VERSION as CAPACITY_VERSION
     from .automatic_sections import VERSION as SECTION_VERSION
     value=candidate.get('estimated_capacity') or {};section=candidate.get('deposited_section') or {}
+    volume_selected=value.get('structure_model')=='LOCAL_COMMANDED_VOLUME_UNION'
+    if volume_selected:section=candidate.get('commanded_volume_section') or {}
     if candidate.get('screening_quality')=='RESOLUTION_LIMITED_FEATURE':return None
     if value.get('model_version')!=CAPACITY_VERSION or value.get('bending_basis')!='MINIMUM_OVER_ALL_LOCAL_MOMENT_DIRECTIONS':return None
     if value.get('calculation_status')!='AUTOMATIC_REFERENCE_LOAD_ESTIMATE' or value.get('is_failure_prediction') is not False:return None
     if not _finite(value.get('bending_force_n'),True) or value.get('bending_lever_mm')!=25:return None
     tools=section.get('tools')
     if section.get('version')!=SECTION_VERSION or section.get('status')!='COMPLETE' or section.get('complete') is not True or section.get('sampled') is not False:return None
-    if section.get('normal_axis')!=candidate.get('section_normal_axis') or section.get('scope')!='LOCAL_DECLARED_ROAD_REGION' or section.get('provenance')!='GCODE_WIDTH_HEIGHT_ASSUMPTION':return None
+    provenance='GCODE_COMMANDED_VOLUME_RECTANGULAR_EQUIVALENT' if volume_selected else 'GCODE_WIDTH_HEIGHT_ASSUMPTION'
+    if section.get('normal_axis')!=candidate.get('section_normal_axis') or section.get('scope')!='LOCAL_DECLARED_ROAD_REGION' or section.get('provenance')!=provenance:return None
     if not isinstance(tools,list) or len(tools)!=1:return None
     if isinstance(tools[0],bool) or not isinstance(tools[0],int) or tools[0]<0:return None
     basis=value.get('reference_stress_area_basis')
     if basis not in ('UNKNOWN','NET_MATERIAL','GROSS_ENVELOPE','INTERLAYER_CONTACT'):return None
     transfer=value.get('reference_transfer_assumption')
     if not isinstance(transfer,dict) or transfer.get('source_area_basis')!=basis:return None
-    if transfer.get('target_area_basis')!='DECLARED_NET_ROAD_ENVELOPE' or transfer.get('basis')!='COUPON_REFERENCE_AS_HOMOGENEOUS_NET_SECTION_STRESS':return None
+    target='COMMAND_VOLUME_EQUIVALENT_NET_SECTION' if volume_selected else 'DECLARED_NET_ROAD_ENVELOPE'
+    if transfer.get('target_area_basis')!=target or transfer.get('basis')!='COUPON_REFERENCE_AS_HOMOGENEOUS_NET_SECTION_STRESS':return None
     if not isinstance(transfer.get('verified'),bool):return None
-    return tools[0],basis,transfer['target_area_basis'],transfer['basis'],transfer['verified'],candidate.get('material_reference_id'),candidate.get('source_sha256')
+    comparison=(value.get('geometry_scenarios') or {}).get('selection',target)
+    return tools[0],basis,comparison,transfer['basis'],transfer['verified'],candidate.get('material_reference_id'),candidate.get('source_sha256')
 
 
 def assess_candidates(candidates):

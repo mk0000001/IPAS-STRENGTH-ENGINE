@@ -4,7 +4,7 @@ from . import automatic_sections
 from .process import settings as process_settings
 
 GRAVITY=9.80665
-VERSION='CAPACITY_SCENARIO_V7_INTEGRATED_WEAKNESS_VALIDATION'
+VERSION='CAPACITY_SCENARIO_V8_COMMANDED_VOLUME_CONTEXT'
 AUTOMATIC_VERSION=VERSION
 BASIS_ENVELOPE='OUTER_ENVELOPE_GEOMETRY_ONLY'
 BASIS_PROXY='LAYER_EXTRUSION_GEOMETRY_COMPARISON_ONLY'
@@ -74,6 +74,55 @@ def _valid_automatic_details(deposited,axis,candidate=None):
 
 
 def capacity_for_candidate(candidate,directional_mpa,analysis=None,lever_mm=None,*,reference_area_basis='UNKNOWN'):
+    """Compare two explicitly labelled geometric assumptions, never flow factors."""
+    from copy import deepcopy
+    from .local_process import valid_process_descriptor,VOLUME_PROVENANCE
+    declared=_declared_capacity(candidate,directional_mpa,analysis,lever_mm,reference_area_basis=reference_area_basis)
+    if declared is None:return None
+    local=candidate.get('local_process')
+    if not valid_process_descriptor(local) or local.get('section_window_bounds_mm')!=candidate.get('section_window_bounds_mm'):return declared
+    result=deepcopy(declared);result['local_process']={k:deepcopy(v) for k,v in local.items() if k!='volume_section'}
+    section=candidate.get('commanded_volume_section') or {}
+    if not isinstance(section,dict):section={}
+    axis=result.get('section_normal_axis');tools=section.get('tools')
+    volume=None
+    if local.get('complete') is True and section.get('version')==automatic_sections.VERSION and section.get('status')=='COMPLETE' and \
+       section.get('complete') is True and section.get('sampled') is False and section.get('provenance')==VOLUME_PROVENANCE and \
+       section.get('scope')=='LOCAL_DECLARED_ROAD_REGION' and section.get('normal_axis')==axis and \
+       section.get('width_capped_at_declared') is True and section.get('commanded_volume_is_measured') is False and \
+       isinstance(tools,list) and len(tools)==1 and tools==candidate.get('deposited_section',{}).get('tools') and \
+       _automatic_details_valid(section,axis,candidate) and result.get('calculation_status')=='AUTOMATIC_REFERENCE_LOAD_ESTIMATE':
+        volume=_automatic_reference(candidate,section,section['area_mm2'],section['minimum_all_direction_section_modulus_mm3'],
+                                    result['material_reference_mpa'],axis,analysis,reference_area_basis)
+        volume.update(structure_model='LOCAL_COMMANDED_VOLUME_UNION',basis='MATERIAL_REFERENCE_TIMES_COMMANDED_VOLUME_EQUIVALENT_SECTION')
+        volume['reference_transfer_assumption']['target_area_basis']='COMMAND_VOLUME_EQUIVALENT_NET_SECTION'
+        volume['limitations'].insert(0,'Programmed volume divided by path length and declared height defines an equivalent rectangle capped at declared width; this is not measured bead shape or a guaranteed capacity bound.')
+    def summary(value,status='COMPLETE'):
+        return {'status':status,'area_mm2':(value or {}).get('effective_load_bearing_area_mm2'),
+                'bending_force_n':(value or {}).get('bending_force_n'),'axial_force_n':(value or {}).get('axial_capacity_n')}
+    selected=volume is not None and volume['bending_force_n']<result['bending_force_n']
+    if selected:
+        context=result['local_process'];result=volume;result['local_process']=context
+    axial_selected=volume is not None and volume['axial_capacity_n']<declared['axial_capacity_n']
+    axial_reference=volume if axial_selected else declared
+    if volume is not None:
+        result.update(axial_capacity_n=axial_reference['axial_capacity_n'],axial_capacity_kgf=axial_reference['axial_capacity_kgf'],
+                      effective_load_bearing_area_mm2=axial_reference['effective_load_bearing_area_mm2'],section_area_mm2=axial_reference['section_area_mm2'])
+        result['governing_capacity_n']=min(result['axial_capacity_n'],result['bending_force_n'])
+        result['governing_capacity_kgf']=result['governing_capacity_n']/GRAVITY
+        result['reference_transfer_assumption']['axial_target_area_basis']=axial_reference['reference_transfer_assumption']['target_area_basis']
+        result['reference_transfer_assumption']['bending_target_area_basis']=result['reference_transfer_assumption']['target_area_basis']
+    result['geometry_scenarios']={'declared':summary(declared),
+        'commanded_volume':{**summary(volume,'COMPLETE' if volume else 'WITHHELD'),
+                            'assessment_gaps':section.get('assessment_gaps') or ([] if volume else ['COMMANDED_VOLUME_SECTION_INCOMPLETE'])},
+        'selection':'LOWER_CONDITIONAL_REFERENCE' if volume else 'DECLARED_ONLY',
+        'selected_geometry':'COMMANDED_VOLUME_EQUIVALENT' if selected else 'DECLARED_ROADS',
+        'selected_axial_geometry':'COMMANDED_VOLUME_EQUIVALENT' if axial_selected else 'DECLARED_ROADS',
+        'is_measured':False,'temperature_strength_multiplier_applied':False}
+    return result
+
+
+def _declared_capacity(candidate,directional_mpa,analysis=None,lever_mm=None,*,reference_area_basis='UNKNOWN'):
     """Never turn an envelope or nominal infill setting into a force prediction.
 
     Complete streamed local road sections support explicit reference-stress

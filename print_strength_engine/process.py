@@ -5,7 +5,7 @@ import re
 from .evidence import literature_comparisons, evidence_coverage
 from .calibration import calibration_eligibility
 
-VERSION='GCODE_PROCESS_EVIDENCE_V3_THERMAL_CONTEXT'
+VERSION='GCODE_PROCESS_EVIDENCE_V4_LOCAL_COMMANDED_CONTEXT'
 AXES=('X','Y','Z')
 
 
@@ -71,6 +71,10 @@ def settings(analysis):
             'speed_basis':'COMMANDED_MOVE_MEDIAN' if number(speeds.get('p50_approx'),1,2000) is not None else None,
             'nozzle_diameter_mm':uniform(nozzles),'nozzle_diameters_mm':nozzles,
             'nozzle_c':uniform(temperatures),'nozzle_temperatures_c':temperatures,
+            'nozzle_command_range_c':deepcopy(metrics.get('deposition_nozzle_setpoint_c')),
+            'bed_command_range_c':deepcopy(metrics.get('bed_setpoint_c')),
+            'chamber_command_range_c':deepcopy(metrics.get('chamber_setpoint_c')),
+            'temperature_basis':'SLICER_CONFIGURATION_SEPARATE_FROM_COMMAND_RANGES_AND_MEASUREMENTS',
             'bed_c':uniform(bed_temperatures),'bed_temperatures_c':bed_temperatures,
             'flow_ratio':uniform(flows),'flow_ratios':flows,
             'top_shell_layers':number(first('top_shell_layers','top_solid_layers'),0,1000),

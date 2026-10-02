@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 from .calibration import compare_contexts
 
-VERSION = 'PRIMARY_LITERATURE_COMPARISONS_V1'
+VERSION = 'PRIMARY_LITERATURE_COMPARISONS_V2_PROCESS_INTERACTIONS'
 
 _CATALOG = [
     {
@@ -80,6 +80,7 @@ for _family, _mean, _sd, _n in [('PLA', 25.74, 1.03, 10), ('ABS', 23.01, 1.63, 1
 # Public raw-curve evidence retains source hashes and individual specimen
 # calculations. These observations expand comparison coverage, not calibration.
 _CATALOG.extend(json.loads(Path(__file__).with_name('public_tensile_catalog.json').read_text(encoding='utf-8')))
+_CATALOG.extend(json.loads(Path(__file__).with_name('process_interaction_catalog.json').read_text(encoding='utf-8')))
 _RESEARCH_COVERAGE=json.loads(Path(__file__).with_name('research_coverage_catalog.json').read_text(encoding='utf-8'))
 
 
