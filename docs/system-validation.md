@@ -6,7 +6,7 @@
 
 검증일: 2026-09-25. 공개 엔진과 이를 사용하는 PrintOps 통합 앱의 현재 릴리스를 점검했다. 이 문서는 검증 범위를 밝히는 기록이며 무결함 인증이나 출력물의 구조 안전 인증이 아니다.
 
-후속 기록: [2026-10-02 강도·뷰어 통합 검토](strength-viewer-audit-20261002.md), [2026-09-30 통합 검증](release-validation-20260930.md), [2026-09-30 추가 성능 검증](performance-validation-20260930.md), [2026-10-01 API 지연 수정](api-latency-validation-20261001.md), [2026-10-01 시편 근거·명시적 하중 검증](strength-release-validation-20261001.md), [2026-10-01 FusRock 공식 소재 카탈로그](fusrock-official-catalog-20261001.md). 아래 내용은 9월 25일 당시의 기록이다.
+후속 기록: [2026-10-02 하중 상태·가변 단면 계산](load-status-and-variable-sections-20261002.md), [2026-10-02 강도·뷰어 통합 검토](strength-viewer-audit-20261002.md), [2026-09-30 통합 검증](release-validation-20260930.md), [2026-09-30 추가 성능 검증](performance-validation-20260930.md), [2026-10-01 API 지연 수정](api-latency-validation-20261001.md), [2026-10-01 시편 근거·명시적 하중 검증](strength-release-validation-20261001.md), [2026-10-01 FusRock 공식 소재 카탈로그](fusrock-official-catalog-20261001.md). 아래 내용은 9월 25일 당시의 기록이다.
 
 관련 문서: [논문·자료의 핵심 근거](research-evidence.md), [공정 근거 API](../PROCESS_EVIDENCE.md).
 

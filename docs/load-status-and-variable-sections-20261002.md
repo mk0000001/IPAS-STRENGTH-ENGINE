@@ -14,7 +14,7 @@
 
 분석용 경로 캐시는 출처를 유지하면서 저장 한도, 치수 누락, 비평면 경로, 툴 오류, 곡선 제외를 구분한다. 이미 잘린 기존 기록을 완전한 자료로 바꾸지 않는다. 확인한 대용량 기존 사례는 기록 451,958개, `truncated=true`였으며 이 자료의 부품 응력은 계속 보류된다.
 
-검증 사례는 100×10×2 mm 보의 90 mm 자유 길이에서 2 N에 27 MPa, 50 mm 지점부터 2×2 mm로 좁아지는 보의 1 N에 37.5 MPa/N이다. 반대쪽 고정에서도 동일 응답을 확인하며, 모서리 접촉과 비틀림은 보류한다. 실제 API→견적 저장→보고서의 성공 전달과 입력 변경 후 늦게 도착한 웹 결과 폐기를 회귀 시험한다. 최종 운영 검증 결과는 [시스템 검증 기록](system-validation.md)에 추가한다.
+검증 사례는 100×10×2 mm 보의 90 mm 자유 길이에서 2 N에 27 MPa, 50 mm 지점부터 2×2 mm로 좁아지는 보의 1 N에 37.5 MPa/N이다. 반대쪽 고정에서도 동일 응답을 확인하며, 모서리 접촉과 비틀림은 보류한다. 실제 API→견적 저장→보고서의 성공 전달과 입력 변경 후 늦게 도착한 웹 결과 폐기를 회귀 시험한다. 패키지 전체 시험 115개, 통합 Docker 시험 343개·하위 검사 72개가 통과했다. 조건부 생략 5개, 의존성 사용 중단 예고 2개가 있다. Node의 후보 상태·하중 입력·요약·뷰어 밀도·캐시·그리기 회귀 시험과 문법 검사도 통과했다. 최종 운영 검증 결과는 [시스템 검증 기록](system-validation.md)에 추가한다.
 
 ## English
 
@@ -26,4 +26,10 @@ The returned section profile, governing nominal plane and stress appear separate
 
 Planar sections, small linear-elastic deformation and homogeneous perfect bonding are explicit assumptions. Stress concentrations, shear failure, printed voids, bonding, cracks, buckling, fatigue and creep are unresolved. Failure loads remain null and empirical-validation flags remain false. [Roylance's MIT beam-stress module](https://web.mit.edu/course/3/3.11/www/modules/bstress.pdf) provides the section-equilibrium basis, not experimental validation of printed parts.
 
-Analytical regressions check 27 MPa under 2 N for the constant beam, 37.5 MPa/N for a stepped beam, reversed restraint invariance, and rejection of edge-only contacts and torsion. Host regressions exercise successful API, quote and report delivery plus stale response handling. Final deployment evidence is recorded in the system validation document.
+Analytical regressions check 27 MPa under 2 N for the constant beam, 37.5 MPa/N for a stepped beam, reversed restraint invariance, and rejection of edge-only contacts and torsion. Host regressions exercise successful API, quote and report delivery plus stale response handling. All 115 package tests and 343 integrated Docker tests with 72 subtests passed; five conditional checks were skipped and two dependency deprecations remain. Node candidate-status, load-input, summary, density, cache and drawing regressions plus syntax checks passed. Final deployment evidence is recorded in the system validation document.
+
+## 운영 확인 / Deployment verification
+
+한국어: 2026-10-03 운영 확인에서 앱 `0.5.10-load-status`, 강도 `0.15.0`을 확인했다. 네 서비스가 테스트 이미지 `sha256:6e7c40c29c125b77913240316b13c2d6e94f9a654d839e4d05224ce77c3a6671`과 소스 해시·네이티브 스캐너가 일치했으며 재시작은 0회였다. 기존 파일의 6개 후보는 모두 “형상 검사 완료”를 표시하고 빈 하중 상세란은 없어졌다. 후보 버튼은 해당 후보를 선택하고 하중 입력을 열었으며 물리 좌표를 자동으로 채우지 않았다. 브라우저 오류 로그는 비어 있었다. 대용량 사례의 별도 진단 요청은 한국어 저장·처리 한도 사유와 `WITHHELD`를 반환했다. 진단 견적을 고객 이력에 저장하지 않았다.
+
+English: Production verification on 2026-10-03 confirmed host `0.5.10-load-status` and strength `0.15.0`. All four services matched the tested image, source hashes and native scanners, with zero restarts. All six existing candidates displayed completed geometry, without empty capacity details. Candidate actions selected the region and opened the load panel without inventing physical coordinates; inspected browser errors were empty. The separate large-file diagnostic remained withheld with a Korean cache-limit reason and was not saved as a customer quote.
