@@ -99,5 +99,21 @@ class AutomaticCapacityTests(unittest.TestCase):
                 result=self.estimate(section=damaged)
                 self.assertIsNone(result['axial_capacity_n']);self.assertIsNone(result['bending_force_n'])
 
+    def test_finite_forged_top_metrics_and_outside_stations_withhold_loads(self):
+        original=section_tests.AutomaticSectionTests().extract()
+        for field in ('area_mm2','minimum_all_direction_section_modulus_mm3'):
+            damaged=deepcopy(original);damaged[field]=1_000_000.
+            result=self.estimate(section=damaged)
+            self.assertIsNone(result['axial_capacity_n']);self.assertIsNone(result['bending_force_n'])
+        damaged=deepcopy(original);damaged['axial']['station_mm']=1_000_000.
+        result=self.estimate(section=damaged)
+        self.assertIsNone(result['axial_capacity_n']);self.assertIsNone(result['bending_force_n'])
+
+    def test_physical_section_crop_bounds_limit_even_consistent_finite_metrics(self):
+        damaged=deepcopy(section_tests.AutomaticSectionTests().extract())
+        damaged['area_mm2']=damaged['axial']['area_mm2']=1_000_000.
+        result=self.estimate(section=damaged)
+        self.assertIsNone(result['axial_capacity_n']);self.assertIsNone(result['bending_force_n'])
+
 
 if __name__=='__main__':unittest.main()

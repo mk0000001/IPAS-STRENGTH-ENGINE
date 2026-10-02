@@ -1,10 +1,10 @@
 """Local declared-road reference scenarios and unsupported-geometry metadata."""
-from math import isfinite
+from math import isfinite,hypot,sqrt
 from . import automatic_sections
 from .process import settings as process_settings
 
 GRAVITY=9.80665
-VERSION='CAPACITY_SCENARIO_V6_AUTOMATIC_LOCAL_REFERENCE_LOADS'
+VERSION='CAPACITY_SCENARIO_V7_INTEGRATED_WEAKNESS_VALIDATION'
 AUTOMATIC_VERSION=VERSION
 BASIS_ENVELOPE='OUTER_ENVELOPE_GEOMETRY_ONLY'
 BASIS_PROXY='LAYER_EXTRUSION_GEOMETRY_COMPARISON_ONLY'
@@ -17,7 +17,12 @@ def _number(value,maximum=1e9):
     return value if isfinite(value) and 0<value<=maximum else None
 
 
-def _automatic_details_valid(deposited,axis):
+def _automatic_details_valid(deposited,axis,candidate=None):
+    try:return _valid_automatic_details(deposited,axis,candidate)
+    except (ValueError,TypeError,KeyError,OverflowError,ZeroDivisionError):return False
+
+
+def _valid_automatic_details(deposited,axis,candidate=None):
     """Complete markers cannot replace finite required output metadata."""
     bending=deposited.get('bending')
     if not isinstance(bending,dict):return False
@@ -31,7 +36,41 @@ def _automatic_details_valid(deposited,axis):
     except (ValueError,OverflowError):return False
     if any(not isfinite(value) or value<=0 for value in principal):return False
     if any(not isfinite(value) or abs(value)>1+1e-7 for value in gradient):return False
-    return abs(sum(value*value for value in gradient)-1)<=1e-6 and abs(gradient['XYZ'.index(axis)])<=1e-7
+    if abs(sum(value*value for value in gradient)-1)>1e-6 or abs(gradient['XYZ'.index(axis)])>1e-7:return False
+    bounds=deposited.get('section_window_bounds_mm')
+    if not isinstance(bounds,list) or len(bounds)!=3:return False
+    if any(not isinstance(pair,list) or len(pair)!=2 or any(isinstance(v,bool) or not isinstance(v,(int,float)) or not isfinite(v) for v in pair) or pair[0]>=pair[1] for pair in bounds):return False
+    if candidate is not None and bounds!=candidate.get('section_window_bounds_mm'):return False
+    normal='XYZ'.index(axis);plane=[(normal+1)%3,(normal+2)%3]
+    spans=[bounds[index][1]-bounds[index][0] for index in plane]
+    crop_area=spans[0]*spans[1]
+    def equal(left,right):
+        return _number(left) is not None and _number(right) is not None and abs(left-right)<=1e-6*max(1.,abs(left),abs(right))
+    for name in ('axial','bending'):
+        section=deposited.get(name)
+        if not isinstance(section,dict):return False
+        area=_number(section.get('area_mm2'));station=section.get('station_mm')
+        if area is None or area>crop_area+1e-6:return False
+        if isinstance(station,bool) or not isinstance(station,(int,float)) or not isfinite(station) or not bounds[normal][0]<=station<=bounds[normal][1]:return False
+        if candidate is not None:
+            expected=candidate.get(name+'_section_station_mm',candidate.get('section_station_mm'))
+            if expected is None and name=='bending':expected=candidate.get('axial_section_station_mm',candidate.get('section_station_mm'))
+            if not isinstance(expected,(int,float)) or isinstance(expected,bool) or not isfinite(expected) or abs(station-expected)>1e-6:return False
+        moduli=section.get('principal_section_moduli_mm3');minimum=_number(section.get('minimum_all_direction_section_modulus_mm3'))
+        if not isinstance(moduli,list) or len(moduli)!=2 or any(_number(value) is None or value>area*hypot(*spans)+1e-6 for value in moduli):return False
+        if minimum is None or minimum>min(moduli)+1e-6:return False
+        tensor=section.get('coordinate_second_moment_mm4')
+        if not isinstance(tensor,list) or len(tensor)!=2 or any(not isinstance(row,list) or len(row)!=2 for row in tensor):return False
+        if any(isinstance(value,bool) or not isinstance(value,(int,float)) or not isfinite(value) for row in tensor for value in row):return False
+        a,b=tensor[0];c,d=tensor[1]
+        if a<=0 or d<=0 or abs(b-c)>1e-6*max(1.,abs(b),abs(c)) or a*d-b*c<=0:return False
+        if any(tensor[index][index]>area*spans[index]**2/4+1e-6 for index in (0,1)):return False
+        moments=section.get('principal_second_moments_mm4')
+        expected=[(a+d-sqrt((a-d)**2+4*b*c))/2,(a+d+sqrt((a-d)**2+4*b*c))/2]
+        if not isinstance(moments,list) or len(moments)!=2 or not all(equal(left,right) for left,right in zip(moments,expected)):return False
+    if not equal(deposited.get('area_mm2'),deposited['axial']['area_mm2']):return False
+    if not equal(deposited.get('minimum_all_direction_section_modulus_mm3'),deposited['bending']['minimum_all_direction_section_modulus_mm3']):return False
+    return True
 
 
 def capacity_for_candidate(candidate,directional_mpa,analysis=None,lever_mm=None,*,reference_area_basis='UNKNOWN'):
@@ -61,7 +100,7 @@ def capacity_for_candidate(candidate,directional_mpa,analysis=None,lever_mm=None
         tools=deposited.get('tools')
         if net_area is not None and modulus is not None and isinstance(tools,list) and len(tools)==1 and \
            isinstance(tools[0],int) and not isinstance(tools[0],bool) and tools[0]>=0 and \
-           _automatic_details_valid(deposited,axis):
+           _automatic_details_valid(deposited,axis,candidate):
             return _automatic_reference(candidate,deposited,net_area,modulus,reference,axis,analysis,reference_area_basis)
         if isinstance(tools,list) and len(tools)>1:
             blocked=capacity_for_candidate({key:value for key,value in candidate.items() if key!='deposited_section'},
