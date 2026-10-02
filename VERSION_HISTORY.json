@@ -1,9 +1,9 @@
 {
   "counting_rule": "Reachable non-merge commits modifying the engine package, excluding _version.py; initial import counts as revision 1. Docs, tests-only and host-app changes excluded. Not individual feature counts.",
-  "version": "0.16.0",
-  "revision_count": 16,
-  "update_count": 15,
-  "source_commit": "282bdde24a7508ff6aa47e14447de19ad12aa207",
+  "version": "0.18.0",
+  "revision_count": 18,
+  "update_count": 17,
+  "source_commit": "e5cee3bf13c68ec8e253d372ebd297d36e240b8b",
   "commits": [
     {
       "commit": "b8d3aeeabebb80addc05a50ca25e2ad3e000a61d",
@@ -68,6 +68,14 @@
     {
       "commit": "282bdde24a7508ff6aa47e14447de19ad12aa207",
       "subject": "Add automatic local road reference loads without force input"
+    },
+    {
+      "commit": "e27260cd2660019e18135e551b213c6abd47bc7c",
+      "subject": "Integrate terminal root and interlayer diagnostics with comparable load ranking"
+    },
+    {
+      "commit": "e5cee3bf13c68ec8e253d372ebd297d36e240b8b",
+      "subject": "Separate raw material properties from load scenario margins"
     }
   ]
 }
