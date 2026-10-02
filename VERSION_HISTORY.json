@@ -1,9 +1,9 @@
 {
   "counting_rule": "Reachable non-merge commits modifying the engine package, excluding _version.py; initial import counts as revision 1. Docs, tests-only and host-app changes excluded. Not individual feature counts.",
-  "version": "0.18.0",
-  "revision_count": 18,
-  "update_count": 17,
-  "source_commit": "e5cee3bf13c68ec8e253d372ebd297d36e240b8b",
+  "version": "0.19.0",
+  "revision_count": 19,
+  "update_count": 18,
+  "source_commit": "ded36d8810f7e882789939b7c1b85cd8a5e72ffe",
   "commits": [
     {
       "commit": "b8d3aeeabebb80addc05a50ca25e2ad3e000a61d",
@@ -76,6 +76,10 @@
     {
       "commit": "e5cee3bf13c68ec8e253d372ebd297d36e240b8b",
       "subject": "Separate raw material properties from load scenario margins"
+    },
+    {
+      "commit": "ded36d8810f7e882789939b7c1b85cd8a5e72ffe",
+      "subject": "feat: connect commanded process evidence and volume sections to weakness assessment"
     }
   ]
 }

@@ -1,6 +1,6 @@
 # 벽 수·선폭·토출량과 국부 취약부 근거 / Walls, width, extrusion and local weaknesses
 
-연구 확인일: 2026-10-03. 대상: PrintOps / print-strength-engine v0.18의 연구 설계. 제품 코드·배포·재질 강도값을 변경하지 않았다.
+연구 확인일: 2026-10-03. 연구 착수 시 PrintOps / print-strength-engine v0.18.0을 기준으로 한 문헌 검토와 **구현 전 감사**다. 이 연구 문서 작성 단계에서는 제품 코드·배포·재질 강도값을 변경하지 않았다. 같은 날 후속 공정 구현이 추가되었으므로 아래 과거 감사표를 현재 기능 목록으로 읽지 않는다. 후속 계산·검증 상태는 [공정 취약부 검증 기록](process-aware-weakness-validation-20261003.md)을 참조한다.
 
 ## 한국어
 
@@ -44,30 +44,34 @@ FusRock의 [공식 ABS 페이지](https://www.fusrock.com/material/performance/i
 
 공개 접근 범위에서 동일한 FusRock ABS lot의 외벽/내벽 유량을 각각 바꾸고 n·산포·실제 단면·파단 위치까지 기록한 통제 데이터를 찾지 못했다. WF01/02/03/07의 ABS 실험은 가능한 기작과 비단조성을 뒷받침하며 FusRock의 강도 배수를 확정하지 않는다. PLA/PETG 결과는 과토출의 표면·공극·산포 문제를 검토하는 데 적용한다. PA-CF는 등급·건조·온도·장비 차이가 크므로 이 조사에서 새 wall/flow 수치를 ABS로 전이하지 않았다.
 
-### 현재 구현에서 중복되는 것과 비어 있는 것
+### 구현 전 감사: v0.18.0에서 중복되는 것과 비어 있던 것
 
-2026-10-03 checkout을 읽어 확인했다. 다음은 구현 관찰이며 논문 실험 결과와 구분한다.
+2026-10-03 연구 착수 당시 checkout을 읽어 확인한 관찰이다. 파일과 줄 번호도 **후속 공정 구현 이전**을 가리킨다. 논문 실험 결과 및 현재 기능과 구분한다.
 
 | 구현 위치 | 확인한 사실 | 연구 설계에 주는 의미 |
 | --- | --- | --- |
 | `print_strength_engine/automatic_sections.py:117,174–202` | `segment(start,end,width,height,tool)`로 road를 받는다. 선언된 직사각 road envelope를 잘라 `union_all` 후 면적·관성·단면계수를 계산한다. 동일 영역의 중첩은 한 번만 센다. | 실제 모델 벽 경로 및 내부 채움이 모두 포함되므로 wall count·infill density 형상 배수는 불필요하다. 선언형상이며 실제 공극·압출 품질은 미반영. |
 | `print_strength_engine/interlayer_contact.py:182,232–244` | 같은 선언 road footprint의 층별 union·인접 층 교집합. | 기하학적 겹침을 실제 neck 면적·접착 강도로 읽지 않는다. seam·박리·thermal welding은 추가 검증 필요. |
 | `print_strength_engine/process.py:64–75` | flow·per-tool flow·walls·infill 설정을 context로 보존한다. | 설정 context는 유용하지만 자체적인 강도 배수 근거가 되지 않는다. 대표 outer-wall 폭이 개별 road 폭을 대체하면 안 된다. |
-| 호스트 `3D-Print-System/app/automatic_capacity.py:212–220` | motion callback에 `deposited` E 회복 후 양이 오지만 국부 단면 호출에는 width/height/tool만 전달한다. | E를 region·layer·feature와 연결하는 정보 경로가 비어 있다. 전역 평균으로 국부 이상을 추정하지 않는다. |
-| 호스트 `external/print-gcode-engine/print_gcode_engine/scanner.py:199–283`, `process.py:55–69` | M82/M83·G92·단위·툴·retraction recovery 처리 후 체적을 계산한다. 전역 유량은 명령 feed 기반이다. 현재 M200/M221 상태 처리 없음. | 기존 material-volume 계산은 활용할 수 있으나 volumetric E·runtime flow 상태가 있는 파일은 먼저 구분해야 한다. 가속·실제 motor/slip 반영 값이 아니다. |
+| 당시 호스트 `3D-Print-System/app/automatic_capacity.py:212–220` | motion callback에 `deposited` E 회복 후 양이 왔지만 국부 단면 호출에는 width/height/tool만 전달했다. | 당시 E를 region·layer·feature와 연결하는 정보 경로가 비어 있었다. 전역 평균으로 국부 이상을 추정하지 않는 설계가 필요했다. |
+| 당시 호스트 `external/print-gcode-engine/print_gcode_engine/scanner.py:199–283`, `process.py:55–69` | M82/M83·G92·단위·툴·retraction recovery 처리 후 체적을 계산했다. 전역 유량은 명령 feed 기반이었으며 **당시에는 M200/M221 상태 처리가 없었다.** | volumetric E·runtime flow 상태의 구분이 후속 과제였다. 명령 기반 계산은 가속·실제 motor/slip 반영 값이 아니다. |
+
+후속 구현은 M200/M220/M221 상태를 처리하고 원본 모션의 공정 정보를 국부 창에 연결한다. 선언 직사각 경로 union과 `Vcmd/(L×h)`로 정의한 등가 직사각 경로 union을 별도 조건부 시나리오로 계산하며 등가 폭은 선언 폭을 넘지 않는다. 축방향과 굽힘 각각 낮은 참고값을 선택한다. **실측 비드 형상·실제 접합 면적·안전 하한 또는 파단 예측으로 검증된 것은 아니다.** 곡선·비평면 이동이나 불명 체적·치수는 추가 체적 시나리오를 보류한다. 역할별 체적은 창과 층높이가 교차하는 경로 중심선 길이로 배분한 명령량이며, 높이가 일부만 교차해도 정확한 3D 창 내부 체적으로 읽지 않는다.
 
 자동 단면의 scope는 `LOCAL_DECLARED_ROAD_REGION`이다. 이 범위가 충분한지, 연결된 하중 경로인지, 얇은 끝·root가 후보에 포함되는지는 별도의 취약부 탐색 문제다. 모델 전체 경로가 포함돼도 자동 선택한 지역 밖 결함을 찾았다고 할 수 없다. WF05/06의 fracture 사진과 WF01의 불규칙 공극은 정성적 위치 근거이며, 복잡 부품의 균일한 좌표 기반 정답 세트가 아니다.
 
 ### 외벽·내벽 토출량을 반영하는 제한된 설계
 
+아래는 연구 당시의 설계 권고다. 슬라이서 관례별 비율 `r`과 nominal 유량 `Q` 제안까지 모두 구현되었다는 뜻은 아니다. 후속 구현의 채택 범위는 위 검증 기록과 구분한다.
+
 1. **형상과 토출 진단을 분리한다.** 각 후보에서 outer/inner wall, infill, top/bottom solid, bridge의 경로 길이·선폭·명령 체적을 따로 기록한다. 실제 G-code에 feature 의미가 없으면 role을 추측 확정하지 않는다. 이미 union에 들어간 wall/infill 면적에 일반 배수를 추가하지 않는다.
-2. **E 의미를 먼저 확인한다.** 일반 길이형 E라면 `Vcmd = ΔEdeposit × π dtool²/4` mm³이다. M200 volumetric E는 E가 mm³이므로 필라멘트 면적을 다시 곱하지 않는다. M82/M83, G92, G20/G21, T, 회복된 retraction, arc 실제 경로길이, prime/purge·0길이 토출을 처리한다. [Marlin M200](https://marlinfw.org/docs/gcode/M200.html) 및 [M221](https://marlinfw.org/docs/gcode/M221.html) 상태가 알려져야 firmware 명령 체적도 설명할 수 있다. 알 수 없는 override는 정량 결과를 unavailable로 둔다.
+2. **E 의미를 먼저 확인한다.** 단위를 정규화하고 명시적 리트랙션 회복분을 제외한 `ΔEdeposit`에 대해, 일반 길이형 E의 기본 체적은 `Vbase = ΔEdeposit × π dtool²/4` mm³이다. M200 체적 모드에서는 `Vbase = ΔEdeposit` mm³이므로 필라멘트 면적을 다시 곱하지 않는다. 알려진 통상 M221 상태를 반영한 명령 체적은 `Vcmd = Vbase × flow_override_percent/100`이며 runtime override는 한 번만 적용한다. M82/M83, G92, G20/G21, T, 회복된 retraction, arc 실제 경로길이, prime/purge·0길이 토출을 구분해야 한다. [Marlin M200](https://marlinfw.org/docs/gcode/M200.html) 및 [M221](https://marlinfw.org/docs/gcode/M221.html)의 통상 명령 의미를 사용하더라도 실제 firmware 실행·질량을 실측한 것은 아니다. 알 수 없는 유량 override·회복 상태는 명령 체적을 unavailable로 둔다.
 3. **슬라이서의 체적 단면과 비교한다.** 정상 Orca road는 `Aslicer = h(w−h)+πh²/4`, bridge는 `πw²/4`인 rounded bead 모형을 쓴다. [Orca Flow.cpp](https://github.com/OrcaSlicer/OrcaSlicer/blob/main/src/libslic3r/Flow.cpp), 현재 로컬 Orca `Flow.cpp:218–225`도 확인했다. 현 단면의 직사각 `w×h`와 다른 목적이다. w=.4,h=.2이면 rounded .071416 vs rectangle .08 mm²이며 완전한 정상 E도 rectangle 대비 **0.8927**이다. 단순 `V/(Lwh)<.9` 규칙은 정상 G-code를 과소토출로 오인할 수 있다. 다른 슬라이서·특수 road는 해당 체적 관례를 확인해야 한다.
 4. **명령 일관성과 nominal 유량을 계산한다.** 같은 tool·role·폭/높이 조건의 국부 window에서 `r = ΣVcmd / Σ(L×Aslicer)`, `qcmd=Vcmd/L` mm², `Qcmd=Vcmd/(L/vcommand)` mm³/s를 기록한다. 분모는 중첩을 제거한 union 체적이 아니라 **각 이동이 계획한 road 체적의 합**이다. 재방문/겹침을 union 체적과 비교하면 정상 명령도 과토출로 오인할 수 있다. 이 r은 void fraction, 실제 접촉 면적, defect probability가 아니다. Q는 가속·센서 측정 전의 명령 기반 값이다.
 5. **설정 배수를 E에 다시 곱하지 않는다.** [Orca 재질 flow](https://github.com/OrcaSlicer/OrcaSlicer/wiki/material_flow_ratio_and_pressure_advance), [외/내벽·표면 flow](https://github.com/OrcaSlicer/OrcaSlicer/wiki/quality_settings_wall_and_surfaces), [bridge flow](https://github.com/OrcaSlicer/OrcaSlicer/wiki/quality_settings_bridging)는 이미 G-code E 생성에 반영될 수 있다. 재질·역할·object 설정의 의도와 관측 명령을 병렬 보존한다. 공급업체 TDS, 실제 질량 또는 flow 실험 보정까지 같은 효과를 여러 번 적용하지 않는다.
 6. **정량 강도 변환은 보류한다.** 동일 role의 갑작스러운 토출량 변화, 설정과 명령의 불일치, 신뢰할 수 있는 해당 장비/등급의 처리 한도를 넘는 nominal 유량은 확인 대상이 될 수 있다. 임의의 전 재질 threshold나 flow→MPa 곡선을 만들지 않는다. 안정된 r도 막힘·slip·습기·낮은 용접 온도·표면 결함을 배제하지 못한다. WF01의 명령 대비 질량 차이와 WF02/04의 과토출 결과가 이 제한을 직접 지지한다.
 
-추후 E로 road 폭을 재구성해 형상을 바꾸는 모델을 선택한다면, 폭·접촉·공극 변화 중 어디에 그 효과를 적용했는지 하나의 회계로 추적해야 한다. **E로 면적을 감소시킨 뒤 같은 부족량의 강도 penalty를 다시 곱하지 않는다.** 반대로 선언된 형상을 유지할 때에는 r을 독립적 불확실성 표시로 남긴다. 어느 방식도 실제 측정 road/neck와 하중 시험 없는 물성 보정을 정당화하지 않는다.
+명령 체적 등가 직사각 시나리오 및 향후 실측 보정 모델에서는 폭·접촉·공극 변화 중 어디에 그 효과를 적용했는지 하나의 회계로 추적해야 한다. **E로 면적을 감소시킨 뒤 같은 부족량의 강도 penalty를 다시 곱하지 않는다.** 선언된 형상은 별도 시나리오로 보존하며 제안한 r은 독립적 불확실성 표시로 구분한다. 어느 방식도 실제 측정 road/neck와 하중 시험 없는 물성 보정을 정당화하지 않는다.
 
 ### 필요한 검증 데이터와 채택 수준
 
@@ -85,6 +89,8 @@ FusRock의 [공식 ABS 페이지](https://www.fusrock.com/material/performance/i
 
 ### Findings and scope
 
+This research began against v0.18.0 on 2026-10-03. Its Korean implementation audit and historical line references describe the **pre-implementation state**, not the later process features. The research-document stage did not change product code or material strengths. See the [process-aware validation record](process-aware-weakness-validation-20261003.md) for subsequent implementation and verification.
+
 The existing local road union already includes the number, placement and declared width of model walls and infill crossing each section. A generic wall-count or infill-density strength multiplier would count this geometry twice. Declared geometry does not establish deposited mass, pores or weld quality. E-derived **commanded** volume can add local consistency evidence without being converted into a universal strength multiplier.
 
 The Korean evidence matrix records the full conditions, n, scatter, area convention and missing information for seven additional primary studies. It distinguishes machined 3DXTECH ABS specimens (WF01), Devil Design ABS/PETG flow trials (WF02), thick single-wall ABS tests (WF03), controlled PLA extrusion trials (WF04), PLA shell trials with reproducible specimen summaries (WF05), a nonmonotonic PLA shell series with incomplete methods (WF06), and ABS under-extrusion microscopy (WF07). These are separate experiments, not universal coefficients. WF05 and WF06 share an institution. Previously reviewed infill, maximum-load and actual-contact-area studies are referenced, not counted again.
@@ -101,9 +107,11 @@ The publication removes catastrophic failures, sensor anomalies and IQR outliers
 
 ### Bounded modeling recommendation
 
-Keep the declared geometric union and a separate commanded-extrusion diagnostic. Retain local tool and feature role, including outer wall, inner wall, infill, solid surfaces and bridges when identified by the source G-code. Pass post-retraction deposited E through the existing motion callback to local windows rather than applying a global mean to a weak region.
+The subsequent implementation supports M200/M220/M221 and connects source-motion context to local windows. Declared-road unions and capped `Vcmd/(L×h)` equivalent-rectangle unions remain separate conditional scenarios; axial and bending modes independently select the lower reference. This is not measured bead/bond geometry, a validated failure prediction or a guaranteed safety bound. Curves, nonplanar moves and unresolved volume/dimensions withhold the added volume scenario. Local role volumes use clipped-centerline command allocation and are not measured volume inside a 3D window, including where only part of the declared height intersects it.
 
-For length-mode E, use `Vcmd=ΔEdeposit×πdtool²/4`. For volumetric E, E already represents volume. Validate units, absolute/relative E, G92, tool changes, retraction recovery, arc length, purge and zero-length prime moves. M200/M221 and unknown runtime overrides require explicit handling. Slicer material and feature flow modifiers may already be present in E and must not be reapplied.
+The following recommendations include proposed slicer-compatible r and nominal Q diagnostics, not a claim that every item has shipped. Keep declared geometry and commanded-extrusion evidence distinct. Retain local tool and feature role, including outer wall, inner wall, infill, solid surfaces and bridges when identified by source G-code; use source motions rather than a global mean for local regions.
+
+With normalized units and explicit retraction recovery excluded, length-mode E gives `Vbase=ΔEdeposit×πdtool²/4`; volumetric E gives `Vbase=ΔEdeposit` in mm³. A known conventional runtime M221 state gives `Vcmd=Vbase×flow_override_percent/100`, applied once. Validate absolute/relative E, G92, tool changes, recovery, arc length, purge and zero-length prime moves. Unresolved runtime flow overrides or recovery state leave commanded volume unavailable. Conventional command semantics are not measured firmware execution or mass. Slicer material and feature flow modifiers may already be present in E and must not be reapplied.
 
 Compare each move's volume with its slicer-compatible bead cross-section. Orca's rounded normal-road and circular bridge conventions differ from the rectangular envelope used for section union. Accumulate expected move volumes, not deduplicated union volume. A normal .4×.2 mm rounded road has only .8927 of the rectangle's area, making a naive universal .9 threshold unreliable. Report local ratio r, volume per path length and commanded nominal volumetric rate as diagnostics, with provenance. These values are not actual void fraction, weld quality or defect probability.
 

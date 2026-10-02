@@ -4,7 +4,7 @@
 
 ## 한국어
 
-검토일: 2026-10-03. 이 문서는 기존 `research-evidence.md`, `research-update-20261001.md`, `weakness-research-redesign-20261003.md`에서 **완료하지 않았던 정량 전사와 새로운 공개 데이터**를 기록한다. 표적 문헌 검토이며 전 세계 논문의 전수 조사라는 뜻은 아니다. 제품 코드·보정 등록부는 변경하지 않았다. 아래 관측이나 비율은 문헌 조건의 비교이며 목표 부품의 보정계수·파단확률·예측 정확도가 아니다.
+검토일: 2026-10-03. 이 문서는 기존 `research-evidence.md`, `research-update-20261001.md`, `weakness-research-redesign-20261003.md`에서 **완료하지 않았던 정량 전사와 새로운 공개 데이터**를 기록한다. 표적 문헌 검토이며 전 세계 논문의 전수 조사라는 뜻은 아니다. 이 연구 문서 작성 단계에서는 제품 코드·보정 등록부를 변경하지 않았다. 같은 날 후속 구현에 문헌 비교 자료와 명령 공정 정보가 추가되었으며 채택·검증 범위는 [공정 취약부 검증 기록](process-aware-weakness-validation-20261003.md)을 참조한다. 아래 관측이나 비율은 문헌 조건의 비교이며 목표 부품의 보정계수·파단확률·예측 정확도가 아니다.
 
 ### 새로 확보한 공개 PA6-CF 시편 데이터
 
@@ -68,7 +68,7 @@ Liparoti 등(2021), [10.3390/polym13030399](https://doi.org/10.3390/polym1303039
 
 ### 엔진에 보존할 수 있는 입력과 승인 경계
 
-아래는 연구를 근거로 한 **설계 제안**이다. 구현·검증 완료 기능 목록이 아니다.
+아래는 연구를 근거로 한 **설계 제안**이다. 구현·검증 완료 기능 목록이 아니다. 후속 구현의 국부 명령 범위·길이 커버리지·역할별 체적은 별도 검증 기록에 있으며, 국소 재방문 시간·열전달량·실제 접합면 온도까지 구현했다는 뜻은 아니다.
 
 |입력/관측|저장할 의미|그것만으로 결정하지 못하는 것|
 |---|---|---|
@@ -84,7 +84,7 @@ Liparoti 등(2021), [10.3390/polym13030399](https://doi.org/10.3390/polym1303039
 
 ## English
 
-This targeted review adds previously uncompleted quantitative extraction and new public data. It does not change product code or authorize runtime correction factors. Paper and dataset pairs, and related thesis/article experiments, retain one lineage.
+This targeted review adds previously uncompleted quantitative extraction and new public data. The research-document stage did not change product code or authorize runtime correction factors. Subsequent literature-comparison and commanded-process features are documented in the [process-aware validation record](process-aware-weakness-validation-20261003.md). The design proposals below do not establish implemented local revisit timing, heat transfer or measured interface temperature. Paper and dataset pairs, and related thesis/article experiments, retain one lineage.
 
 The new [Nesheim PA6-CF dataset, Mendeley v1](https://data.mendeley.com/datasets/pdfz6y8bmh/1) accompanies [10.1016/j.addma.2025.104705](https://doi.org/10.1016/j.addma.2025.104705). Official SHA-256 checks passed for the workbook, six CSV files, and author code. It contains 108 numeric specimen records of peak load/area/UTS, plus thermal observations, rather than complete instrument curves. The 20–50 mm/s condition means and sample SDs above were recomputed from load/area. Exact grade, bed/chamber, mechanical test speed, conditioning, complete geometry, and the meaning of the reported area remain incomplete. The institutional abstract establishes a 0.8 mm single wall, 0.3 mm layer, approximately 40 W IR heater, and 3–50 mm/s domain. Full article Methods remain inaccessible in this review.
 

@@ -28,12 +28,12 @@
 
 ## Tasks
 
-- [ ] Verify new primary thermal/flow/wall experiments, open data hashes, replicates and confounding; document applicability.
-- [ ] Reproduce parser bugs with synthetic G-code; implement optional immutable motion context and checkpoint consistency with focused regressions.
-- [ ] Test and implement bounded local role/process collection plus volume-equivalent conditional sections; no universal material factor.
-- [ ] Connect exact-source cache/version guards and consistent candidate assessment to host/web/PDF.
-- [ ] Review and test core/parser/host integration, one needed source replay and performance overhead; fix findings.
-- [ ] Conduct one independent final review, build/test/deploy, verify versions and actual browser/PDF, publish bilingual release evidence.
+- [x] Verify new primary thermal/flow/wall experiments, open data hashes, replicates and confounding; document applicability.
+- [x] Reproduce parser bugs with synthetic G-code; implement optional immutable motion context and checkpoint consistency with focused regressions.
+- [x] Test and implement bounded local role/process collection plus volume-equivalent conditional sections; no universal material factor.
+- [x] Connect exact-source cache/version guards and consistent candidate assessment to host/web/PDF.
+- [x] Review and test core/parser/host integration, one needed source replay and performance overhead; fix findings.
+- [x] Conduct one independent final review, build/test/deploy, verify versions and actual browser/PDF, publish bilingual release evidence.
 
 ## 한국어 실행 범위
 
