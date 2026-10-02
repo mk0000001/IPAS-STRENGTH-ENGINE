@@ -140,7 +140,7 @@ def process_adjustment(analysis,directional_mpa,*,reference_context=None,target_
         matching_context['material_grade']=reference['reference_product']
     report['reference_matching_context']=matching_context
     report['calibration']=calibration_eligibility(matching_context,report['target_context'],model_id=calibration_id)
-    if reference.get('internal_conservative_factor') not in (None,1,1.):
+    if reference.get('reference_margin_applied',True) and reference.get('internal_conservative_factor') not in (None,1,1.):
         report['calibration']['blocking_reasons'].append('REFERENCE_CONTAINS_UNVALIDATED_INTERNAL_MARGIN')
         report['reference_strength_kind']='MARGIN_ADJUSTED_REFERENCE_NOT_MEASURED_ALLOWABLE'
     else:
