@@ -1,5 +1,9 @@
 # 시스템 검증 결과와 적용 한계
 
+취소·재분석 복구 검증(2026-10-04): [취소 상태 표시와 저장 원본 재분석](analysis-cancel-retry-20261004.md).
+
+Cancellation and recovery validation (2026-10-04): [cancelled status and retrying saved source files](analysis-cancel-retry-20261004.md).
+
 보고서 표시 검증(2026-10-04): [고객·관리자 구성과 실제 G-code 경로 그림](report-audience-paths-20261004.md).
 
 Report presentation validation (2026-10-04): [customer/admin content and actual G-code path figures](report-audience-paths-20261004.md).
