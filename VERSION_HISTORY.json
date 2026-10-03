@@ -1,9 +1,9 @@
 {
   "counting_rule": "Reachable non-merge commits modifying the engine package, excluding _version.py; initial import counts as revision 1. Docs, tests-only and host-app changes excluded. Not individual feature counts.",
-  "version": "0.19.0",
-  "revision_count": 19,
-  "update_count": 18,
-  "source_commit": "ded36d8810f7e882789939b7c1b85cd8a5e72ffe",
+  "version": "0.20.0",
+  "revision_count": 20,
+  "update_count": 19,
+  "source_commit": "3f3b3bafbd956b1c8425d8e65bbd94559ce52496",
   "commits": [
     {
       "commit": "b8d3aeeabebb80addc05a50ca25e2ad3e000a61d",
@@ -80,6 +80,10 @@
     {
       "commit": "ded36d8810f7e882789939b7c1b85cd8a5e72ffe",
       "subject": "feat: connect commanded process evidence and volume sections to weakness assessment"
+    },
+    {
+      "commit": "3f3b3bafbd956b1c8425d8e65bbd94559ce52496",
+      "subject": "Preserve FusRock tensile metric labels and endpoint uncertainty"
     }
   ]
 }
