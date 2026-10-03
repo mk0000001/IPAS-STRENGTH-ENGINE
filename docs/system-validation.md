@@ -1,5 +1,9 @@
 # 시스템 검증 결과와 적용 한계
 
+보고서 표시 검증(2026-10-04): [고객·관리자 구성과 실제 G-code 경로 그림](report-audience-paths-20261004.md).
+
+Report presentation validation (2026-10-04): [customer/admin content and actual G-code path figures](report-audience-paths-20261004.md).
+
 전체 자료 검증 및 회귀 반영: [모든 원본·플레이트, 제품 매칭과 층간 접촉 경계](full-corpus-validation-20261003.md).
 
 Full-corpus validation and regression updates: [all source/plate identities, product matching and interlayer contact boundaries](full-corpus-validation-20261003.md).
