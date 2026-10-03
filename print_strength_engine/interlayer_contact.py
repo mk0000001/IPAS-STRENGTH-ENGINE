@@ -4,10 +4,10 @@ The G-code width/height rectangular-prism assumption is geometric evidence only.
 An overlap of one is not a successful weld test. Molecular adhesion, real bead
 contact, temperature history, peeling, shear strength and failure load are unknown.
 """
-from math import hypot,isfinite
+from math import hypot,isfinite,ulp
 from .deposition_section import finite_number,vector,UnsupportedGeometry
 
-VERSION='LOCAL_DECLARED_INTERLAYER_CONTACT_V1'
+VERSION='LOCAL_DECLARED_INTERLAYER_CONTACT_V2_BOUNDED_ROUNDOFF'
 PROVENANCE='GCODE_WIDTH_HEIGHT_ASSUMPTION'
 SCOPE='LOCAL_DECLARED_ROAD_INTERLAYER_WINDOW'
 MAX_CANDIDATES=6
@@ -17,11 +17,27 @@ MAX_LAYERS=2048
 MAX_UNION_VERTICES=1_000_000
 PLANE_TOLERANCE_MM=1e-4
 LOW_OVERLAP_RATIO=.5  # Geometric screening threshold, never a strength factor.
+OVERLAP_AREA_ROUNDOFF_ULPS=64  # Arithmetic tolerance, never a geometry/strength margin.
 
 
 def _components(shape):
     if shape.is_empty:return 0
     return len(shape.geoms) if shape.geom_type=='MultiPolygon' else 1 if shape.geom_type=='Polygon' else 0
+
+
+def _bounded_overlap_area(area,upper_bound):
+    """Normalize only bounded floating-point excess over intersection bounds."""
+    if any(isinstance(value,bool) or not isinstance(value,(int,float)) or not isfinite(value)
+           for value in (area,upper_bound)) or upper_bound<0:
+        raise UnsupportedGeometry('INVALID_INTERLAYER_OVERLAP_AREA')
+    tolerance=OVERLAP_AREA_ROUNDOFF_ULPS*max(ulp(area),ulp(upper_bound))
+    if area<0:
+        if -area>tolerance:raise UnsupportedGeometry('INVALID_INTERLAYER_OVERLAP_AREA')
+        return 0.
+    if area>upper_bound:
+        if area-upper_bound>tolerance:raise UnsupportedGeometry('INVALID_INTERLAYER_OVERLAP_AREA')
+        return float(upper_bound)
+    return float(area)
 
 
 def valid_contact_descriptor(value,expected_bounds):
@@ -91,11 +107,11 @@ def _valid_contact_descriptor(value,expected_bounds):
                  'lower_depth_mm','upper_depth_mm','interior_smaller_area_mm2')
         if not all(number(row.get(field)) for field in numeric):return False
         if not equal_number(row['z_mm'],lower['top_z_mm']) or not equal_number(row['lower_area_mm2'],lower['area_mm2']) or not equal_number(row['upper_area_mm2'],upper['area_mm2']):return False
-        if row['overlap_area_mm2']<0 or row['overlap_area_mm2']>min(lower['area_mm2'],upper['area_mm2'])+1e-6:return False
+        if row['overlap_area_mm2']<0 or row['overlap_area_mm2']>min(lower['area_mm2'],upper['area_mm2']):return False
         for field,area in [('upper_overlap_ratio',upper['area_mm2']),('lower_overlap_ratio',lower['area_mm2']),('smaller_footprint_overlap_ratio',min(lower['area_mm2'],upper['area_mm2']))]:
-            if not 0<=row[field]<=1+1e-7 or not equal_number(row[field],row['overlap_area_mm2']/area):return False
+            if not 0<=row[field]<=1 or not equal_number(row[field],row['overlap_area_mm2']/area):return False
         inner=row.get('interior_smaller_overlap_ratio')
-        if inner is not None and (not number(inner) or not 0<=inner<=1+1e-7):return False
+        if inner is not None and (not number(inner) or not 0<=inner<=1):return False
         gap=upper['bottom_z_mm']-lower['top_z_mm']
         if not equal_number(row['geometric_vertical_gap_mm'],gap) or row['adjacent_plane_verified']!=(abs(gap)<=PLANE_TOLERANCE_MM):return False
         max_width=max(lower['max_declared_width_mm'],upper['max_declared_width_mm']);minimum_area=max(1.,4*max_width**2)
@@ -107,7 +123,7 @@ def _valid_contact_descriptor(value,expected_bounds):
         depth=index>=1 and index+2<len(layers) and min(lower_depth,upper_depth)>=2*max(lower['height_mm'],upper['height_mm'])-PLANE_TOLERANCE_MM
         if row['has_both_sided_layer_depth']!=depth or row['z_crop_boundary']!=(lower['z_crop_boundary'] or upper['z_crop_boundary']):return False
         interior_area=row['interior_smaller_area_mm2']
-        if interior_area<0 or interior_area>min(lower['area_mm2'],upper['area_mm2'])+1e-6 or (interior_area==0)!=(inner is None):return False
+        if interior_area<0 or interior_area>min(lower['area_mm2'],upper['area_mm2']) or (interior_area==0)!=(inner is None):return False
         crop_robust=interior_area>=minimum_area and inner is not None and (row['smaller_footprint_overlap_ratio']>LOW_OVERLAP_RATIO or inner<=LOW_OVERLAP_RATIO+1e-8)
         if row['crop_robust']!=crop_robust:return False
         qualifies=row['both_footprints_substantial'] and row['both_footprints_have_extent'] and depth and not row['z_crop_boundary'] and crop_robust
@@ -260,8 +276,9 @@ class StreamingInterlayerContact:
             lower=descriptors[index-1];upper=descriptors[index]
             previous=shapes[index-1];current=shapes[index];gap=upper['bottom_z_mm']-lower['top_z_mm']
             adjacent=abs(gap)<=PLANE_TOLERANCE_MM
-            intersection=previous.intersection(current);area=float(intersection.area)
+            intersection=previous.intersection(current)
             small=min(lower['area_mm2'],upper['area_mm2'])
+            area=_bounded_overlap_area(float(intersection.area),small)
             ratio=area/small
             max_width=max(lower['max_declared_width_mm'],upper['max_declared_width_mm'])
             min_area=max(1.,4*max_width**2)
@@ -276,8 +293,10 @@ class StreamingInterlayerContact:
             inner_ratio=None;inner_area=0.
             if inner_bounds[0]<inner_bounds[2] and inner_bounds[1]<inner_bounds[3]:
                 inner_crop=box(*inner_bounds);inner_lower=previous.intersection(inner_crop);inner_upper=current.intersection(inner_crop)
-                inner_area=min(inner_lower.area,inner_upper.area)
-                if inner_area>0:inner_ratio=float(inner_lower.intersection(inner_upper).area/inner_area)
+                inner_area=_bounded_overlap_area(float(min(inner_lower.area,inner_upper.area)),small)
+                if inner_area>0:
+                    inner_overlap=_bounded_overlap_area(float(inner_lower.intersection(inner_upper).area),inner_area)
+                    inner_ratio=inner_overlap/inner_area
             # A loss disappearing when the crop border is removed is a window
             # artifact. Expansion with overlap/smaller=1 is supported growth.
             crop_robust=inner_area>=min_area and inner_ratio is not None and (ratio>LOW_OVERLAP_RATIO or inner_ratio<=LOW_OVERLAP_RATIO+1e-8)

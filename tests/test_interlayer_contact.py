@@ -1,6 +1,9 @@
 """Declared-road overlaps remain geometric observations, not weld validation."""
 import unittest
 from copy import deepcopy
+from math import inf,nextafter,ulp
+from unittest.mock import patch
+import print_strength_engine.interlayer_contact as contact_module
 from print_strength_engine.interlayer_contact import StreamingInterlayerContact,valid_contact_descriptor
 
 
@@ -13,7 +16,73 @@ def add_square(collector,z,*,shift=0,width=1,side=4,layer=None):
         collector.segment((shift,y+.5,z),(shift+side,y+.5,z),width,1,0,layer_number=layer or int(z))
 
 
+def square_contact_with_intersection_excess(excess_width):
+    """Emulate GEOS area roundoff using unit test squares, never user geometry."""
+    from shapely.geometry import box
+    from shapely.geometry.base import BaseGeometry
+    original=BaseGeometry.intersection
+    def intersect(left,right,*args,**kwargs):
+        shape=original(left,right,*args,**kwargs)
+        if left.area==right.area==shape.area==16.:
+            return box(0,0,excess_width,4)
+        return shape
+    collector=StreamingInterlayerContact([candidate()])
+    for z in range(1,7):add_square(collector,z)
+    with patch.object(BaseGeometry,'intersection',intersect):
+        return collector.finish()['region']
+
+
 class InterlayerContactTests(unittest.TestCase):
+    def test_fresh_equal_footprint_area_roundoff_is_normalized_to_geometric_bound(self):
+        # Exact scalar values from a fresh anonymous source assessment.
+        lower=15.743535805252982;upper=15.743535800771948;overlap=15.743535800771951
+        normalize=getattr(contact_module,'_bounded_overlap_area',None)
+        self.assertTrue(callable(normalize),'Source overlap roundoff requires a bounded normalization')
+        self.assertEqual(normalize(overlap,min(lower,upper)),upper)
+        self.assertEqual(normalize(6.,16.),6.)
+        for bound in (2.**-40,16.,2.**40):
+            with self.subTest(bound=bound):
+                self.assertEqual(normalize(bound+64*ulp(bound),bound),bound)
+                with self.assertRaises(contact_module.UnsupportedGeometry):
+                    normalize(bound+65*ulp(bound),bound)
+        for invalid in (16.001,-.001,float('nan'),float('inf'),True):
+            with self.subTest(invalid=invalid):
+                with self.assertRaises(contact_module.UnsupportedGeometry):normalize(invalid,16.)
+
+    def test_generated_roundoff_contact_stays_valid_through_descriptor_and_weakness_readers(self):
+        from print_strength_engine.weakness import assess_candidates
+        value=square_contact_with_intersection_excess(nextafter(4.,inf))
+        self.assertEqual(value['status'],'COMPLETE')
+        for row in value['interfaces']:
+            self.assertEqual(row['overlap_area_mm2'],16.)
+            for field in ('upper_overlap_ratio','lower_overlap_ratio','smaller_footprint_overlap_ratio',
+                          'interior_smaller_overlap_ratio'):
+                self.assertEqual(row[field],1.)
+        self.assertTrue(valid_contact_descriptor(value,candidate()['section_window_bounds_mm']))
+        row={**candidate(),'kind':'LOCAL_THIN_SECTION','rank':1,'interlayer_contact':value}
+        assessment=assess_candidates([row])['candidates'][0]['weakness_assessment']
+        self.assertEqual(assessment['contact_geometry_status'],'COMPLETE')
+        self.assertEqual(assessment['minimum_smaller_footprint_overlap_ratio'],1.)
+        self.assertEqual(assessment['weld_strength_status'],'UNMEASURED')
+        self.assertIsNone(assessment['interlayer_failure_load_n'])
+        self.assertFalse(assessment['is_failure_prediction'])
+
+    def test_materially_excessive_intersection_withholds_instead_of_clamping(self):
+        value=square_contact_with_intersection_excess(4.001)
+        self.assertEqual(value['status'],'WITHHELD')
+        self.assertIn('INVALID_INTERLAYER_OVERLAP_AREA',value['assessment_gaps'])
+        self.assertTrue(valid_contact_descriptor(value,candidate()['section_window_bounds_mm']))
+
+    def test_cached_noncanonical_excess_cannot_bypass_reader_bounds(self):
+        collector=StreamingInterlayerContact([candidate()])
+        for z in range(1,7):add_square(collector,z)
+        valid=collector.finish()['region']
+        for field in ('upper_overlap_ratio','lower_overlap_ratio','smaller_footprint_overlap_ratio',
+                      'interior_smaller_overlap_ratio'):
+            value=deepcopy(valid);value['interfaces'][0][field]=nextafter(1.,inf)
+            with self.subTest(field=field):
+                self.assertFalse(valid_contact_descriptor(value,candidate()['section_window_bounds_mm']))
+
     def test_full_overlap_does_not_claim_bond_strength_is_verified(self):
         collector=StreamingInterlayerContact([candidate()])
         for z in range(1,7):add_square(collector,z)
