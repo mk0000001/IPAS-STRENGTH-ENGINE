@@ -1,9 +1,9 @@
 {
   "counting_rule": "Reachable non-merge commits modifying the engine package, excluding _version.py; initial import counts as revision 1. Docs, tests-only and host-app changes excluded. Not individual feature counts.",
-  "version": "0.21.0",
-  "revision_count": 21,
-  "update_count": 20,
-  "source_commit": "8a9d8fc1fe2ebcd68efbedfee10d4f4ba39ec44d",
+  "version": "0.22.0",
+  "revision_count": 22,
+  "update_count": 21,
+  "source_commit": "dfb4825b39c162db7d33a5e43a77afc55a8ee6a5",
   "commits": [
     {
       "commit": "b8d3aeeabebb80addc05a50ca25e2ad3e000a61d",
@@ -88,6 +88,10 @@
     {
       "commit": "8a9d8fc1fe2ebcd68efbedfee10d4f4ba39ec44d",
       "subject": "Bound interlayer overlap roundoff and enforce canonical cached ratios"
+    },
+    {
+      "commit": "dfb4825b39c162db7d33a5e43a77afc55a8ee6a5",
+      "subject": "Preserve exact Cura primary roles in commanded process descriptors"
     }
   ]
 }
