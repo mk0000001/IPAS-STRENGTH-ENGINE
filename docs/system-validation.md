@@ -1,5 +1,9 @@
 # 시스템 검증 결과와 적용 한계
 
+프로파일 매칭 및 원본 재분석: [브랜드·제품·출력 설정·노즐 분리](profile-matching-and-body-reanalysis-20261003.md).
+
+Profile matching and source reanalysis: [separate brand, product, preset and nozzle](profile-matching-and-body-reanalysis-20261003.md).
+
 최신 공정 요인 검증: [원본 명령 체적·온도·벽과 취약부 계산](process-aware-weakness-validation-20261003.md).
 
 Latest process-aware validation: [source-command volume, temperatures, walls and weakness scenarios](process-aware-weakness-validation-20261003.md).
