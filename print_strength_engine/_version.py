@@ -1,3 +1,3 @@
 """Generated package code-history revision; not a validation rating."""
-RELEASE = {'version': '0.20.0', 'revision_count': 20, 'update_count': 19, 'source_commit': '3f3b3bafbd956b1c8425d8e65bbd94559ce52496'}
+RELEASE = {'version': '0.21.0', 'revision_count': 21, 'update_count': 20, 'source_commit': '8a9d8fc1fe2ebcd68efbedfee10d4f4ba39ec44d'}
 __version__ = RELEASE["version"]

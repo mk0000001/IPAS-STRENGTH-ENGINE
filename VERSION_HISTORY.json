@@ -1,9 +1,9 @@
 {
   "counting_rule": "Reachable non-merge commits modifying the engine package, excluding _version.py; initial import counts as revision 1. Docs, tests-only and host-app changes excluded. Not individual feature counts.",
-  "version": "0.20.0",
-  "revision_count": 20,
-  "update_count": 19,
-  "source_commit": "3f3b3bafbd956b1c8425d8e65bbd94559ce52496",
+  "version": "0.21.0",
+  "revision_count": 21,
+  "update_count": 20,
+  "source_commit": "8a9d8fc1fe2ebcd68efbedfee10d4f4ba39ec44d",
   "commits": [
     {
       "commit": "b8d3aeeabebb80addc05a50ca25e2ad3e000a61d",
@@ -84,6 +84,10 @@
     {
       "commit": "3f3b3bafbd956b1c8425d8e65bbd94559ce52496",
       "subject": "Preserve FusRock tensile metric labels and endpoint uncertainty"
+    },
+    {
+      "commit": "8a9d8fc1fe2ebcd68efbedfee10d4f4ba39ec44d",
+      "subject": "Bound interlayer overlap roundoff and enforce canonical cached ratios"
     }
   ]
 }
