@@ -14,19 +14,21 @@
 
 - `FusRock_ABS_0.2 @BBL H2C`, `FusRock ABS-GF @QIDI Q2`처럼 활성 슬라이서 프로필이 공식 제품명 하나에 정확히 일치할 때만 제품을 선택한다.
 - 여러 활성 프로필이 서로 다른 제품을 가리키거나 `ABS Plus`처럼 공식 등급과 정확히 일치하지 않으면 다른 FusRock 등급 또는 다른 제조사의 값을 대체 적용하지 않는다.
-- 공식 기계값은 동일 시험상태의 비교 가능한 XY/Z 인장 파단 쌍이 모두 있을 때만 방향별 소재 참고값에 사용한다. 그 쌍이 없는 제품은 공식 출력·물리·열·기계 자료만 표시하고 방향별 MPa는 보류한다.
+- 공식 기계값은 동일 제품·시험상태의 XY/Z 인장 참고값과 시험조건이 모두 있을 때만 조건부 소재 참고값에 사용한다. 수치 또는 시험조건이 없는 제품은 공식 출력·물리·열·기계 자료만 표시하고 방향별 MPa는 보류한다. XY와 Z의 파단 지표가 같다고 추정하지 않는다.
 - 공식 출력 범위와 G-code의 노즐·베드·명령 속도를 비교해 범위 내/밖을 표시한다. 이 경고를 임의 강도 배율로 환산하지 않는다.
 - 전체 공식 항목은 `fusrock_material_catalog.json`에 보존하고, 웹·PDF에는 판단에 필요한 핵심값과 공식 링크를 간결하게 표시한다.
 
 ### FusRock ABS에 실제 적용한 기준
 
-공식 ABS 성능표가 같은 비열처리 시험조건에서 공개한 `Tensile Break Strength XY = 33.36 MPa`와 `Tensile Strength Z = 55 MPa`를 방향 쌍으로 사용한다. 시험조건은 0.4 mm 노즐, 250 °C 노즐, 100 °C 베드, 50 mm/s, 인필 100%, ±45° 인필이다. 기존 내부 여유계수 0.85를 한 번 적용한 표시 참고값은 X/Y 28.356 MPa, Z 46.75 MPa다. 이 계수는 실측 보정계수나 검증된 안전율이 아니다.
+공식 ABS 성능표의 `Tensile Break Strength XY = 33.36 MPa`와 `Tensile Strength Z = 55 MPa`를 원래 이름을 보존한 조건부 소재 참고값으로 사용한다. 비교표는 Z를 인장 파단강도로 부르지만 연결된 성능표는 인장강도로 표시하므로, 두 방향의 파단 지표 동등성은 확인되지 않았다. `source_metric_labels`와 `catalog_metric_labels`를 분리하고 `metric_comparability = SOURCE_LABEL_CONFLICT_ENDPOINT_COMPARABILITY_UNVERIFIED`로 기록한다. Z 요약 키는 `tensile_strength_z_mpa`이며 `tensile_break_z_mpa`로 표시하지 않는다.
+
+시험조건은 0.4 mm 노즐, 250 °C 노즐, 100 °C 베드, 50 mm/s, 인필 100%, ±45° 인필이다. 소재 참고값은 X/Y 33.36 MPa, Z 55 MPa로 유지한다. 기존 내부 여유계수 0.85는 조건부 하중 계산 입력에 한 번 적용해 X/Y 28.356 MPa, Z 46.75 MPa를 만든다. 이 계수는 실측 보정계수나 검증된 안전율이 아니다. 선택한 참고 응력에 도달하는 시나리오는 실제 파단이나 방향별 파단강도 비교의 검증이 아니다.
 
 공식 제품 페이지 권장조건도 별도로 보존한다. ABS의 페이지 기준은 노즐 240–260 °C, 베드 100–110 °C, 챔버 밀폐 또는 60–80 °C, 팬 끔–30%, 속도 30–120 mm/s, 리트랙션 1–5 mm, 리트랙션 속도 1800–3600 mm/min, 70 °C에서 5–6시간 건조, FusFree S-Multi 서포트다. 비교표와 제품 페이지 값은 각 출처의 값으로 분리해 유지한다.
 
 ### 제외한 오해 가능 값
 
-공식 원자료의 일부 필드는 이름과 수치의 물리적 의미가 맞지 않을 가능성이 있다. 예를 들어 ABS의 일반 `tensile_unannealed = 2201.74`는 강도라기보다 탄성률 규모이며, 별도 XY/Z 탄성률 항목과 중복될 수 있다. 원문 사실은 스냅샷에 보존하지만 방향별 강도 계산에는 `tbs_xy_unannealed`와 `ts_z_unannealed`만 사용한다. 제조사 시편값은 현재 부품의 인필, 벽, 접합, 노치, 고정조건과 하중 경로가 실증된 파단강도 또는 허용하중이 아니다.
+공식 원자료의 일반 `tensile_unannealed` 필드는 방향과 시험 지표의 연결이 명확하지 않아 계산에 사용하지 않는다. 수치의 크기로 물리적 의미를 추정하지 않는다. 원문 사실은 스냅샷에 보존하지만 방향별 조건부 소재 참고값에는 `tbs_xy_unannealed`와 `ts_z_unannealed`만 사용하며 각 출처의 지표 이름과 미확인 동등성을 함께 기록한다. 제조사 시편값은 현재 부품의 인필, 벽, 접합, 노치, 고정조건과 하중 경로가 실증된 파단강도 또는 허용하중이 아니다.
 
 ### 구현 검증
 
@@ -51,19 +53,21 @@ Regenerate with `python tools/update_fusrock_catalog.py --checked-date YYYY-MM-D
 
 - A product is selected only when every active FusRock slicer profile resolves exactly to one official product.
 - Mixed, incomplete and unknown grades are withheld rather than borrowing another FusRock grade or another manufacturer's reference.
-- Directional material references require a comparable XY/Z tensile-break pair from the same test state. Products without such a pair retain their official properties but receive no directional MPa.
+- Conditional material references require both XY/Z tensile values and conditions from the same product and test state. Products without these values retain their official properties but receive no directional MPa. Equal breaking endpoints are not inferred.
 - G-code nozzle, bed and commanded-speed values are compared with official ranges. Out-of-range results are warnings and never become an invented strength multiplier.
 - The complete factual record remains in `fusrock_material_catalog.json`; the web and PDF surfaces show a compact review set plus official links.
 
 ### FusRock ABS reference used
 
-For ABS, the official same-state pair is `Tensile Break Strength XY = 33.36 MPa` and `Tensile Strength Z = 55 MPa`. The declared specimen conditions are a 0.4 mm nozzle, 250 °C nozzle, 100 °C bed, 50 mm/s, 100% infill and ±45° raster. Applying the existing internal 0.85 margin once gives display references X/Y 28.356 MPa and Z 46.75 MPa. The margin is neither empirical calibration nor a validated safety factor.
+For ABS, the official performance page labels the values `Tensile Break Strength XY = 33.36 MPa` and `Tensile Strength Z = 55 MPa`. The comparison labels Z as breaking strength, so the sources do not establish equal breaking endpoints. `source_metric_labels` and `catalog_metric_labels` retain their separate labels; `metric_comparability` is `SOURCE_LABEL_CONFLICT_ENDPOINT_COMPARABILITY_UNVERIFIED`. The Z summary key is `tensile_strength_z_mpa`; no Z-break key is emitted.
+
+The declared specimen conditions are a 0.4 mm nozzle, 250 °C nozzle, 100 °C bed, 50 mm/s, 100% infill and ±45° raster. Material references remain X/Y 33.36 MPa and Z 55 MPa. Applying the existing internal 0.85 margin once to conditional load inputs gives X/Y 28.356 MPa and Z 46.75 MPa. The margin is neither empirical calibration nor a validated safety factor. A scenario reaching the chosen reference stress does not validate fracture or compare verified directional breaking strength.
 
 The product-page recommendations are retained separately: 240–260 °C nozzle, 100–110 °C bed, sealed or 60–80 °C chamber, off–30% fan, 30–120 mm/s, 1–5 mm retraction, 1800–3600 mm/min retraction speed, 70 °C for 5–6 h drying and FusFree S-Multi support. Comparison and product-page values keep their respective provenance.
 
 ### Ambiguous fields excluded from calculation
 
-Some source fields may have labels that do not match their physical scale. For example, ABS `tensile_unannealed = 2201.74` is modulus-sized and may duplicate the explicit XY/Z modulus fields. It remains in the factual snapshot but is excluded from directional strength. Only `tbs_xy_unannealed` and `ts_z_unannealed` form the ABS directional pair. Manufacturer coupon values are not validated failure strength or allowable load for the current part, infill, walls, welds, notches, fixtures or load path.
+The generic `tensile_unannealed` field has no clear directional endpoint mapping and is excluded from calculation. Numerical magnitude does not establish its physical meaning. The factual snapshot retains it; only `tbs_xy_unannealed` and `ts_z_unannealed` supply conditional directional references, with separate source labels and unverified endpoint equivalence. Manufacturer coupon values are not validated failure strength or allowable load for the current part, infill, walls, welds, notches, fixtures or load path.
 
 ### Implementation verification
 

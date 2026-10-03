@@ -27,11 +27,18 @@ class FusRockOfficialCatalog(unittest.TestCase):
         self.assertIsNone(match_profiles(['FusRock ABS Plus']))
         self.assertIsNone(match_profiles(['UnknownBrand ABS']))
 
-    def test_abs_directional_reference_uses_comparable_break_metrics_only(self):
+    def test_abs_directional_reference_preserves_source_labels_without_inferred_endpoint(self):
         product = match_profiles(['FusRock_ABS_0.2 @BBL H2C'])
         ref = exact_directional_reference(product)
         self.assertEqual(ref['raw_reference_mpa'], {'XY': '33.36', 'Z': '55'})
         self.assertEqual(ref['metric_keys'], {'XY': 'tbs_xy_unannealed', 'Z': 'ts_z_unannealed'})
+        self.assertEqual(ref['source_metric_labels'], {
+            'XY': 'Tensile Break Strength XY', 'Z': 'Tensile Strength Z'})
+        self.assertEqual(ref['catalog_metric_labels'], {
+            'XY': 'Tensile breaking strength (X-Y) (Unannealed)',
+            'Z': 'Tensile breaking strength (Z) (Unannealed)'})
+        self.assertEqual(ref['metric_comparability'],
+                         'SOURCE_LABEL_CONFLICT_ENDPOINT_COMPARABILITY_UNVERIFIED')
         self.assertEqual(ref['test_conditions']['nozzle_c'], 250)
         self.assertEqual(ref['test_conditions']['bed_c'], 100)
         self.assertEqual(ref['test_conditions']['speed_mm_s'], 50)
@@ -48,7 +55,12 @@ class FusRockOfficialCatalog(unittest.TestCase):
         self.assertEqual(summary['physical']['density_g_cm3'], 1.05)
         self.assertEqual(summary['thermal']['hdt_a_c'], 86)
         self.assertEqual(summary['mechanical']['tensile_break_xy_mpa'], 33.36)
-        self.assertEqual(summary['mechanical']['tensile_break_z_mpa'], 55)
+        self.assertEqual(summary['mechanical']['tensile_strength_z_mpa'], 55)
+        self.assertNotIn('tensile_break_z_mpa', summary['mechanical'])
+        self.assertEqual(summary['source_metric_labels'], {
+            'XY': 'Tensile Break Strength XY', 'Z': 'Tensile Strength Z'})
+        self.assertEqual(summary['metric_comparability'],
+                         'SOURCE_LABEL_CONFLICT_ENDPOINT_COMPARABILITY_UNVERIFIED')
         self.assertTrue(summary['source_url'].endswith('/material/performance/id/106/lang/en'))
         page = product['product_page_recommendations']
         self.assertEqual(page['nozzle_temperature'], '240-260°C')

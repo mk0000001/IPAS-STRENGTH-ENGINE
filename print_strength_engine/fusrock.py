@@ -86,8 +86,23 @@ def _plain(value):
     return format(value, 'f').rstrip('0').rstrip('.') if value else '0'
 
 
+def _metric_provenance():
+    parameters = {row['key']: row.get('label') for row in catalog()['parameters']}
+    return {
+        'source_metric_labels': {'XY': 'Tensile Break Strength XY', 'Z': 'Tensile Strength Z'},
+        'catalog_metric_labels': {'XY': parameters.get('tbs_xy_unannealed'),
+                                 'Z': parameters.get('ts_z_unannealed')},
+        'metric_comparability': 'SOURCE_LABEL_CONFLICT_ENDPOINT_COMPARABILITY_UNVERIFIED',
+    }
+
+
 def exact_directional_reference(product):
-    """Use only the official XY/Z tensile-breaking pair from one test state."""
+    """Retain source-labeled tensile references without inferring equal endpoints.
+
+    The comparison calls Z breaking strength; the linked ABS performance page
+    calls it tensile strength. Keep both labels and leave endpoint equivalence
+    unverified. These numbers are conditional references, not fracture targets.
+    """
     if not product:
         return None
     metrics = product.get('metrics') or {}
@@ -99,6 +114,7 @@ def exact_directional_reference(product):
     return {
         'raw_reference_mpa': {'XY': _plain(xy), 'Z': _plain(z)},
         'metric_keys': {'XY': 'tbs_xy_unannealed', 'Z': 'ts_z_unannealed'},
+        **_metric_provenance(),
         'test_state': 'UNANNEALED',
         'test_conditions': conditions,
         'source_ref': product['performance_url'],
@@ -143,7 +159,7 @@ def product_summary(product):
         },
         'mechanical': {
             'tensile_break_xy_mpa': metrics.get('tbs_xy_unannealed'),
-            'tensile_break_z_mpa': metrics.get('ts_z_unannealed'),
+            'tensile_strength_z_mpa': metrics.get('ts_z_unannealed'),
             'youngs_modulus_xy_mpa': metrics.get('tm_xy_unannealed'),
             'youngs_modulus_z_mpa': metrics.get('tm_z_unannealed'),
             'elongation_break_xy_percent': metrics.get('eb_xy_unannealed'),
@@ -152,6 +168,7 @@ def product_summary(product):
             'bending_modulus_xy_mpa': metrics.get('fm_xy_unannealed'),
             'charpy_impact_xy_kj_m2': metrics.get('ni_xy_unannealed'),
         },
+        **_metric_provenance(),
         'test_conditions': product.get('mechanical_test_conditions') or {},
         'source_url': product['performance_url'],
         'catalog_url': source['url'],
