@@ -1,5 +1,9 @@
 # 시스템 검증 결과와 적용 한계
 
+전체 자료 검증 및 회귀 반영: [모든 원본·플레이트, 제품 매칭과 층간 접촉 경계](full-corpus-validation-20261003.md).
+
+Full-corpus validation and regression updates: [all source/plate identities, product matching and interlayer contact boundaries](full-corpus-validation-20261003.md).
+
 프로파일 매칭 및 원본 재분석: [브랜드·제품·출력 설정·노즐 분리](profile-matching-and-body-reanalysis-20261003.md).
 
 Profile matching and source reanalysis: [separate brand, product, preset and nozzle](profile-matching-and-body-reanalysis-20261003.md).

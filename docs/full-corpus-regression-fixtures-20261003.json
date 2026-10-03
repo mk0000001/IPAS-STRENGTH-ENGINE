@@ -1,0 +1,643 @@
+{
+  "schema": "ANONYMIZED_FRESH_METADATA_REGRESSIONS_V1",
+  "mechanical_training": false,
+  "corpus_scope": "FULL_CURRENT_CORPUS",
+  "source_engine_fingerprint": "7c57a945b71ab3214988a234e840201497ac68cc6ca9342b42469723d6b075e0",
+  "source_results_sha256": "7b68cb6f7174f15d9ab9c220c0512b3a9dd3b7d9c94b2c7c79e24f74b692ced0",
+  "eligible_fresh_plate_contexts": 1693,
+  "purpose": "Software regressions for selected fresh metadata edge cases; no source shape, paths, business filenames or measured part-fracture targets. Manufacturer material references retain their source labels.",
+  "family_grouping": "Filename inference is heuristic. Dataset is regression organization only, not independent design/study holdout.",
+  "required_contracts": [
+    "NO_UNAPPROVED_PROCESS_STRENGTH",
+    "CONTACT_IS_GEOMETRY",
+    "MATERIAL_IDENTITY_AND_MARGIN",
+    "CURRENT_V2_COMMAND_CONTEXT_IS_NOT_MEASURED_WELD_STRENGTH"
+  ],
+  "fixtures": [
+    {
+      "id": "fresh-metadata-e5d2cdf6ff6ac384",
+      "origin": "MINIMAL_ANONYMIZED_FRESH_FULL_SCAN_METADATA",
+      "labels": [
+        "COMMAND_SPEED_DISTINCT_FROM_PRINT_SETPOINT",
+        "PROFILE_NAME_CANNOT_VERIFY_GRADE",
+        "RAW_DIRECTIONAL_REFERENCE_UNAVAILABLE",
+        "UNAPPROVED_PROCESS_STRENGTH_REMAINS_WITHHELD"
+      ],
+      "input": {
+        "analysis": {
+          "configuration": {
+            "bottom_shell_layers": "3",
+            "chamber_temperature": "60",
+            "filament_flow_ratio": "0.96",
+            "layer_height": "0.2",
+            "line_width": "0.42",
+            "nozzle_diameter": "0.4",
+            "nozzle_temperature": "280",
+            "outer_wall_line_width": "0.42",
+            "slow_down_layer_time": "2",
+            "sparse_infill_density": "15%",
+            "top_shell_layers": "5",
+            "wall_loops": "2",
+            "first_layer_height": "0.200"
+          },
+          "detected_materials": [
+            "UNKNOWN"
+          ],
+          "nozzle_diameter_mm": "0.4",
+          "process_metrics": {
+            "bed_setpoint_c": {
+              "min": 0.0,
+              "max": 100.0
+            },
+            "chamber_setpoint_c": {
+              "min": 0.0,
+              "max": 60.0
+            },
+            "deposition_nozzle_setpoint_c": {
+              "min": 280.0,
+              "max": 280.0
+            },
+            "commanded_speed_mm_s": {
+              "min": 10.0,
+              "max": 250.0,
+              "p50_approx": 103.071381,
+              "p95_approx": 112.400138
+            }
+          }
+        },
+        "raw_reference_mpa": {},
+        "internal_margin_factor": null,
+        "reference_metrics": {},
+        "capacity_probe": {
+          "kind": "LAYER_CONSTRICTION",
+          "axis": "Z",
+          "material_area_proxy_mm2": 1
+        },
+        "capacity_probe_basis": "UNIT_NORMALIZED_SCHEMA_PROBE_NOT_SOURCE_GEOMETRY"
+      },
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    },
+    {
+      "id": "fresh-metadata-9dff3bb3d8c8242a",
+      "origin": "MINIMAL_ANONYMIZED_FRESH_FULL_SCAN_METADATA",
+      "labels": [
+        "COMMAND_SPEED_DISTINCT_FROM_PRINT_SETPOINT",
+        "PROFILE_NAME_CANNOT_VERIFY_GRADE",
+        "RAW_REFERENCE_SEPARATE_FROM_CAPACITY_MARGIN",
+        "UNAPPROVED_PROCESS_STRENGTH_REMAINS_WITHHELD"
+      ],
+      "input": {
+        "analysis": {
+          "configuration": {
+            "bottom_shell_layers": "3",
+            "chamber_temperature": "0",
+            "filament_flow_ratio": "0.98",
+            "layer_height": "0.2",
+            "line_width": "0.42",
+            "nozzle_diameter": "0.4",
+            "nozzle_temperature": "220",
+            "outer_wall_line_width": "0.42",
+            "slow_down_layer_time": "4",
+            "sparse_infill_density": "10%",
+            "top_shell_layers": "5",
+            "wall_loops": "2",
+            "first_layer_height": "0.200"
+          },
+          "detected_materials": [
+            "PLA"
+          ],
+          "nozzle_diameter_mm": "0.4",
+          "process_metrics": {
+            "bed_setpoint_c": {
+              "min": 0.0,
+              "max": 55.0
+            },
+            "chamber_setpoint_c": {
+              "min": 0.0,
+              "max": 0.0
+            },
+            "deposition_nozzle_setpoint_c": {
+              "min": 220.0,
+              "max": 220.0
+            },
+            "commanded_speed_mm_s": {
+              "min": 10.0,
+              "max": 365.2325666666667,
+              "p50_approx": 86.672355,
+              "p95_approx": 291.52989
+            }
+          }
+        },
+        "raw_reference_mpa": {
+          "XY": "35",
+          "Z": "31"
+        },
+        "internal_margin_factor": "0.85",
+        "reference_metrics": {},
+        "capacity_probe": {
+          "kind": "LAYER_CONSTRICTION",
+          "axis": "Z",
+          "material_area_proxy_mm2": 1
+        },
+        "capacity_probe_basis": "UNIT_NORMALIZED_SCHEMA_PROBE_NOT_SOURCE_GEOMETRY"
+      },
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    },
+    {
+      "id": "fresh-metadata-4c7e1d6a8cf8efca",
+      "origin": "MINIMAL_ANONYMIZED_FRESH_FULL_SCAN_METADATA",
+      "labels": [
+        "ABSOLUTE_LINE_WIDTH_MISSING_OR_AUTO",
+        "ACTIVE_MATERIAL_UNKNOWN",
+        "COMMAND_SPEED_DISTINCT_FROM_PRINT_SETPOINT",
+        "PROFILE_NAME_CANNOT_VERIFY_GRADE",
+        "RAW_DIRECTIONAL_REFERENCE_UNAVAILABLE",
+        "UNAPPROVED_PROCESS_STRENGTH_REMAINS_WITHHELD"
+      ],
+      "input": {
+        "analysis": {
+          "configuration": {},
+          "detected_materials": [],
+          "nozzle_diameter_mm": null,
+          "process_metrics": {
+            "bed_setpoint_c": {
+              "min": 0.0,
+              "max": 50.0
+            },
+            "chamber_setpoint_c": {
+              "min": null,
+              "max": null
+            },
+            "deposition_nozzle_setpoint_c": {
+              "min": 0.0,
+              "max": 0.0
+            },
+            "commanded_speed_mm_s": {
+              "min": 15.266666666666667,
+              "max": 50.0,
+              "p50_approx": 25.767845,
+              "p95_approx": 28.100035
+            }
+          }
+        },
+        "raw_reference_mpa": {},
+        "internal_margin_factor": null,
+        "reference_metrics": {},
+        "capacity_probe": {
+          "kind": "LAYER_CONSTRICTION",
+          "axis": "Z",
+          "material_area_proxy_mm2": 1
+        },
+        "capacity_probe_basis": "UNIT_NORMALIZED_SCHEMA_PROBE_NOT_SOURCE_GEOMETRY"
+      },
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    },
+    {
+      "id": "fresh-metadata-3b51b28b3535fd16",
+      "origin": "MINIMAL_ANONYMIZED_FRESH_FULL_SCAN_METADATA",
+      "labels": [
+        "COMMAND_SPEED_DISTINCT_FROM_PRINT_SETPOINT",
+        "CONFLICTING_TOOL_TEMPERATURE_SLOTS",
+        "PROFILE_NAME_CANNOT_VERIFY_GRADE",
+        "RAW_DIRECTIONAL_REFERENCE_UNAVAILABLE",
+        "UNAPPROVED_PROCESS_STRENGTH_REMAINS_WITHHELD"
+      ],
+      "input": {
+        "analysis": {
+          "configuration": {
+            "bottom_shell_layers": "3",
+            "filament_flow_ratio": "0.95,0.98",
+            "layer_height": "0.103359",
+            "line_width": "0.584052",
+            "nozzle_diameter": "0.4",
+            "nozzle_temperature": "220,230",
+            "outer_wall_line_width": "0.42",
+            "slow_down_layer_time": "8,8",
+            "sparse_infill_density": "15%",
+            "top_shell_layers": "5",
+            "wall_loops": "2"
+          },
+          "detected_materials": [
+            "PLA"
+          ],
+          "nozzle_diameter_mm": "0.4",
+          "process_metrics": {
+            "bed_setpoint_c": {
+              "min": 0.0,
+              "max": 65.0
+            },
+            "chamber_setpoint_c": {
+              "min": null,
+              "max": null
+            },
+            "deposition_nozzle_setpoint_c": {
+              "min": 220.0,
+              "max": 230.0
+            },
+            "commanded_speed_mm_s": {
+              "min": 10.0,
+              "max": 300.0,
+              "p50_approx": 145.764945,
+              "p95_approx": 206.142762
+            }
+          }
+        },
+        "raw_reference_mpa": {},
+        "internal_margin_factor": null,
+        "reference_metrics": {},
+        "capacity_probe": {
+          "kind": "LAYER_CONSTRICTION",
+          "axis": "Z",
+          "material_area_proxy_mm2": 1
+        },
+        "capacity_probe_basis": "UNIT_NORMALIZED_SCHEMA_PROBE_NOT_SOURCE_GEOMETRY"
+      },
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    },
+    {
+      "id": "fresh-metadata-27f9e7c682955ed0",
+      "origin": "MINIMAL_ANONYMIZED_FRESH_FULL_SCAN_METADATA",
+      "labels": [
+        "CATALOG_SOURCE_TENSILE_ENDPOINT_LABEL_CONFLICT",
+        "COMMAND_SPEED_DISTINCT_FROM_PRINT_SETPOINT",
+        "CONFLICTING_TOOL_TEMPERATURE_SLOTS",
+        "PROFILE_NAME_CANNOT_VERIFY_GRADE",
+        "RAW_REFERENCE_SEPARATE_FROM_CAPACITY_MARGIN",
+        "SOURCE_ENDPOINT_LABELS_PRESERVED_COMPARABILITY_UNVERIFIED",
+        "UNAPPROVED_PROCESS_STRENGTH_REMAINS_WITHHELD"
+      ],
+      "input": {
+        "analysis": {
+          "configuration": {
+            "layer_height": "0.2",
+            "line_width": "0.42",
+            "bottom_shell_layers": "3",
+            "filament_flow_ratio": "0.88,0.92,0.92,0.92,0.98,0.98,0.98,0.98,0.95",
+            "nozzle_diameter": "0.4",
+            "nozzle_temperature": "250,260,260,260,210,210,210,210,260",
+            "outer_wall_line_width": "0.42",
+            "slow_down_layer_time": "4,4,4,4,8,8,8,8,4",
+            "sparse_infill_density": "45%",
+            "top_shell_layers": "5",
+            "wall_loops": "5",
+            "bed_temperature": [
+              "110",
+              "90",
+              "90",
+              "90",
+              "60",
+              "60",
+              "60",
+              "60",
+              "90"
+            ],
+            "chamber_temperature": [
+              "65",
+              "55",
+              "55",
+              "55",
+              "0",
+              "0",
+              "0",
+              "0",
+              "55"
+            ]
+          },
+          "detected_materials": [
+            "ABS"
+          ],
+          "nozzle_diameter_mm": "0.4",
+          "process_metrics": {
+            "bed_setpoint_c": {
+              "min": 0.0,
+              "max": 110.0
+            },
+            "chamber_setpoint_c": {
+              "min": 0.0,
+              "max": 65.0
+            },
+            "deposition_nozzle_setpoint_c": {
+              "min": 250.0,
+              "max": 260.0
+            },
+            "commanded_speed_mm_s": {
+              "min": 50.0,
+              "max": 250.0,
+              "p50_approx": 206.142762,
+              "p95_approx": 206.142762
+            }
+          }
+        },
+        "raw_reference_mpa": {
+          "XY": "33.36",
+          "Z": "55"
+        },
+        "internal_margin_factor": "0.85",
+        "reference_metrics": {
+          "source_metric_labels": {
+            "XY": "Tensile Break Strength XY",
+            "Z": "Tensile Strength Z"
+          },
+          "catalog_metric_labels": {
+            "XY": "Tensile breaking strength (X-Y) (Unannealed)",
+            "Z": "Tensile breaking strength (Z) (Unannealed)"
+          },
+          "metric_comparability": "SOURCE_LABEL_CONFLICT_ENDPOINT_COMPARABILITY_UNVERIFIED"
+        },
+        "capacity_probe": {
+          "kind": "LAYER_CONSTRICTION",
+          "axis": "Z",
+          "material_area_proxy_mm2": 1
+        },
+        "capacity_probe_basis": "UNIT_NORMALIZED_SCHEMA_PROBE_NOT_SOURCE_GEOMETRY"
+      },
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    },
+    {
+      "id": "fresh-metadata-f27cc42fa83301a5",
+      "origin": "MINIMAL_ANONYMIZED_FRESH_FULL_SCAN_METADATA",
+      "labels": [
+        "COMMAND_SPEED_DISTINCT_FROM_PRINT_SETPOINT",
+        "CONFLICTING_TOOL_TEMPERATURE_SLOTS",
+        "MIXED_ACTIVE_MATERIALS",
+        "PROFILE_NAME_CANNOT_VERIFY_GRADE",
+        "RAW_DIRECTIONAL_REFERENCE_UNAVAILABLE",
+        "UNAPPROVED_PROCESS_STRENGTH_REMAINS_WITHHELD"
+      ],
+      "input": {
+        "analysis": {
+          "configuration": {
+            "bottom_shell_layers": "3",
+            "filament_flow_ratio": "0.98,0.98,0.95,1",
+            "layer_height": "0.2",
+            "line_width": "0.101236",
+            "nozzle_diameter": "0.4",
+            "nozzle_temperature": "220,220,270,240",
+            "outer_wall_line_width": "0.42",
+            "slow_down_layer_time": "8,8,3,8",
+            "sparse_infill_density": "15%",
+            "top_shell_layers": "5",
+            "wall_loops": "2"
+          },
+          "detected_materials": [
+            "PLA",
+            "TPU"
+          ],
+          "nozzle_diameter_mm": "0.4",
+          "process_metrics": {
+            "bed_setpoint_c": {
+              "min": 0.0,
+              "max": 45.0
+            },
+            "chamber_setpoint_c": {
+              "min": null,
+              "max": null
+            },
+            "deposition_nozzle_setpoint_c": {
+              "min": 240.0,
+              "max": 240.0
+            },
+            "commanded_speed_mm_s": {
+              "min": 34.0,
+              "max": 250.0,
+              "p50_approx": 39.73945,
+              "p95_approx": 47.258437
+            }
+          }
+        },
+        "raw_reference_mpa": {},
+        "internal_margin_factor": null,
+        "reference_metrics": {},
+        "capacity_probe": {
+          "kind": "LAYER_CONSTRICTION",
+          "axis": "Z",
+          "material_area_proxy_mm2": 1
+        },
+        "capacity_probe_basis": "UNIT_NORMALIZED_SCHEMA_PROBE_NOT_SOURCE_GEOMETRY"
+      },
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    }
+  ],
+  "independent_full_corpus_proof": {
+    "independent_receipt_sha256": "5f08c0a0e308d221af933a6dc4f397fe94ebe285e48047abc6fb10eb1b691b2b",
+    "manifest_sha256": "b01068e705f2eca6efc52762e8c1bf204b0e2b797c7affeabaa2a10c79939b86",
+    "original_hash_rechecks_performed": true,
+    "artifact_occurrences": 1682,
+    "plate_occurrences": 1693,
+    "missing_count": 0,
+    "error_count": 0
+  },
+  "contact_roundoff_regressions": [
+    {
+      "id": "fresh-contact-roundoff-b5176db868022c05",
+      "input": {
+        "area_mm2": 15.743535800771951,
+        "upper_bound_mm2": 15.743535800771948,
+        "expected_area_mm2": 15.743535800771948
+      },
+      "origin": "MINIMAL_SCALAR_REPRODUCTION_OF_CURRENT_CORRECTED_SOURCE_ERROR",
+      "geometry_retained": false,
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    }
+  ],
+  "process_semantic_regressions": [
+    {
+      "id": "fresh-process-semantic-6afa08b0abbb87b4",
+      "input": {
+        "canonical_schema_feature": "outer wall",
+        "expected_role": "OUTER_WALL",
+        "observed_current_source_semantics": {
+          "process_version": "LOCAL_COMMANDED_PROCESS_V2_CURA_FEATURE_ROLES",
+          "is_measured": false,
+          "measured_substrate_temperature_c": null,
+          "individual_wall_passes_resolved": false,
+          "source_geometry_complete": true,
+          "deposited_section_status": "COMPLETE",
+          "contact_geometry_status": "COMPLETE",
+          "actual_bond_measured": false,
+          "weld_strength_status": "UNMEASURED",
+          "interlayer_failure_load_n": null
+        },
+        "probe_basis": "UNIT_SCHEMA_PROBE_DERIVED_FROM_ROLE_ENUM_NOT_SOURCE_FEATURE_TOKEN_OR_GEOMETRY"
+      },
+      "labels": [
+        "OUTER_WALL"
+      ],
+      "origin": "MINIMAL_CURRENT_FULL_GEOMETRY_PROCESS_ROLE_AND_STATUS_EVIDENCE",
+      "geometry_retained": false,
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    },
+    {
+      "id": "fresh-process-semantic-01b6ed627b56a8fe",
+      "input": {
+        "canonical_schema_feature": "inner wall",
+        "expected_role": "INNER_WALL",
+        "observed_current_source_semantics": {
+          "process_version": "LOCAL_COMMANDED_PROCESS_V2_CURA_FEATURE_ROLES",
+          "is_measured": false,
+          "measured_substrate_temperature_c": null,
+          "individual_wall_passes_resolved": false,
+          "source_geometry_complete": true,
+          "deposited_section_status": "COMPLETE",
+          "contact_geometry_status": "COMPLETE",
+          "actual_bond_measured": false,
+          "weld_strength_status": "UNMEASURED",
+          "interlayer_failure_load_n": null
+        },
+        "probe_basis": "UNIT_SCHEMA_PROBE_DERIVED_FROM_ROLE_ENUM_NOT_SOURCE_FEATURE_TOKEN_OR_GEOMETRY"
+      },
+      "labels": [
+        "INNER_WALL"
+      ],
+      "origin": "MINIMAL_CURRENT_FULL_GEOMETRY_PROCESS_ROLE_AND_STATUS_EVIDENCE",
+      "geometry_retained": false,
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    },
+    {
+      "id": "fresh-process-semantic-8049e805bd5c3741",
+      "input": {
+        "canonical_schema_feature": "unknown model",
+        "expected_role": "OTHER_MODEL",
+        "observed_current_source_semantics": {
+          "process_version": "LOCAL_COMMANDED_PROCESS_V2_CURA_FEATURE_ROLES",
+          "is_measured": false,
+          "measured_substrate_temperature_c": null,
+          "individual_wall_passes_resolved": false,
+          "source_geometry_complete": true,
+          "deposited_section_status": "COMPLETE",
+          "contact_geometry_status": "COMPLETE",
+          "actual_bond_measured": false,
+          "weld_strength_status": "UNMEASURED",
+          "interlayer_failure_load_n": null
+        },
+        "probe_basis": "UNIT_SCHEMA_PROBE_DERIVED_FROM_ROLE_ENUM_NOT_SOURCE_FEATURE_TOKEN_OR_GEOMETRY"
+      },
+      "labels": [
+        "OTHER_MODEL"
+      ],
+      "origin": "MINIMAL_CURRENT_FULL_GEOMETRY_PROCESS_ROLE_AND_STATUS_EVIDENCE",
+      "geometry_retained": false,
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    },
+    {
+      "id": "fresh-process-semantic-c99de17c1b2f0857",
+      "input": {
+        "canonical_schema_feature": "internal solid infill",
+        "expected_role": "SOLID",
+        "observed_current_source_semantics": {
+          "process_version": "LOCAL_COMMANDED_PROCESS_V2_CURA_FEATURE_ROLES",
+          "is_measured": false,
+          "measured_substrate_temperature_c": null,
+          "individual_wall_passes_resolved": false,
+          "source_geometry_complete": true,
+          "deposited_section_status": "COMPLETE",
+          "contact_geometry_status": "COMPLETE",
+          "actual_bond_measured": false,
+          "weld_strength_status": "UNMEASURED",
+          "interlayer_failure_load_n": null
+        },
+        "probe_basis": "UNIT_SCHEMA_PROBE_DERIVED_FROM_ROLE_ENUM_NOT_SOURCE_FEATURE_TOKEN_OR_GEOMETRY"
+      },
+      "labels": [
+        "SOLID"
+      ],
+      "origin": "MINIMAL_CURRENT_FULL_GEOMETRY_PROCESS_ROLE_AND_STATUS_EVIDENCE",
+      "geometry_retained": false,
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    },
+    {
+      "id": "fresh-process-semantic-ea67605a8f848992",
+      "input": {
+        "canonical_schema_feature": "infill",
+        "expected_role": "INFILL",
+        "observed_current_source_semantics": {
+          "process_version": "LOCAL_COMMANDED_PROCESS_V2_CURA_FEATURE_ROLES",
+          "is_measured": false,
+          "measured_substrate_temperature_c": null,
+          "individual_wall_passes_resolved": false,
+          "source_geometry_complete": true,
+          "deposited_section_status": "COMPLETE",
+          "contact_geometry_status": "COMPLETE",
+          "actual_bond_measured": false,
+          "weld_strength_status": "UNMEASURED",
+          "interlayer_failure_load_n": null
+        },
+        "probe_basis": "UNIT_SCHEMA_PROBE_DERIVED_FROM_ROLE_ENUM_NOT_SOURCE_FEATURE_TOKEN_OR_GEOMETRY"
+      },
+      "labels": [
+        "INFILL"
+      ],
+      "origin": "MINIMAL_CURRENT_FULL_GEOMETRY_PROCESS_ROLE_AND_STATUS_EVIDENCE",
+      "geometry_retained": false,
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    },
+    {
+      "id": "fresh-process-semantic-f5ba193d9fac0922",
+      "input": {
+        "canonical_schema_feature": "outer wall",
+        "expected_role": "OUTER_WALL",
+        "observed_current_source_semantics": {
+          "process_version": "LOCAL_COMMANDED_PROCESS_V2_CURA_FEATURE_ROLES",
+          "is_measured": false,
+          "measured_substrate_temperature_c": null,
+          "individual_wall_passes_resolved": false,
+          "source_geometry_complete": true,
+          "deposited_section_status": "COMPLETE",
+          "contact_geometry_status": "WITHHELD",
+          "actual_bond_measured": false,
+          "weld_strength_status": "UNMEASURED",
+          "interlayer_failure_load_n": null
+        },
+        "probe_basis": "UNIT_SCHEMA_PROBE_DERIVED_FROM_ROLE_ENUM_NOT_SOURCE_FEATURE_TOKEN_OR_GEOMETRY"
+      },
+      "labels": [
+        "COMPLETE_SOURCE_GEOMETRY_CONTACT_WITHHELD",
+        "OUTER_WALL"
+      ],
+      "origin": "MINIMAL_CURRENT_FULL_GEOMETRY_PROCESS_ROLE_AND_STATUS_EVIDENCE",
+      "geometry_retained": false,
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    },
+    {
+      "id": "fresh-process-semantic-6a676dcafcce419a",
+      "input": {
+        "canonical_schema_feature": "bridge",
+        "expected_role": "BRIDGE",
+        "observed_current_source_semantics": {
+          "process_version": "LOCAL_COMMANDED_PROCESS_V2_CURA_FEATURE_ROLES",
+          "is_measured": false,
+          "measured_substrate_temperature_c": null,
+          "individual_wall_passes_resolved": false,
+          "source_geometry_complete": true,
+          "deposited_section_status": "COMPLETE",
+          "contact_geometry_status": "WITHHELD",
+          "actual_bond_measured": false,
+          "weld_strength_status": "UNMEASURED",
+          "interlayer_failure_load_n": null
+        },
+        "probe_basis": "UNIT_SCHEMA_PROBE_DERIVED_FROM_ROLE_ENUM_NOT_SOURCE_FEATURE_TOKEN_OR_GEOMETRY"
+      },
+      "labels": [
+        "BRIDGE",
+        "COMPLETE_SOURCE_GEOMETRY_CONTACT_WITHHELD"
+      ],
+      "origin": "MINIMAL_CURRENT_FULL_GEOMETRY_PROCESS_ROLE_AND_STATUS_EVIDENCE",
+      "geometry_retained": false,
+      "numeric_fracture_ground_truth": null,
+      "strength_training_eligible": false
+    }
+  ]
+}
