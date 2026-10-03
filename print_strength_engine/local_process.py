@@ -7,7 +7,7 @@ from copy import deepcopy
 from math import hypot, isfinite
 from .automatic_sections import StreamingSections
 
-VERSION='LOCAL_COMMANDED_PROCESS_V1'
+VERSION='LOCAL_COMMANDED_PROCESS_V2_CURA_FEATURE_ROLES'
 VOLUME_PROVENANCE='GCODE_COMMANDED_VOLUME_RECTANGULAR_EQUIVALENT'
 ROLES=('OUTER_WALL','INNER_WALL','INFILL','SOLID','BRIDGE','OTHER_MODEL')
 RANGES={'temperature_setpoint_c':('nozzle_setpoint_c',0,600),
@@ -25,11 +25,11 @@ def _number(value,low=0,high=1e12):
 
 def _role(feature):
     feature=str(feature or '').lower()
-    if feature in ('outer wall','external perimeter'):return 'OUTER_WALL'
-    if feature in ('inner wall','perimeter'):return 'INNER_WALL'
+    if feature in ('outer wall','external perimeter','wall-outer'):return 'OUTER_WALL'
+    if feature in ('inner wall','perimeter','wall-inner'):return 'INNER_WALL'
     if 'bridge' in feature:return 'BRIDGE'
-    if feature in ('sparse infill','infill','internal infill'):return 'INFILL'
-    if 'solid' in feature or feature in ('top surface','bottom surface'):return 'SOLID'
+    if feature in ('sparse infill','infill','internal infill','fill'):return 'INFILL'
+    if 'solid' in feature or feature in ('top surface','bottom surface','skin'):return 'SOLID'
     return 'OTHER_MODEL'
 
 
