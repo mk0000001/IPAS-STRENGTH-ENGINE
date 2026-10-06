@@ -1,9 +1,9 @@
 {
   "counting_rule": "Reachable non-merge commits modifying the engine package, excluding _version.py; initial import counts as revision 1. Docs, tests-only and host-app changes excluded. Not individual feature counts.",
-  "version": "0.23.0",
-  "revision_count": 23,
-  "update_count": 22,
-  "source_commit": "f3ee9a2e63f14154d8bf9900a60d9bc55f0177f4",
+  "version": "0.24.0",
+  "revision_count": 24,
+  "update_count": 23,
+  "source_commit": "d065d560a24028c93055540c769096174feb1d75",
   "commits": [
     {
       "commit": "b8d3aeeabebb80addc05a50ca25e2ad3e000a61d",
@@ -96,6 +96,10 @@
     {
       "commit": "f3ee9a2e63f14154d8bf9900a60d9bc55f0177f4",
       "subject": "Fix contact gaps and validate cached section mechanics"
+    },
+    {
+      "commit": "d065d560a24028c93055540c769096174feb1d75",
+      "subject": "Audit observation provenance before experimental calibration"
     }
   ]
 }

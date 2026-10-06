@@ -1,5 +1,9 @@
 # 시스템 검증 결과와 적용 한계
 
+최신 품질 검토(2026-10-07): [관측 출처·보고서 단면·견적 이력 성능 검증](commercial-quality-review-20261007.md).
+
+Latest quality review (2026-10-07): [observation provenance, report sections and estimate-history performance](commercial-quality-review-20261007.md).
+
 최신 전체 재검토(2026-10-07): [단면·층 접촉 오류 수정, 논문 검토와 실증 범위](whole-engine-review-20261007.md).
 
 Latest whole-engine review (2026-10-07): [section/contact fixes, primary research and validation scope](whole-engine-review-20261007.md).
