@@ -1,5 +1,9 @@
 # 시스템 검증 결과와 적용 한계
 
+최종 화면 배포(2026-10-07): [PrintOps v0.5.23 후보 카드 반응형 배치 검증](responsive-candidates-release-20261007.md). 강도 v0.24.0 유지.
+
+Final presentation deployment (2026-10-07): [PrintOps v0.5.23 responsive candidate verification](responsive-candidates-release-20261007.md). Strength remains v0.24.0.
+
 최신 품질 검토(2026-10-07): [관측 출처·보고서 단면·견적 이력 성능 검증](commercial-quality-review-20261007.md).
 
 Latest quality review (2026-10-07): [observation provenance, report sections and estimate-history performance](commercial-quality-review-20261007.md).

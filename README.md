@@ -2,6 +2,8 @@
 
 ## 한국어
 
+최종 화면 배포: [PrintOps v0.5.23 후보 카드 반응형 검증](docs/responsive-candidates-release-20261007.md). 강도 v0.24.0 유지.
+
 최신 품질 검토: [관측 출처·보고서 단면·견적 이력 성능 검증](docs/commercial-quality-review-20261007.md).
 
 최신 전체 재검토: [층 접촉·단면 캐시·원문 충돌 및 상용 검증 경계](docs/whole-engine-review-20261007.md).
@@ -33,6 +35,8 @@ python -m unittest discover -s tests
 ```
 
 ## English
+
+Final presentation deployment: [PrintOps v0.5.23 responsive candidate verification](docs/responsive-candidates-release-20261007.md). Strength remains v0.24.0.
 
 Latest quality review: [observation provenance, report sections and estimate-history performance](docs/commercial-quality-review-20261007.md).
 

@@ -1,0 +1,32 @@
+--- a/app/web/styles.css
++++ b/app/web/styles.css
+@@ -325,3 +325,3 @@
+ .viewer-legend .candidate {color:#b66b07;}
+-.viewer-candidates {margin-top:14px;padding:14px;background:#f7f9fb;border:1px solid var(--line);border-radius:10px;}
++.viewer-candidates {margin-top:14px;padding:14px;background:#f7f9fb;border:1px solid var(--line);border-radius:10px;container:candidate-layout / inline-size;}
+ .viewer-candidates[hidden] {display:none;}
+@@ -329,4 +329,7 @@
+ .viewer-candidate-heading label {display:flex;align-items:center;gap:6px;font-size:13px;}
+-.viewer-candidate-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:start;}
++.viewer-candidate-grid {display:grid;grid-template-columns:minmax(0,1fr);gap:8px;align-items:start;}
++@container candidate-layout (min-width:468px) { .viewer-candidate-grid {grid-template-columns:repeat(2,minmax(0,1fr));} }
++@container candidate-layout (min-width:706px) { .viewer-candidate-grid {grid-template-columns:repeat(3,minmax(0,1fr));} }
+ .viewer-candidate-card {min-width:0;display:flex;flex-direction:column;gap:6px;overflow-wrap:anywhere;}
++.viewer-candidate-card:has(> details[open]) {grid-column:1/-1;}
+ .viewer-candidate-card > .viewer-candidate {width:100%;}
+@@ -348,4 +351,3 @@
+ .local-risk strong {display:block;font-size:16px;}.local-risk p {margin:6px 0 0;}
+-@media(max-width:680px) { .viewer-stage canvas {height:300px;} .viewer-layer {flex-wrap:wrap;} .viewer-candidate-grid {grid-template-columns:repeat(2,minmax(0,1fr));} }
+-@media(max-width:480px) { .viewer-candidate-grid {grid-template-columns:minmax(0,1fr);} }
++@media(max-width:680px) { .viewer-stage canvas {height:300px;} .viewer-layer {flex-wrap:wrap;} }
+ @media(max-width:500px) { .analysis-timing { grid-template-columns:minmax(0,1fr); } }
+--- a/app/config.py
++++ b/app/config.py
+@@ -4 +4 @@
+-VERSION = '0.5.22-commercial-quality'
++VERSION = '0.5.23-responsive-candidates'
+--- a/app/web/index.html
++++ b/app/web/index.html
+@@ -8 +8 @@
+-  <link rel="stylesheet" href="/web/styles.css?v=20261004-cancel-retry">
++  <link rel="stylesheet" href="/web/styles.css?v=20261007-responsive-candidates">
