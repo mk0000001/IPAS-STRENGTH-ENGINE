@@ -7,8 +7,9 @@ from copy import deepcopy
 import json
 from pathlib import Path
 from .calibration import compare_contexts
+from .provenance import prepare_provenance_map, catalog_provenance
 
-VERSION = 'PRIMARY_LITERATURE_COMPARISONS_V2_PROCESS_INTERACTIONS'
+VERSION = 'PRIMARY_LITERATURE_COMPARISONS_V3_OBSERVATION_PROVENANCE'
 
 _CATALOG = [
     {
@@ -84,7 +85,7 @@ _CATALOG.extend(json.loads(Path(__file__).with_name('process_interaction_catalog
 _RESEARCH_COVERAGE=json.loads(Path(__file__).with_name('research_coverage_catalog.json').read_text(encoding='utf-8'))
 
 
-def literature_comparisons(target_context, *, property_name='tensile_strength'):
+def literature_comparisons(target_context, *, property_name='tensile_strength', provenance_map=None):
     """Return same-family observations with applicability gaps, never a factor.
 
     Callers must request shear explicitly. Exact grade text is only an identity
@@ -95,6 +96,7 @@ def literature_comparisons(target_context, *, property_name='tensile_strength'):
     family = str(target.get('material_family') or '').strip().upper()
     grade = str(target.get('material_grade') or '').strip().casefold()
     rows = []
+    prepared_map = prepare_provenance_map(provenance_map)
     for entry in _CATALOG:
         if entry['material_family'] != family or entry['property'] != property_name:
             continue
@@ -118,7 +120,10 @@ def literature_comparisons(target_context, *, property_name='tensile_strength'):
                               material_grade=row['material_grade'], property=row['property'])
         row['calibration_context_match'] = compare_contexts(source_context, target,
                                                            varying=(variable,) if variable else ())
-        row['experimental_lineage_id'] = row['doi']
+        identity = catalog_provenance(entry, prepared_map)
+        row.update(identity)
+        row['experimental_lineage_id'] = identity['experimental_lineages'][0] if len(identity['experimental_lineages']) == 1 else None
+        row['provenance_map'] = deepcopy(prepared_map[0])
         row['runtime_calibration_eligible'] = False
         row['calibration_blocking_reason'] = 'NO_INDEPENDENTLY_VALIDATED_TRANSFER_MODEL'
         if variable:
@@ -136,7 +141,7 @@ def literature_comparisons(target_context, *, property_name='tensile_strength'):
     return rows
 
 
-def evidence_coverage(target_context, *, property_name='tensile_strength'):
+def evidence_coverage(target_context, *, property_name='tensile_strength', provenance_map=None):
     """Every requested family gets an explicit evidence status, including gaps.
 
     Keep property-filtered numeric observations separate from family-level
@@ -147,6 +152,10 @@ def evidence_coverage(target_context, *, property_name='tensile_strength'):
     target=target_context if isinstance(target_context,dict) else {}
     family=str(target.get('material_family') or '').strip().upper()
     matching=[r for r in _CATALOG if r['material_family']==family and r['property']==property_name]
+    prepared_map=prepare_provenance_map(provenance_map)
+    identities=[catalog_provenance(r,prepared_map) for r in matching]
+    publications=sorted({p for r in identities for p in r['publication_ids']})
+    campaigns=sorted({p for r in identities for p in r['experimental_lineages']})
     other=sorted({r['property'] for r in _CATALOG if r['material_family']==family and r['property']!=property_name})
     researched=next((deepcopy(r) for r in _RESEARCH_COVERAGE['materials'] if r['material_family']==family),None)
     numeric_status='COMPARISON_EVIDENCE_ONLY' if matching else 'NO_MATCHING_CURATED_PROPERTY_EVIDENCE'
@@ -156,7 +165,14 @@ def evidence_coverage(target_context, *, property_name='tensile_strength'):
                 else 'RESEARCH_REVIEWED_INSUFFICIENT')
     return {'version':VERSION,'material_family':family or None,'property':property_name,
             'status':status,
-            'experimental_lineages':sorted({r['doi'] for r in matching}),
+            'experimental_lineages':campaigns,
+            'publication_ids':publications,'publication_count':len(publications),
+            'declared_campaigns':sorted({p for r in identities for p in r['declared_campaigns']}),
+            'canonical_campaigns':sorted({p for r in identities for p in r['canonical_campaigns']}),
+            'independent_validation_established':False,
+            'provenance_map':deepcopy(prepared_map[0]),
+            'unresolved_observation_count':sum(bool(p['errors']) or p['canonical_campaign_id'] is None
+                for r in identities for p in r['observation_provenance']),
             'comparison_count':len(matching),'other_properties_available':other,
             'approved_transfer_models':0,'effective_mpa':None,
             'grade_identity_verified':target.get('grade_identity_verified') is True,

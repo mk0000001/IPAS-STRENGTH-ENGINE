@@ -11,8 +11,9 @@ from hashlib import sha256
 import json
 from math import isfinite, sqrt
 from statistics import mean
+from .provenance import prepare_provenance_map, observation_provenance
 
-VERSION = 'PROCESS_CALIBRATION_AUDIT_V1'
+VERSION = 'PROCESS_CALIBRATION_AUDIT_V2_OBSERVATION_PROVENANCE'
 # No public evidence reviewed so far establishes a transferable, independently
 # validated model for the registered manufacturer references. Do not populate
 # this registry merely because a fitted curve has small training residuals.
@@ -102,7 +103,7 @@ def _number(value):
     return isinstance(value, (int, float)) and not isinstance(value, bool) and isfinite(value)
 
 
-def validate_linear_candidate(records, *, variable):
+def validate_linear_candidate(records, *, variable, provenance_map=None):
     """Leave-one-experimental-lineage-out evaluation, with no extrapolation.
 
     Each row requires sample_id, study_id, lineage_id, batch_id, source_url,
@@ -110,11 +111,15 @@ def validate_linear_candidate(records, *, variable):
     describe one grade/property/orientation/conditioning/process stratum except
     for the declared variable. Lineage IDs must group papers and datasets from
     the same experiment. Caller-provided IDs are audited, not independently
-    authenticated. Never random-split specimens from the same experiment.
+    authenticated. An optional observation-level provenance_map canonicalizes
+    curated identities, but validates metadata consistency, not source truth.
+    Never random-split specimens from the same experiment.
     """
     if variable not in VARIABLES:
         raise ValueError('UNSUPPORTED_CALIBRATION_VARIABLE')
     records = deepcopy(list(records))
+    prepared_map = prepare_provenance_map(provenance_map)
+    mapped = provenance_map is not None
     # Hash retains input values and metadata; report does not conceal rejected
     # rows or convert missing labels to zero. NaN is explicitly invalid below.
     digest = sha256(json.dumps(records, sort_keys=True, separators=(',', ':'),
@@ -125,17 +130,34 @@ def validate_linear_candidate(records, *, variable):
               'input_sha256': digest, 'input_rows': len(records),
               'status': 'INSUFFICIENT_EVIDENCE', 'accepted_for_runtime': False,
               'is_prediction': False, 'exclusions': [], 'folds': [],
+              'provenance_map': deepcopy(prepared_map[0]), 'input_provenance': [],
+              'independence_status': 'CURATED_METADATA_SOURCE_AUTHENTICITY_UNVERIFIED' if mapped
+                  else 'CALLER_DECLARED_UNVERIFIED',
+              'independent_validation_established': False,
+              'declared_lineages': sorted({r['lineage_id'] for r in records
+                  if isinstance(r, dict) and isinstance(r.get('lineage_id'), str) and known(r['lineage_id'])}),
+              'canonical_campaigns': [], 'publication_ids': [], 'publication_count': 0,
               'replicate_policy': 'AVERAGE_WITHIN_LINEAGE_BATCH_CONDITION',
               'acceptance_rule': 'At least three lineages; full holdout coverage; MAE at least 1e-12 MPa lower than training mean in every fold (numerical tie tolerance only).',
               'limitations': ['Lineage/provenance supplied by caller requires source review.',
                               'A passing candidate is not an approved model or a design allowable.',
                               'No independent-laboratory or universal-accuracy claim.']}
-    valid, seen, study_lineages, sample_lineages = [], set(), {}, {}
+    valid, seen, study_lineages, sample_lineages, original_outcomes = [], set(), {}, {}, set()
     for index, row in enumerate(records):
         errors = []
         if not isinstance(row, dict):
             report['exclusions'].append({'row': index, 'reasons': ['INVALID_ROW']})
+            report['input_provenance'].append({'provided': deepcopy(row), 'errors': ['INVALID_ROW']})
             continue
+        provenance = observation_provenance(row, prepared_map)
+        report['input_provenance'].append(provenance)
+        errors.extend(provenance['errors'])
+        if provenance['observation_kind'] in ('PUBLISHED_AGGREGATE', 'DERIVED_SUMMARY'):
+            errors.append('AGGREGATE_NOT_SPECIMEN')
+        elif mapped and provenance['observation_kind'] != 'RAW_SPECIMEN':
+            errors.append('RAW_SPECIMEN_IDENTITY_REQUIRED')
+        if provenance['observation_kind'] == 'RAW_SPECIMEN' and row.get('n') not in (None, 1):
+            errors.append('RAW_SPECIMEN_N_NOT_ONE')
         context = row.get('context') if isinstance(row.get('context'), dict) else {}
         for field in ('sample_id', 'study_id', 'lineage_id', 'batch_id', 'source_url', 'source_locator'):
             if not isinstance(row.get(field), str) or not known(row.get(field)):
@@ -150,13 +172,21 @@ def validate_linear_candidate(records, *, variable):
         if errors:
             report['exclusions'].append({'row': index, 'reasons': errors})
             continue
-        key = (row['lineage_id'], row['sample_id'])
+        if mapped:
+            row['lineage_id'] = provenance['canonical_campaign_id']
+        origin = provenance['original_outcome_id']
+        if origin is not None:
+            if origin in original_outcomes:
+                errors.append('ORIGINAL_OUTCOME_REUSED')
+            original_outcomes.add(origin)
+        key = (row['lineage_id'], origin if mapped else row['sample_id'])
         if key in seen:
             errors.append('DUPLICATE_SPECIMEN')
         seen.add(key)
-        prior = study_lineages.setdefault(row['study_id'], row['lineage_id'])
-        if prior != row['lineage_id']:
-            errors.append('STUDY_SPLIT_ACROSS_LINEAGES')
+        if not mapped:
+            prior = study_lineages.setdefault(row['study_id'], row['lineage_id'])
+            if prior != row['lineage_id']:
+                errors.append('STUDY_SPLIT_ACROSS_LINEAGES')
         specimen_source = (row['source_url'], row['source_locator'], row['sample_id'])
         prior = sample_lineages.setdefault(specimen_source, row['lineage_id'])
         if prior != row['lineage_id']:
@@ -172,6 +202,15 @@ def validate_linear_candidate(records, *, variable):
     report['eligible_rows'] = len(valid)
     lineages = sorted({r['lineage_id'] for r in valid})
     report['experimental_lineages'] = lineages
+    report['canonical_campaigns'] = lineages if mapped else []
+    report['publication_ids'] = sorted({p['publication_id'] for p in report['input_provenance']
+                                       if p.get('publication_id')})
+    report['publication_count'] = len(report['publication_ids'])
+    if prepared_map[0]['status'] == 'INVALID_PROVENANCE_MAP':
+        report['status'] = 'REJECTED_INPUT'
+        report['independence_status'] = 'INVALID_PROVENANCE_MAP'
+        report['blocking_reason'] = 'INVALID_PROVENANCE_MAP'
+        return report
     if report['exclusions']:
         report['status'] = 'REJECTED_INPUT'
         return report
@@ -235,11 +274,13 @@ def main():
     parser.add_argument('records',type=Path,help='JSON array of source-linked measurement records')
     parser.add_argument('--variable',required=True,choices=VARIABLES)
     parser.add_argument('--output',type=Path)
+    parser.add_argument('--provenance-map',type=Path,help='Optional observation identity map; metadata audit, not source authentication')
     args=parser.parse_args()
     records=json.loads(args.records.read_text(encoding='utf-8-sig'))
     if not isinstance(records,list):
         parser.error('records must be a JSON array')
-    report=validate_linear_candidate(records,variable=args.variable)
+    provenance_map=json.loads(args.provenance_map.read_text(encoding='utf-8-sig')) if args.provenance_map else None
+    report=validate_linear_candidate(records,variable=args.variable,provenance_map=provenance_map)
     output=json.dumps(report,ensure_ascii=False,indent=2,allow_nan=False)+'\n'
     if args.output:
         args.output.write_text(output,encoding='utf-8')
