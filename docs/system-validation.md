@@ -1,5 +1,9 @@
 # 시스템 검증 결과와 적용 한계
 
+최신 전체 재검토(2026-10-07): [단면·층 접촉 오류 수정, 논문 검토와 실증 범위](whole-engine-review-20261007.md).
+
+Latest whole-engine review (2026-10-07): [section/contact fixes, primary research and validation scope](whole-engine-review-20261007.md).
+
 취소·재분석 복구 검증(2026-10-04): [취소 상태 표시와 저장 원본 재분석](analysis-cancel-retry-20261004.md).
 
 Cancellation and recovery validation (2026-10-04): [cancelled status and retrying saved source files](analysis-cancel-retry-20261004.md).

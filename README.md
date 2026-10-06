@@ -2,9 +2,11 @@
 
 ## 한국어
 
+최신 전체 재검토: [층 접촉·단면 캐시·원문 충돌 및 상용 검증 경계](docs/whole-engine-review-20261007.md).
+
 최신 공정 요인 개선: [온도·벽·명령 압출량을 연결한 취약부 검증](docs/process-aware-weakness-validation-20261003.md). 제조사 원자료와 조건부 단면 계산을 분리하며 보편적 강도 배율은 적용하지 않습니다.
 
-릴리스 **v0.22.0** · 코드 개정 22회(최초 등록 이후 업데이트 21회). [커밋 집계](VERSION_HISTORY.json). 패키지 변경 비병합 커밋을 세며 문서·시험 전용 변경과 자동 생성 버전 파일은 제외합니다. 개정 수는 정확도 검증 횟수가 아닙니다.
+릴리스 **v0.23.0** · 코드 개정 23회(최초 등록 이후 업데이트 22회). [커밋 집계](VERSION_HISTORY.json). 패키지 변경 비병합 커밋을 세며 문서·시험 전용 변경과 자동 생성 버전 파일은 제외합니다. 개정 수는 정확도 검증 횟수가 아닙니다.
 
 **힘을 입력하지 않아도 G-code의 국부 경로 단면으로 인장·굽힘 하중을 자동 추정합니다. 형상 선별·문헌 비교·명시적 하중 조건의 정상응력 계산도 제공합니다. 자동 추정은 조건을 명시한 참고 시나리오이며 실제 파단하중이나 가장 먼저 부러질 위치를 검증한 예측은 아닙니다.**
 
@@ -30,7 +32,9 @@ python -m unittest discover -s tests
 
 ## English
 
-Release **v0.22.0** · 22 package code revisions (21 updates after initial import). [Commit ledger](VERSION_HISTORY.json). Reachable non-merge package commits are counted; documentation-only, tests-only and generated version metadata changes are excluded. Revision count is not a validation rating.
+Latest whole-engine review: [contact, section-cache integrity, primary-source conflicts and validation boundaries](docs/whole-engine-review-20261007.md).
+
+Release **v0.23.0** · 23 package code revisions (22 updates after initial import). [Commit ledger](VERSION_HISTORY.json). Reachable non-merge package commits are counted; documentation-only, tests-only and generated version metadata changes are excluded. Revision count is not a validation rating.
 
 **Automatic tensile and bending reference loads from local G-code road sections, without entering a force. Geometry screening, literature comparison and explicit-load normal-stress analysis remain available. Automatic values are conditional reference scenarios, not validated part fracture loads or failure locations.**
 

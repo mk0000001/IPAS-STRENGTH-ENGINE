@@ -44,7 +44,7 @@ Scientific Reports의 각 소재·패턴에서 **25%와 75%의 시편만**으로
 |ABS-CF|부족|[층간 파괴인성](https://doi.org/10.1016/j.addma.2018.02.023)을 인장강도로 대체하지 않음|
 |ABS-GF|부족|[단섬유·연속섬유 비교](https://doi.org/10.1002/pc.71317); 보강 형태 분리 필요|
 |PA6-CF|부족|[인장·피로 연구](https://doi.org/10.3390/polym15030507); 수분·grade 일치 부족|
-|PA6-GF|부족|[시험온도 연구](https://doi.org/10.35860/iarej.862304); 연속 GF를 단섬유로 전이하지 않음|
+|PA6-GF|부족|[시험온도 연구](https://doi.org/10.35860/iarej.862304)는 **단유리섬유 PA6**이며 ASTM D638 시험온도 −20/20/40/60°C를 비교함. 노즐온도 실험이나 연속 GF 연구로 분류하지 않음|
 |PA12-CF|부족|[층간 파괴 연구](https://doi.org/10.1016/j.compstruct.2019.02.005); 물성 구분 필요|
 |PA12-GF|부족|[FFF 마찰·마모 연구](https://doi.org/10.3390/polym18182239)의 인장 TDS 인용은 독립 인장실험이 아님; SLS/MJF 자료 제외|
 |PPA-CF|비교|위 Fiberlogy CF15 시험온도 연구|
@@ -70,5 +70,7 @@ The [PPA-CF study](https://doi.org/10.3390/polym18121422) identifies Fiberlogy P
 For an explicitly **within-study diagnostic**, endpoint means from 25% and 75% infill predicted all six held-out 50% specimens per material/pattern by linear interpolation. The three patterns were analyzed separately; Lateral 100% was excluded. There were 18 held-out specimens per material. Mean specimen-level errors were PLA **0.495 MPa / 2.530%**, ABS **0.551 MPa / 4.011%**, and PETG **1.361 MPa / 8.536%** (MAE/MAPE). This protocol was chosen after inspecting the dataset structure. It is not prospective validation, independent-study generalization, or engine accuracy. No interpolation coefficients were applied to the production engine.
 
 Family status is **comparison only** for PLA, ABS, PETG, ASA, PPA-CF, and PC, within the specific source/property limits in the Korean table. It is **insufficient** for PETG-CF/GF, ABS-CF/GF, PA6-CF/GF, PA12-CF/GF, PPA-GF, PPS-CF, TPU, and TPE. Listed primary papers are research candidates where full grade-matched extraction is incomplete. Chopped and continuous fiber, FFF and SLS/MJF, and tensile/flexural/shear/fracture properties remain separate. TDS values quoted in research papers are not independent tests.
+
+Correction verified on 2026-10-07: [DOI 10.35860/iarej.862304](https://dergipark.org.tr/en/pub/iarej/article/862304) studies **short-glass-fiber PA6**, not continuous glass fiber. Its −20/20/40/60°C settings are ASTM D638 **test temperatures**, not extrusion temperatures. The earlier Korean row incorrectly implied a continuous-fiber source; runtime coverage already classified it as short GF.
 
 External independent validation remains **n=0 across all registered families**, with accuracy undetermined. Article and supplement share one experimental lineage. Source texts, figures, DOCX files, and specimen tables are retained privately and are not reproduced in this public repository. The Scientific Reports XML specifies CC BY-NC-ND 4.0; other source rights remain with their respective licensors.

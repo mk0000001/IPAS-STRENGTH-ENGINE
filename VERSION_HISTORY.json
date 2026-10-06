@@ -1,9 +1,9 @@
 {
   "counting_rule": "Reachable non-merge commits modifying the engine package, excluding _version.py; initial import counts as revision 1. Docs, tests-only and host-app changes excluded. Not individual feature counts.",
-  "version": "0.22.0",
-  "revision_count": 22,
-  "update_count": 21,
-  "source_commit": "dfb4825b39c162db7d33a5e43a77afc55a8ee6a5",
+  "version": "0.23.0",
+  "revision_count": 23,
+  "update_count": 22,
+  "source_commit": "f3ee9a2e63f14154d8bf9900a60d9bc55f0177f4",
   "commits": [
     {
       "commit": "b8d3aeeabebb80addc05a50ca25e2ad3e000a61d",
@@ -92,6 +92,10 @@
     {
       "commit": "dfb4825b39c162db7d33a5e43a77afc55a8ee6a5",
       "subject": "Preserve exact Cura primary roles in commanded process descriptors"
+    },
+    {
+      "commit": "f3ee9a2e63f14154d8bf9900a60d9bc55f0177f4",
+      "subject": "Fix contact gaps and validate cached section mechanics"
     }
   ]
 }

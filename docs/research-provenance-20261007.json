@@ -1,0 +1,2221 @@
+{
+  "schema": "CURATED_RESEARCH_PROVENANCE_V1",
+  "review_date": "2026-10-07",
+  "scope": "Primary-source metadata, access and eligibility; no licensed source payloads or replicate tables.",
+  "exhaustive_systematic_review": false,
+  "approved_runtime_transfer_models": 0,
+  "independent_part_first_failure_validation": 0,
+  "material_sources": [
+    {
+      "id": "M01",
+      "doi": "10.3390/polym18050563",
+      "primary_url": "https://www.mdpi.com/2073-4360/18/5/563",
+      "fulltext_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12986956/fullTextXML",
+      "access": "Publisher article and official full-text XML inspected; numerical Table 3 and Methods verified.",
+      "material": "PA12-CF",
+      "grade": "Fiberlogy PA12 CF15",
+      "reinforcement": "Chopped CF; nominal 15%",
+      "stress_area_basis": "Nominal gross narrow-section geometry is specified; per-specimen measured stress denominator not verified. Do not relabel net deposited/contact stress.",
+      "dispersion_definition": "Standard deviation explicitly described.",
+      "lineage": "PA12-CF temperature campaign; Ciganas/Kalinauskis/Cigane research group, shared source ecosystem with M09, not independent labs by DOI alone.",
+      "comparison_eligibility": "Grade-specific aggregate tensile comparison after source normalization.",
+      "calibration_or_validation_eligibility": "Not eligible yet: no acquired individual curves, batch identity, measured moisture, full humidity/chamber/area context or predeclared external holdout.",
+      "cautions": [
+        "The quoted manufacturer 120 MPa is TDS, not this printed test.",
+        "Reported modulus uses crosshead-based apparent strain and must not silently become local extensometer modulus.",
+        "Test temperature varies; nozzle temperature does not."
+      ],
+      "printer": "Creality K1 MAX",
+      "process": {
+        "orientation": "flat",
+        "raster_angles_deg": [
+          45,
+          -45
+        ],
+        "infill_percent": 100,
+        "infill_pattern": "linear",
+        "walls": 5,
+        "nozzle_diameter_mm": 0.6,
+        "layer_height_mm": 0.2,
+        "nozzle_c": 265,
+        "bed_c": 100,
+        "speed_mm_s": 60,
+        "fan_percent": 100,
+        "chamber_c": null
+      },
+      "conditioning": {
+        "drying_c": 80,
+        "drying_h": 12,
+        "equilibration_before_test_min": 30,
+        "residual_moisture_measured": false,
+        "test_relative_humidity_percent": null
+      },
+      "test": {
+        "property": "UTS",
+        "standard": "ISO 527",
+        "crosshead_speed_mm_min": 1,
+        "test_temperature_c": [
+          23,
+          40,
+          60,
+          80,
+          100,
+          120
+        ],
+        "nominal_narrow_section_mm": [
+          10,
+          3
+        ]
+      },
+      "n": {
+        "per_temperature": 3,
+        "temperatures": 6,
+        "reported_tensile_specimens": 18,
+        "individual_records_acquired": 0
+      },
+      "locator": "Methods printing parameters and Table 3; endpoints shown, six aggregate UTS conditions verified.",
+      "observations": [
+        {
+          "test_temperature_c": 23,
+          "mean_MPa": 49.07,
+          "spread_MPa": 0.88
+        },
+        {
+          "test_temperature_c": 120,
+          "mean_MPa": 18.68,
+          "spread_MPa": 0.91
+        }
+      ]
+    },
+    {
+      "id": "M02",
+      "doi": "10.1002/pc.71040",
+      "primary_url": "https://4spepublications.onlinelibrary.wiley.com/doi/10.1002/pc.71040",
+      "fulltext_url": null,
+      "access": "Publisher full HTML inspected; Table 5, abstract, numerical narrative and Methods compared.",
+      "material": "PPS-CF",
+      "grade": "Laboratory compound: Fortron 0214P1 PPS with re-Evo HSC Phenix.25 recycled CF",
+      "reinforcement": "Short recycled CF; 20 wt% rCF group, plus rCF/tourmaline substitutions",
+      "stress_area_basis": "Engineering specimen test; measured denominator procedure not verified.",
+      "dispersion_definition": "Reported 95% confidence interval, not standard deviation.",
+      "lineage": "One laboratory compounding/printing campaign; injection moulding and FFF are distinct fabrication strata.",
+      "comparison_eligibility": "Methods/mechanism comparison; disputed tensile values remain quarantined pending clarification.",
+      "calibration_or_validation_eligibility": "Ineligible: incompatible abstract/table/narrative values, no acquired raw curves or batch identities, custom compound unmatched to registered product grades.",
+      "cautions": [
+        "15/5 and 10/10 groups also have narrative/table mismatches: 66.5/65.2 versus 66.2/65.5 MPa.",
+        "Do not average conflicting claims, select the highest strength or convert confidence intervals into SD without the source definition.",
+        "Flexural and tensile strength are separate responses."
+      ],
+      "printer": "AON-M2",
+      "process": {
+        "orientation": "flat",
+        "raster_angles_deg": [
+          45,
+          -45
+        ],
+        "infill_percent": 100,
+        "nozzle_diameter_mm": 0.4,
+        "line_width_mm": 0.48,
+        "layer_height_mm": 0.2,
+        "nozzle_c": 350,
+        "bed_c": 160,
+        "chamber_c": 100
+      },
+      "conditioning": {
+        "drying_c": 100,
+        "drying_h": 12,
+        "test_temperature_c": 23,
+        "test_relative_humidity_percent": 50,
+        "conditioning_duration_h_minimum": 40
+      },
+      "test": {
+        "property": "UTS",
+        "standard": "ASTM D638",
+        "crosshead_speed_mm_min": 5,
+        "separately_reported_property": "ASTM D790 flexure"
+      },
+      "n": {
+        "per_condition": 5,
+        "individual_records_acquired": 0
+      },
+      "locator": "Table 5 and abstract; Table 5 heading defines 95% confidence intervals.",
+      "observations": [
+        {
+          "group": "20 wt% rCF, unannealed",
+          "mean_MPa": 68.5,
+          "spread_MPa": 2.5,
+          "status": "Provisional Table 5 value; source conflict quarantined"
+        },
+        {
+          "group": "20 wt% rCF, annealed at 235 C",
+          "mean_MPa": 81,
+          "spread_MPa": 2,
+          "status": "Provisional Table 5 value; source conflict quarantined"
+        },
+        {
+          "group": "20 wt% rCF, FFF abstract claim",
+          "mean_MPa": 86,
+          "status": "Conflicts with Table 5; do not ingest as a third condition"
+        }
+      ]
+    },
+    {
+      "id": "M03",
+      "doi": "10.35860/iarej.862304",
+      "primary_url": "https://dergipark.org.tr/en/pub/iarej/article/862304",
+      "fulltext_url": "https://dergipark.org.tr/en/download/article-file/1512952",
+      "access": "Journal PDF text and Table 1 inspected; visual PDF table QA was not completed.",
+      "material": "PA6-GF",
+      "grade": "Owens Corning XSTRAND GF30-PA6",
+      "reinforcement": "Short GF; nominal 30%, approximately 27% by reported TGA",
+      "stress_area_basis": "Specimen dimensions/standard reported; actual measured stress denominator not verified.",
+      "dispersion_definition": "Reported plus/minus; statistical definition not verified.",
+      "lineage": "Tanabi 2021 PA6-GF/ABS test-temperature campaign.",
+      "comparison_eligibility": "Short-GF grade-specific test-temperature comparison, not a continuous-fiber study.",
+      "calibration_or_validation_eligibility": "Not eligible yet: raw replicates, batch, humidity, moisture and measured area missing.",
+      "cautions": [
+        "docs/research-update-20261001.md incorrectly frames this citation as continuous GF; runtime coverage reason already correctly says short-GF.",
+        "Changing test temperature is not changing nozzle temperature.",
+        "GF-PA6 versus ABS also changes polymer and printing settings; no universal reinforcement multiplier."
+      ],
+      "printer": "Zortrax M200",
+      "process": {
+        "orientation": "flat arrangement shown in Fig. 1",
+        "raster_angles_deg": [
+          45,
+          -45
+        ],
+        "infill_percent": 100,
+        "nozzle_diameter_mm": 0.4,
+        "layer_height_mm": 0.19,
+        "nozzle_c": 255,
+        "bed_c": 80,
+        "speed_mm_s": 40
+      },
+      "conditioning": {
+        "drying_c": 60,
+        "drying_h": 48,
+        "equilibration_before_test_min": 30,
+        "temperature_monitor": "IR thermometer",
+        "residual_moisture_measured": false
+      },
+      "test": {
+        "property": "UTS",
+        "standard": "ASTM D638 Type I",
+        "crosshead_speed_mm_min": 1,
+        "test_temperature_c": [
+          -20,
+          20,
+          40,
+          60
+        ],
+        "temperature_tolerance_c": [
+          5,
+          2,
+          2,
+          2
+        ]
+      },
+      "n": {
+        "per_material_temperature": 5,
+        "total_for_GF_PA6_and_ABS": 40,
+        "individual_records_acquired": 0
+      },
+      "locator": "Table 1; Methods separately identify ABS printing at 275 C / 35 mm/s.",
+      "observations": [
+        {
+          "test_temperature_c": -20,
+          "mean_MPa": 70,
+          "spread_MPa": 3
+        },
+        {
+          "test_temperature_c": 20,
+          "mean_MPa": 51,
+          "spread_MPa": 3
+        },
+        {
+          "test_temperature_c": 60,
+          "mean_MPa": 26,
+          "spread_MPa": 2
+        }
+      ]
+    },
+    {
+      "id": "M04",
+      "doi": "10.3390/polym13162752",
+      "primary_url": "https://www.mdpi.com/2073-4360/13/16/2752",
+      "fulltext_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC8401430/fullTextXML",
+      "access": "Official full-text XML Methods inspected; strength graphs not numerically transcribed.",
+      "material": [
+        "PC",
+        "TPU"
+      ],
+      "grade": [
+        "PC EMERGE 8430-15",
+        "TPU Ravathane 140 D70"
+      ],
+      "reinforcement": "Unfilled",
+      "stress_area_basis": "Not verified beyond nominal standard specimen geometry.",
+      "dispersion_definition": "Not verified.",
+      "lineage": "Vidakis 2021 PC/TPU printing and tensile campaign.",
+      "comparison_eligibility": "Grade and strain-rate mechanism boundary; no new ingested numeric tensile rows.",
+      "calibration_or_validation_eligibility": "Ineligible until n, specimen outcomes, exact raster, layer-height, conditioning and area are curated.",
+      "cautions": [
+        "D70 TPU is not 95A TPU.",
+        "Manufacturer values of 70 MPa PC / 45 MPa TPU are not printed observations.",
+        "Rate dependence cannot be collapsed into one universal TPU strength."
+      ],
+      "printer": "Intamsys Funmat HT",
+      "process": {
+        "pc_nozzle_c": [
+          255,
+          260,
+          270
+        ],
+        "pc_bed_c": 85,
+        "pc_chamber_c": 65,
+        "layer_height_mm": null,
+        "raster_definition": "Methods says 45 degrees followed by 180-degree direction changes; do not normalize to alternating +45/-45 without checking the figure."
+      },
+      "conditioning": {
+        "pellet_drying_c": 80,
+        "pellet_drying_h": 24,
+        "filament_drying_c": 50,
+        "filament_drying_h": 4
+      },
+      "test": {
+        "property": "Tensile stress/strain-rate effects",
+        "standard": "ASTM D638-2 Type V",
+        "thickness_mm": 3.2,
+        "test_temperature_c": 23,
+        "crosshead_speed_mm_min": [
+          10,
+          50,
+          100,
+          200,
+          300
+        ]
+      },
+      "n": {
+        "per_condition": null,
+        "individual_records_acquired": 0
+      },
+      "locator": "Methods and Fig. 2 parameter design; numeric figure extraction not performed.",
+      "observations": []
+    },
+    {
+      "id": "M05",
+      "doi": "10.3390/polym15092011",
+      "primary_url": "https://www.mdpi.com/2073-4360/15/9/2011",
+      "fulltext_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10181410/fullTextXML",
+      "access": "Official XML Methods and Table 1 compared with M06/M07.",
+      "material": [
+        "ABS",
+        "ABS-CF"
+      ],
+      "grade": "REC Russia ABS and short-CF/ABS; exact commercial composition unresolved",
+      "reinforcement": null,
+      "stress_area_basis": "Actual measured denominator not verified.",
+      "dispersion_definition": "Reported plus/minus; definition not confirmed in this review.",
+      "lineage": "ABS-Raise3D-REC shared/reused aggregate lineage cluster M05/M06/M07; do not treat three DOIs as three holdouts.",
+      "comparison_eligibility": "Provisional aggregate comparison after resolving metadata/reuse lineage.",
+      "calibration_or_validation_eligibility": "Quarantined as independent data: repeated cells, missing grade/fiber fraction/batch/area/moisture, raw data available only on request.",
+      "cautions": [
+        "Hollow-beam flexure and compact-tension ASTM D5045 fracture are separate properties.",
+        "Nozzle diameter must not stand for a universally independent strength multiplier."
+      ],
+      "printer": "Raise3D Pro2 Plus",
+      "process": {
+        "raster_angles_deg": [
+          0,
+          90
+        ],
+        "infill_percent": 100,
+        "infill_pattern": "straight",
+        "nozzle_diameter_mm": [
+          0.4,
+          0.8
+        ],
+        "layer_height_mm": 0.2,
+        "cf_nozzle_c": 290,
+        "cf_bed_c": 110,
+        "neat_nozzle_c": 255,
+        "neat_bed_c": 100,
+        "speed_mm_s": 30,
+        "chamber": "Enclosed, naturally cooled; numeric chamber temperature not reported"
+      },
+      "conditioning": null,
+      "test": {
+        "property": "UTS",
+        "standard": "ISO 527-2:2012",
+        "test_temperature_c": 20,
+        "crosshead_speed_mm_min": 0.5,
+        "strain_measurement": "AVE2 video"
+      },
+      "n": {
+        "per_configuration_minimum": 15,
+        "individual_records_acquired": 0
+      },
+      "locator": "Table 1; four ABS and four ABS-CF UTS/spread cells repeat in later sources.",
+      "observations": [
+        {
+          "material": "ABS-CF",
+          "nozzle_diameter_mm": 0.4,
+          "raster_deg": 0,
+          "mean_MPa": 70.14,
+          "spread_MPa": 2.61
+        },
+        {
+          "material": "ABS-CF",
+          "nozzle_diameter_mm": 0.8,
+          "raster_deg": 0,
+          "mean_MPa": 79.12,
+          "spread_MPa": 1.65
+        }
+      ]
+    },
+    {
+      "id": "M06",
+      "doi": "10.3390/polym16081106",
+      "primary_url": "https://www.mdpi.com/2073-4360/16/8/1106",
+      "fulltext_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11055083/fullTextXML",
+      "access": "Official XML Methods and Table 1 inspected.",
+      "material": [
+        "ABS",
+        "ABS-CF",
+        "ABS-GF",
+        "ABS-BF"
+      ],
+      "grade": "REC Russia short-fiber filaments; fiber fractions/grade identities unresolved",
+      "reinforcement": null,
+      "stress_area_basis": "Actual measured denominator not verified.",
+      "dispersion_definition": "Reported plus/minus; definition not confirmed.",
+      "lineage": "M05/M06/M07 repeated ABS aggregate cluster.",
+      "comparison_eligibility": "Short-GF/ABS comparison pending lineage/context clarification.",
+      "calibration_or_validation_eligibility": "Ineligible as independent validation; aggregate reuse and missing source context.",
+      "cautions": [
+        "0.4 to 0.8 mm nozzle also changes layer height from 0.2 to 0.4 mm in this Methods section.",
+        "M05 reports 0.2 mm layer height for both nozzles despite repeated ABS/ABS-CF outcomes.",
+        "Flexural and compact-tension outcomes remain separate."
+      ],
+      "printer": "Raise3D Pro2 Plus",
+      "process": {
+        "raster_angles_deg": [
+          0,
+          90
+        ],
+        "infill_percent": 100,
+        "infill_pattern": "rectilinear",
+        "nozzle_layer_pairs_mm": [
+          [
+            0.4,
+            0.2
+          ],
+          [
+            0.8,
+            0.4
+          ]
+        ],
+        "reinforced_nozzle_c": 290,
+        "reinforced_bed_c": 110,
+        "speed_mm_s": 30,
+        "perimeter_contour": "Used; count not verified"
+      },
+      "conditioning": null,
+      "test": {
+        "property": "UTS",
+        "standard": "ISO 527-2",
+        "test_temperature_c_approximate": 20,
+        "crosshead_speed_mm_min": 0.5
+      },
+      "n": {
+        "per_configuration": 15,
+        "individual_records_acquired": 0
+      },
+      "locator": "Table 1; ABS and ABS-CF groups exactly repeat M05 aggregate values.",
+      "observations": [
+        {
+          "material": "ABS-GF",
+          "nozzle_diameter_mm": 0.4,
+          "raster_deg": 0,
+          "mean_MPa": 69.63,
+          "spread_MPa": 2.62
+        },
+        {
+          "material": "ABS-GF",
+          "nozzle_diameter_mm": 0.8,
+          "raster_deg": 0,
+          "mean_MPa": 76.31,
+          "spread_MPa": 2.53
+        }
+      ]
+    },
+    {
+      "id": "M07",
+      "doi": "10.1016/j.prostr.2024.06.029",
+      "primary_url": "https://www.sciencedirect.com/science/article/pii/S2452321624005663",
+      "fulltext_url": null,
+      "access": "Publisher page direct access blocked; indexed abstract and original conference-hosted facsimile pages 225-228 inspected. No full-PDF visual table QA.",
+      "material": [
+        "ABS",
+        "ABS-CF",
+        "ABS-GF",
+        "PA12",
+        "PA12-CF",
+        "PETG",
+        "PETG-GF"
+      ],
+      "grade": "Not verified",
+      "reinforcement": null,
+      "stress_area_basis": "Not verified.",
+      "dispersion_definition": "Reported plus/minus; definition not verified.",
+      "lineage": "ABS-related rows repeat M05/M06 exactly; PA12-CF/PETG-GF groups not verified as new independent batches.",
+      "comparison_eligibility": "Bibliographic and context candidate; numerical rows are provisional until n/grade/lineage confirmed.",
+      "calibration_or_validation_eligibility": "Ineligible: speed 50 vs M05/M06 30 mm/s; ABS-CF bed 100 vs 110 C, same UTS/spread cells; n/grade/batch/conditioning unavailable.",
+      "cautions": [
+        "The paper contains PA12-CF, not PA12-GF.",
+        "Four neat ABS cells, four ABS-CF cells and four ABS-GF cells repeat earlier papers.",
+        "Do not inherit M06 n=15 into this source without checking experimental identity."
+      ],
+      "printer": "Raise3D Pro2 Plus",
+      "process": {
+        "raster_angles_deg": [
+          0,
+          90
+        ],
+        "nozzle_diameter_mm": [
+          0.4,
+          0.8
+        ],
+        "speed_mm_s": 50,
+        "abs_nozzle_c": 255,
+        "abs_bed_c": 100,
+        "abs_cf_nozzle_c": 290,
+        "abs_cf_bed_c": 100,
+        "pa12_cf_nozzle_c": 265,
+        "pa12_cf_bed_c": 60,
+        "petg_gf_nozzle_c": 250,
+        "petg_gf_bed_c": 90
+      },
+      "conditioning": null,
+      "test": {
+        "property": "UTS",
+        "standard": "ISO 527-2",
+        "test_temperature_c_approximate": 20,
+        "crosshead_speed_mm_min": 0.5
+      },
+      "n": {
+        "per_configuration": null,
+        "individual_records_acquired": 0
+      },
+      "locator": "Tables 1-3; table numbering on facsimile pages 226-228.",
+      "observations": [
+        {
+          "material": "PA12-CF",
+          "nozzle_diameter_mm": 0.4,
+          "raster_deg": 0,
+          "mean_MPa": 47.79,
+          "spread_MPa": 3.08
+        },
+        {
+          "material": "PA12-CF",
+          "nozzle_diameter_mm": 0.4,
+          "raster_deg": 90,
+          "mean_MPa": 17.45,
+          "spread_MPa": 1.91
+        },
+        {
+          "material": "PETG-GF",
+          "nozzle_diameter_mm": 0.8,
+          "raster_deg": 0,
+          "mean_MPa": 52.93,
+          "spread_MPa": 2.31
+        }
+      ]
+    },
+    {
+      "id": "M08",
+      "doi": "10.3390/polym17121590",
+      "primary_url": "https://www.mdpi.com/2073-4360/17/12/1590",
+      "fulltext_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12196584/fullTextXML",
+      "access": "Official full-text XML inspected; Table 3 and Taguchi design checked.",
+      "material": "PA6 plus PA6-GF hybrid",
+      "grade": "BASF Ultrafuse PA6 body with Ultrafuse PA6 GF30 reinforced zones",
+      "reinforcement": "Dual-material local reinforced geometry, not a homogeneous PA6-GF30 coupon",
+      "stress_area_basis": "Composite coupon denominator and measured geometry not verified.",
+      "dispersion_definition": "Reported plus/minus; definition not confirmed.",
+      "lineage": "One L9 hybrid geometry/process campaign.",
+      "comparison_eligibility": "Hybrid geometry evidence only.",
+      "calibration_or_validation_eligibility": "Ineligible for homogeneous PA6-GF profile; nine orthogonal-array cells do not identify arbitrary factor interactions, and context/raw records are missing.",
+      "cautions": [
+        "Six tests per condition means three tensile plus three impact, not tensile n=6.",
+        "Table 1 quoted PA6-GF30 78.30 MPa is TDS, not an additional measured condition."
+      ],
+      "printer": "FlashForge Creator 3 dual nozzle",
+      "process": {
+        "bed_c": 90,
+        "design": "Taguchi L9: reinforcement geometry, layer height, nozzle temperature, heat-treatment duration",
+        "annealing_c": 150
+      },
+      "conditioning": null,
+      "test": {
+        "property": "Tensile strength",
+        "standard": "ISO 527",
+        "test_temperature": "Room temperature; numeric value not verified",
+        "crosshead_speed_mm_min": null,
+        "separately_reported_property": "Impact"
+      },
+      "n": {
+        "tensile_per_condition": 3,
+        "impact_per_condition": 3,
+        "combined_tests_per_condition": 6,
+        "design_conditions": 9,
+        "individual_records_acquired": 0
+      },
+      "locator": "Table 3; aggregate endpoints only, not a one-factor curve.",
+      "observations": [
+        {
+          "group": "Selected Table 3 condition",
+          "mean_MPa": 55.88,
+          "spread_MPa": 8.6
+        },
+        {
+          "group": "Highest reported Table 3 condition",
+          "mean_MPa": 89.89,
+          "spread_MPa": 3.7
+        }
+      ]
+    },
+    {
+      "id": "M09",
+      "doi": "10.3390/polym18121422",
+      "primary_url": "https://www.mdpi.com/2073-4360/18/12/1422",
+      "fulltext_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC13306934/fullTextXML",
+      "access": "Official XML Methods and Table 2 inspected; saved nine-mean extraction reused.",
+      "material": "PPA-CF",
+      "grade": "Fiberlogy PPA CF15",
+      "reinforcement": "Short CF; nominal 15%",
+      "stress_area_basis": "Actual measured denominator not verified.",
+      "dispersion_definition": "Reported plus/minus; definition not verified, not automatically SD.",
+      "lineage": "PPA-CF temperature campaign; same research group as M01 but not automatically the same material/batch.",
+      "comparison_eligibility": "Existing grade-specific test-temperature comparison remains valid within its limitations.",
+      "calibration_or_validation_eligibility": "Not eligible yet: raw replicates/batch/area/humidity/moisture/external holdout absent.",
+      "cautions": [
+        "Methods attributes manufacturer tensile strength 107.724 MPa to ASTM D792, which is a density/specific-gravity standard. Quarantine the TDS standard attribute; do not silently replace it with ASTM D638.",
+        "The experimental Table 2 ISO 527 test is distinct from that metadata error.",
+        "Test temperature is not nozzle temperature."
+      ],
+      "printer": "Creality K1 MAX",
+      "process": {
+        "orientation": "flat",
+        "raster_angles_deg": [
+          45,
+          -45
+        ],
+        "infill_percent": 100,
+        "infill_pattern": "linear",
+        "walls": 5,
+        "nozzle_diameter_mm": 0.6,
+        "layer_height_mm": 0.2,
+        "nozzle_c": 290,
+        "bed_c": 100,
+        "chamber_c": 50,
+        "speed_mm_s": 80
+      },
+      "conditioning": {
+        "drying_c": 80,
+        "drying_h": 12,
+        "equilibration_before_test_min": 30,
+        "residual_moisture_measured": false
+      },
+      "test": {
+        "property": "UTS",
+        "standard": "ISO 527",
+        "crosshead_speed_mm_min": 1,
+        "test_temperature_c": [
+          20,
+          40,
+          60,
+          80,
+          100,
+          120,
+          140,
+          160,
+          180
+        ]
+      },
+      "n": {
+        "per_temperature": 3,
+        "individual_records_acquired": 0
+      },
+      "locator": "Table 2 experimental UTS; Methods manufacturer-data paragraph is a distinct source.",
+      "observations": [
+        {
+          "test_temperature_c": 20,
+          "mean_MPa": 64.537,
+          "spread_MPa": 0.88
+        },
+        {
+          "test_temperature_c": 180,
+          "mean_MPa": 9.19,
+          "spread_MPa": 0.76
+        }
+      ]
+    },
+    {
+      "id": "M10",
+      "doi": "10.3390/polym15030507",
+      "primary_url": "https://www.mdpi.com/2073-4360/15/3/507",
+      "fulltext_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9919798/fullTextXML",
+      "access": "Official XML Methods inspected; no new graph-value extraction.",
+      "material": [
+        "PA6",
+        "PA6-CF",
+        "PA6-CF plus continuous GF"
+      ],
+      "grade": "Markforged PA6/Onyx short-CF feedstock",
+      "reinforcement": "Approximately 6.5% short-CF mass fraction by reported pyrolysis; another group adds continuous GF",
+      "stress_area_basis": "Single-wall/die-cut panel area is a different geometry stratum from directly printed multiperimeter dogbones.",
+      "dispersion_definition": "Not verified.",
+      "lineage": "Ahmadifar 2023 campaign; printer and reinforcement substudies must not be mixed.",
+      "comparison_eligibility": "Short-CF tension/fatigue mechanism candidate after stratifying coupon manufacture.",
+      "calibration_or_validation_eligibility": "Ineligible for generic PA6-CF transfer: grade/moisture/area and exact process outcomes incomplete.",
+      "cautions": [
+        "Continuous GF added to Onyx is not chopped PA6-GF evidence.",
+        "Fatigue S-N curves are not monotonic UTS."
+      ],
+      "printer": [
+        "Flashforge Adventurer 3",
+        "Markforged Mark Two"
+      ],
+      "process": {
+        "coupon_manufacture": "Process study single-wall panels subsequently die-cut to ISO 527-2; Mark Two used for infill/continuous reinforcement and fatigue series"
+      },
+      "conditioning": null,
+      "test": {
+        "property": "Tensile and fatigue, retained separately",
+        "standard": [
+          "ISO 527-2",
+          "ISO 527-1"
+        ],
+        "crosshead_speed_mm_min": 5
+      },
+      "n": {
+        "per_group_minimum": 3,
+        "individual_records_acquired": 0
+      },
+      "locator": "Materials and tensile/fatigue methods; response graphs not digitized this turn.",
+      "observations": []
+    },
+    {
+      "id": "M11",
+      "doi": "10.1177/00219983231194391",
+      "primary_url": "https://doi.org/10.1177/00219983231194391",
+      "fulltext_url": "https://eprints.whiterose.ac.uk/203421/1/lyu-et-al-2023-effects-of-thermal-process-conditions-on-crystallinity-and-mechanical-properties-in-material-extrusion.pdf",
+      "access": "Primary author-institution manuscript read in memory with PDF text extraction; Methods pages 2-4 and abstract verified.",
+      "material": "PPS-CF",
+      "grade": "Torayca A630T-30V pellets made into laboratory filament",
+      "reinforcement": "30% short CF pellet grade; measured fiber/void evolution separately reported",
+      "stress_area_basis": "Flexural stress formula for nominal beam geometry, not tensile cross-sectional engineering stress.",
+      "dispersion_definition": "No numerical dispersion for this maximum verified.",
+      "lineage": "Lyu 2023 discontinuous CF/PPS thermal-history campaign.",
+      "comparison_eligibility": "Grade-specific flexural/thermal-history comparison only.",
+      "calibration_or_validation_eligibility": "Ineligible for a tensile model or registered PPS-CF product-grade coefficient; raw curves and full context unavailable.",
+      "cautions": [
+        "164.65 MPa must not be entered as UTS.",
+        "Feedstock extrusion temperature, printing nozzle temperature and post-annealing are separate variables.",
+        "Neat PPS used for FTIR is not another composite strength group."
+      ],
+      "printer": "Creatbot F430 420 C version",
+      "process": {
+        "nozzle_c": [
+          310,
+          320,
+          330,
+          340
+        ],
+        "bed_c": 90,
+        "nozzle_diameter_mm": 0.8,
+        "speed_mm_s": 20,
+        "infill_percent": 100,
+        "raster": "Longitudinal",
+        "layer_height_mm": null,
+        "feedstock_filament_diameter_mm": "1.6 ± 0.1"
+      },
+      "conditioning": {
+        "pellet_drying_c": 100,
+        "pellet_drying_h_minimum": 3,
+        "best_annealing_c": 130,
+        "best_annealing_h": 6
+      },
+      "test": {
+        "property": "Three-point flexural strength",
+        "standard": "ASTM D7264",
+        "nominal_dimensions_mm": [
+          80,
+          13,
+          4
+        ],
+        "crosshead_speed_mm_min": 1
+      },
+      "n": {
+        "per_group": 3,
+        "individual_records_acquired": 0
+      },
+      "locator": "Abstract maximum and Three-point bending test section; graph conditions not fully transcribed.",
+      "observations": [
+        {
+          "property": "Flexural strength",
+          "mean_MPa": 164.65,
+          "status": "Abstract maximum; extrusion 280 C, printing 320 C, annealing 130 C for 6 h"
+        }
+      ]
+    },
+    {
+      "id": "M12",
+      "doi": "10.1108/RPJ-06-2024-0241",
+      "primary_url": "https://doi.org/10.1108/RPJ-06-2024-0241",
+      "fulltext_url": "https://scholar.tecnico.ulisboa.pt/api/records/2lXUe-cvtWaSqq-Yg-kQ4mdGzjNKtzqFgIrN/file/1f4a349c6ca0d4146b82c7830653b4ad170537e73fc6a25d29efb896007d3de6.pdf",
+      "access": "Primary institution article PDF read in memory; Tables 2, 4, 5 and test methods inspected. Correct PDF DOI checked; a different NPT PDF returned by search was excluded.",
+      "material": "TPU",
+      "grade": [
+        "UltiMaker TPU 95A",
+        "Recreus Reciflex recycled 92-98A"
+      ],
+      "reinforcement": null,
+      "stress_area_basis": "Measured initial gross gauge cross-section, using three locations; not net deposited or bonded contact area.",
+      "dispersion_definition": "Reported plus/minus; statistical definition not verified.",
+      "lineage": "Sardinha TPU95A/Reciflex session campaign; multiple patterns/temperatures are not independent labs or batches.",
+      "comparison_eligibility": "Strong grade-specific aggregate candidate after geometry/dispersion/conditioning normalization.",
+      "calibration_or_validation_eligibility": "Not eligible yet: single print-session lineage, no raw replicate curves, batch identity, measured moisture or prospective holdout.",
+      "cautions": [
+        "2025 issue/publication; institution metadata may use 2024 acceptance year.",
+        "Image solid ratios 0.906/0.950/0.983 across TPU temperatures are not G-code flow ratio or measured bonded contact area.",
+        "The concentric solid ratio is about 0.952 but strength is lower; density alone does not determine UTS.",
+        "Large-strain elastomer response is outside a small-strain linear-beam failure claim."
+      ],
+      "printer": "Ultimaker S5 Bowden; Cura 4.11",
+      "process": {
+        "infill_percent": 100,
+        "layer_height_mm": 0.2,
+        "nozzle_diameter_mm": 0.4,
+        "line_width_mm": 0.38,
+        "speed_mm_s": 30,
+        "walls": 2,
+        "top_layers": 0,
+        "bottom_layers": 0,
+        "overlap_mm": 0.4,
+        "infill_before_walls": true,
+        "bed_c": 50,
+        "fan_percent": 20,
+        "commanded_minimum_layer_time_s": 15,
+        "tpu_nozzle_c": [
+          225,
+          235,
+          240
+        ],
+        "reciflex_nozzle_c": [
+          220,
+          225,
+          230
+        ],
+        "raster_patterns": [
+          "0/90",
+          "45/-45",
+          "0/0",
+          "concentric"
+        ]
+      },
+      "conditioning": {
+        "test_temperature_c": 21,
+        "test_relative_humidity_percent_approximate": 60,
+        "drying_history": null
+      },
+      "test": {
+        "property": "UTS and large-strain response",
+        "standard": "Modified ASTM D412 Die C / D638 Type IV geometry",
+        "narrow_width_mm": 7.2,
+        "crosshead_speed_mm_min": 20
+      },
+      "n": {
+        "per_condition": 4,
+        "print_session": "Identical specimens in one session, printed one at a time",
+        "individual_records_acquired": 0
+      },
+      "locator": "Table 5 rows labelled THIS RESEARCH; external-literature rows excluded. Table 4 solid ratios remain separate.",
+      "observations": [
+        {
+          "grade": "TPU95A",
+          "raster": "0/90",
+          "nozzle_c": 225,
+          "mean_MPa": 26.1,
+          "spread_MPa": 4.2
+        },
+        {
+          "grade": "TPU95A",
+          "raster": "0/90",
+          "nozzle_c": 235,
+          "mean_MPa": 37.5,
+          "spread_MPa": 4.9
+        },
+        {
+          "grade": "TPU95A",
+          "raster": "0/90",
+          "nozzle_c": 240,
+          "mean_MPa": 35.8,
+          "spread_MPa": 0.6
+        },
+        {
+          "grade": "TPU95A",
+          "raster": "concentric",
+          "nozzle_c": 235,
+          "mean_MPa": 20.8,
+          "spread_MPa": 2.6
+        }
+      ]
+    }
+  ],
+  "fracture_papers": [
+    {
+      "id": "P01",
+      "dois": [
+        "10.1039/C7SM00950J"
+      ],
+      "year": 2017,
+      "title": "Weld formation during material extrusion additive manufacturing",
+      "display_title": "Seppala et al. — Weld formation during material extrusion additive manufacturing",
+      "primary_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5684701/",
+      "public_fulltext": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=923318",
+      "verification_scope": "Fresh NIST/PMC fulltext; prior extraction reused",
+      "access_level": "Public NIST/PMC fulltext",
+      "engine_modules": [
+        "thermal_history",
+        "interlayer_weld",
+        "commanded_vs_measured_temperature"
+      ],
+      "limitations": "Thermal profile is measured/estimated, not command-only. Suspected 250 °C/3 mm/s temperature anomaly should not calibrate a law. Shares NIST lineage with P02.",
+      "raw_data_status": "Supplementary thermal ZIP linked; payload not revalidated in this review.",
+      "lineage_id": "NIST_ABS_2017",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "MakerBot natural ABS; modified Replicator 2X; single-width 16-layer wall, h=0.3 mm; nozzle 210–270 °C, 3–100 mm/s, bed 110 °C; open front door. IR 60 Hz; interface temperature estimated from neighboring layers. Mode III peel at 1 mm/s; actual weld width microscopy.",
+      "quantified_observations": [
+        {
+          "property": "equivalent isothermal weld time",
+          "unit": "ms",
+          "conditions": "WLF/rheology referenced to 230 °C",
+          "values": [
+            0.1,
+            100
+          ],
+          "n": {
+            "minimum": 5,
+            "scope": "mechanical tests"
+          },
+          "scatter": "not a confidence interval",
+          "source": "Fulltext thermal/rheology discussion"
+        }
+      ],
+      "title_kind": null,
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1039/C7SM00950J",
+          "verified_title": "Weld formation during material extrusion additive manufacturing",
+          "authors": [
+            "Seppala",
+            "Hoon Han",
+            "Hillgartner",
+            "Davis",
+            "Migler"
+          ],
+          "published_date_parts": [
+            [
+              2017
+            ]
+          ],
+          "url": "https://doi.org/10.1039/c7sm00950j",
+          "status": "Fresh Crossref metadata"
+        }
+      ]
+    },
+    {
+      "id": "P02",
+      "dois": [
+        "10.1016/j.addma.2017.06.006"
+      ],
+      "year": 2017,
+      "title": "Mechanical strength of welding zones produced by polymer extrusion additive manufacturing",
+      "display_title": "Davis et al. — Mechanical strength of welding zones produced by material extrusion additive manufacturing",
+      "primary_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5726274/",
+      "public_fulltext": null,
+      "verification_scope": "Existing audited fulltext extraction reused",
+      "access_level": "Public PMC fulltext",
+      "engine_modules": [
+        "interlayer_weld",
+        "fracture_mode_III",
+        "bond_area"
+      ],
+      "limitations": "Nominal coupon section, actual weld width and fracture energy are distinct. P01/P02 are not independent lab replications.",
+      "raw_data_status": "Fulltext public; full specimen curves not verified.",
+      "lineage_id": "NIST_ABS_2017",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "MakerBot ABS; 0.4 mm nozzle, h=0.3 mm, bed 110 °C; nozzle 210–250 °C and 1–100 mm/s. Single-weld Mode III test, 1 mm/s; weld width microscopy.",
+      "quantified_observations": [
+        {
+          "property": "bulk-reference tearing energy",
+          "unit": "N/mm",
+          "conditions": "Same-study bulk reference",
+          "values": [
+            35.9
+          ],
+          "n": {
+            "value": 5,
+            "scope": "bulk reference"
+          },
+          "scatter": "±2.1; confirm exact uncertainty convention before ingest",
+          "source": "Existing process thermal evidence extraction"
+        }
+      ],
+      "title_kind": null,
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1016/j.addma.2017.06.006",
+          "verified_title": "Mechanical strength of welding zones produced by polymer extrusion additive manufacturing",
+          "authors": [
+            "Davis",
+            "Hillgartner",
+            "Han",
+            "Seppala"
+          ],
+          "published_date_parts": [
+            [
+              2017,
+              8
+            ]
+          ],
+          "url": "https://doi.org/10.1016/j.addma.2017.06.006",
+          "status": "Fresh Crossref metadata"
+        }
+      ]
+    },
+    {
+      "id": "P03",
+      "dois": [
+        "10.1016/j.addma.2020.101297"
+      ],
+      "year": 2020,
+      "title": "Interlayer bonding has bulk-material strength in extrusion additive manufacturing: New understanding of anisotropy",
+      "display_title": "Allum et al. — Interlayer bonding has bulk-material strength in extrusion additive manufacturing: New understanding of anisotropy",
+      "primary_url": "https://repository.lboro.ac.uk/articles/journal_contribution/Interlayer_bonding_has_bulk-material_strength_in_extrusion_additive_manufacturing_New_understanding_of_anisotropy/12443528",
+      "public_fulltext": "https://ndownloader.figshare.com/files/22939619",
+      "verification_scope": "Existing accepted-manuscript/audit extraction reused",
+      "access_level": "Public accepted manuscript",
+      "engine_modules": [
+        "actual_contact_area",
+        "anisotropy",
+        "tensile_normalization"
+      ],
+      "limitations": "Anisotropy can arise from bead geometry and local stress concentration. Actual-area strength does not establish universal bulk fracture resistance or part failure load.",
+      "raw_data_status": "Accepted manuscript public; local audit PDF retained privately.",
+      "lineage_id": "LOUGHBOROUGH_PLA_AREA",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "PLA; 0.4 mm nozzle, 210 °C, bed 60 °C, 1000 mm/min; five bead height/width geometries; local bonded-area analysis.",
+      "quantified_observations": [
+        {
+          "property": "specific load-bearing area fraction",
+          "unit": "percent",
+          "conditions": "Figure 14 F / Z geometries",
+          "values": [
+            94.5,
+            64.8
+          ],
+          "n": null,
+          "scatter": "not population uncertainty",
+          "source": "Accepted manuscript Figure 14"
+        }
+      ],
+      "title_kind": null,
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1016/j.addma.2020.101297",
+          "verified_title": "Interlayer bonding has bulk-material strength in extrusion additive manufacturing: New understanding of anisotropy",
+          "authors": [
+            "Allum",
+            "Moetazedian",
+            "Gleadall",
+            "Silberschmidt"
+          ],
+          "published_date_parts": [
+            [
+              2020,
+              8
+            ]
+          ],
+          "url": "https://doi.org/10.1016/j.addma.2020.101297",
+          "status": "Fresh Crossref metadata"
+        }
+      ]
+    },
+    {
+      "id": "P04",
+      "dois": [
+        "10.1089/3dp.2021.0112"
+      ],
+      "year": 2023,
+      "title": "Bulk-Material Bond Strength Exists in Extrusion Additive Manufacturing for a Wide Range of Temperatures, Speeds, and Layer Times",
+      "display_title": "Moetazedian et al. — Process controls and true interlayer strength in FFF PLA",
+      "primary_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10280202/",
+      "public_fulltext": null,
+      "verification_scope": "Existing audited fulltext extraction reused",
+      "access_level": "Public PMC fulltext",
+      "engine_modules": [
+        "process_interactions",
+        "actual_contact_area",
+        "thermal_history"
+      ],
+      "limitations": "Not a full factorial. Geometry-controlled comparisons do not justify generic speed or temperature factors. Bulk reference shares Allum lineage.",
+      "raw_data_status": "Public fulltext; per-specimen raw curves not acquired.",
+      "lineage_id": "LOUGHBOROUGH_PLA_AREA",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "3DXTECH/NatureWorks 4043D PLA; RepRap X400; nozzle 0.4 mm, width 0.5 mm, h=0.2 mm; baseline 210 °C, 1000 mm/min, 10 s. Separate temperature/speed/time controls with extrusion adjusted to preserve geometry. Tensile 0.5 mm/min, actual Z-contact area; n=5.",
+      "quantified_observations": [],
+      "title_kind": null,
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1089/3dp.2021.0112",
+          "verified_title": "Bulk-Material Bond Strength Exists in Extrusion Additive Manufacturing for a Wide Range of Temperatures, Speeds, and Layer Times",
+          "authors": [
+            "Moetazedian",
+            "Allum",
+            "Gleadall",
+            "Silberschmidt"
+          ],
+          "published_date_parts": [
+            [
+              2023,
+              6,
+              1
+            ]
+          ],
+          "url": "https://doi.org/10.1089/3dp.2021.0112",
+          "status": "Fresh Crossref metadata"
+        }
+      ]
+    },
+    {
+      "id": "P05",
+      "dois": [
+        "10.1007/s00170-024-14111-8"
+      ],
+      "year": 2024,
+      "title": "The effect of the interlayer time and deposition speed on the tensile properties of material extrusion components",
+      "display_title": "Lambiase et al. — PLA interlayer tensile behavior with speed and deposition interval",
+      "primary_url": "https://d-nb.info/1346221405/34",
+      "public_fulltext": null,
+      "verification_scope": "Existing public-fulltext extraction reused",
+      "access_level": "Public repository fulltext",
+      "engine_modules": [
+        "local_return_time",
+        "speed",
+        "tensile_interlayer"
+      ],
+      "limitations": "Published endpoint means 25.5/21.1 MPa are not promoted here because a fixed-condition pair is needed. IR surface temperature differs from interface temperature; grade-specific comparison only.",
+      "raw_data_status": "Public PDF; raw curves not verified.",
+      "lineage_id": "LAMBIASE_PLA_THERMAL_TENSILE",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "RS PRO PLA; Ender 6; nozzle/bed 210/60 °C, nozzle/width/h 0.4/0.5/0.2 mm; fan 100%, full rectilinear infill. 2000/3000/4000 mm/min × 21/63/105 s; n=6; upright plate coupons waterjet cut, ASTM D638 Type 2, 2 mm/min; IR surface temperature.",
+      "quantified_observations": [],
+      "title_kind": "Canonical title from existing primary-source registry; fresh Crossref rate-limited",
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1007/s00170-024-14111-8",
+          "status": "metadata_refresh_429; earlier primary evidence retained"
+        }
+      ]
+    },
+    {
+      "id": "P06",
+      "dois": [
+        "10.1007/s00170-023-12223-1"
+      ],
+      "year": 2023,
+      "title": "Influence of the deposition pattern on the interlayer fracture toughness of FDM components",
+      "display_title": "Lambiase et al. — Influence of the deposition pattern on the interlayer fracture toughness of FDM components",
+      "primary_url": "https://link.springer.com/article/10.1007/s00170-023-12223-1",
+      "public_fulltext": null,
+      "verification_scope": "Fresh publisher fulltext plus prior extraction",
+      "access_level": "Publisher open fulltext",
+      "engine_modules": [
+        "fracture_mode_I",
+        "raster",
+        "bond_area"
+      ],
+      "limitations": "Contact can include kissing bonds. Abstract/conclusion disagree on 90° Mode I energy (2.4 versus 2.0 kJ/m²); do not ingest that cell without clarification. Grade and full process settings need lineage completion.",
+      "raw_data_status": "Raw data available on request only.",
+      "lineage_id": "LAMBIASE_PLA_DCB_2023",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "PLA; DCB following ASTM D5528, 1 mm/min, nozzle 0.4 mm, h=0.2 mm, no shells; mono 0/45/90° versus 0/90° and ±45° alternating; n=5 per strategy.",
+      "quantified_observations": [
+        {
+          "property": "measured contact fraction",
+          "unit": "percent",
+          "conditions": "alternating / monodirectional patterns",
+          "values": [
+            43,
+            70
+          ],
+          "n": {
+            "value": 5,
+            "scope": "each strategy"
+          },
+          "scatter": "±2 / ±1.5; uncertainty interpretation not independently recovered",
+          "source": "Publisher contact-area discussion"
+        }
+      ],
+      "title_kind": "Canonical publisher title refreshed",
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1007/s00170-023-12223-1",
+          "status": "metadata_refresh_429; earlier primary evidence retained"
+        }
+      ]
+    },
+    {
+      "id": "P07",
+      "dois": [
+        "10.1016/j.engfracmech.2022.108483"
+      ],
+      "year": 2022,
+      "title": "Lingua et al. — Small-scale interlayer fracture characterization of FFF PLA",
+      "display_title": "Lingua et al. — Small-scale interlayer fracture characterization of FFF PLA",
+      "primary_url": "https://publications.polymtl.ca/51488/",
+      "public_fulltext": null,
+      "verification_scope": "Institutional paper and public-dataset scope refreshed; prior methods reused",
+      "access_level": "Institutional abstract/metadata + public representative dataset",
+      "engine_modules": [
+        "fracture_mode_I",
+        "crack_path",
+        "DIC_validation"
+      ],
+      "limitations": "The linked archive is one representative 0–0 interlayer specimen, not a repeated-population validation or whole-part failure-location dataset.",
+      "raw_data_status": "Representative images/CSV public; raw integrity not freshly replayed.",
+      "lineage_id": "LINGUA_PLA_MINI_CT",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "PLA; miniature compact-tension specimens, 0–0 / 0–90 raster, approximately 4×3 mm² section; Mode I and DIC.",
+      "quantified_observations": [],
+      "title_kind": "Descriptive review label; canonical title linked below when available",
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1016/j.engfracmech.2022.108483",
+          "status": "metadata_refresh_429; earlier primary evidence retained"
+        }
+      ]
+    },
+    {
+      "id": "P08",
+      "dois": [
+        "10.1016/j.addma.2018.02.010",
+        "10.1016/j.addma.2018.02.023"
+      ],
+      "year": 2018,
+      "title": "Interlayer fracture toughness of additively manufactured unreinforced and carbon-fiber-reinforced acrylonitrile butadiene styrene",
+      "display_title": "Young, Wetmore and Czabaj — Interlayer fracture toughness of additively manufactured unreinforced and carbon-fiber-reinforced ABS",
+      "primary_url": "https://doi.org/10.1016/j.addma.2018.02.010",
+      "public_fulltext": null,
+      "verification_scope": "Fresh Crossref/publisher metadata; prior extraction retained",
+      "access_level": "Publisher abstract/metadata",
+      "engine_modules": [
+        "fracture_mode_I",
+        "short_fiber",
+        "bibliographic_deduplication"
+      ],
+      "limitations": "Both DOI records resolve to the same title/authors/year with different PIIs/pages. Reconcile rather than count twice. Poor fiber wetting can reduce interlayer fracture resistance; exact grade, n and numeric curves remain unverified.",
+      "raw_data_status": "Publisher abstract/metadata; accepted manuscript access unresolved.",
+      "lineage_id": "YOUNG_ABS_CF_2018",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": [
+        "DOI_ALIAS_OR_DUPLICATE_UNRESOLVED"
+      ],
+      "test_context": "ABS / short-CF ABS; modified DCB, 8 µm Kapton starter, glass/epoxy doublers; hot-pressed SENB bulk reference.",
+      "quantified_observations": [],
+      "title_kind": null,
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1016/j.addma.2018.02.010",
+          "verified_title": "Interlayer fracture toughness of additively manufactured unreinforced and carbon-fiber-reinforced acrylonitrile butadiene styrene",
+          "authors": [
+            "Young",
+            "Wetmore",
+            "Czabaj"
+          ],
+          "published_date_parts": [
+            [
+              2018,
+              8
+            ]
+          ],
+          "url": "https://doi.org/10.1016/j.addma.2018.02.010",
+          "status": "Fresh Crossref metadata"
+        },
+        {
+          "doi": "10.1016/j.addma.2018.02.023",
+          "status": "metadata_refresh_429; earlier primary evidence retained"
+        }
+      ]
+    },
+    {
+      "id": "P09",
+      "dois": [
+        "10.1016/j.polymertesting.2017.03.016",
+        "10.1016/j.matdes.2018.07.001"
+      ],
+      "year": 2018,
+      "title": "Fracture resistance measurement of fused deposition modeling 3D printed polymers",
+      "display_title": "Aliheidari et al. — Fracture resistance measurement / interlayer adhesion of melt-extruded polymers",
+      "primary_url": "https://rex.libraries.wsu.edu/esploro/outputs/graduate/Characterization-of-interlayer-adhesion-and-fracture/99900525131701842",
+      "public_fulltext": null,
+      "verification_scope": "Existing thesis/public-fulltext extraction reused",
+      "access_level": "Institutional fulltext",
+      "engine_modules": [
+        "fracture_mode_I",
+        "bond_area",
+        "nozzle_bed_temperature"
+      ],
+      "limitations": "Apparent and actual-area-corrected values cannot be mixed. Thesis and two papers form one lineage; not external validation.",
+      "raw_data_status": "Institutional thesis public; raw curves not acquired.",
+      "lineage_id": "WSU_ALIHEIDARI_ABS",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "BuMat ABS, Felix Pro I, 0.35 mm nozzle, full longitudinal infill without perimeter; DCB, 0.01 mm/s; n=5 sequential specimens. Nozzle 220/230/240 °C, bed 85/95/105 °C; baseline h=0.2 mm, width=0.35 mm.",
+      "quantified_observations": [
+        {
+          "property": "area-corrected interlayer initiation J",
+          "unit": "J/m2",
+          "conditions": "nozzle 220→240 °C; other baseline controls",
+          "values": [
+            3391.04,
+            3907.54
+          ],
+          "n": {
+            "value": 5,
+            "scope": "sequential specimens"
+          },
+          "scatter": "SD 69.83 / 143.13",
+          "source": "Prior thesis extraction"
+        },
+        {
+          "property": "apparent initiation J",
+          "unit": "J/m2",
+          "conditions": "same nozzle pair",
+          "values": [
+            1981.45,
+            2731.87
+          ],
+          "n": {
+            "value": 5,
+            "scope": "sequential specimens"
+          },
+          "scatter": "SD 41.22 / 100.48",
+          "source": "Prior thesis extraction"
+        }
+      ],
+      "title_kind": null,
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1016/j.polymertesting.2017.03.016",
+          "verified_title": "Fracture resistance measurement of fused deposition modeling 3D printed polymers",
+          "authors": [
+            "Aliheidari",
+            "Tripuraneni",
+            "Ameli",
+            "Nadimpalli"
+          ],
+          "published_date_parts": [
+            [
+              2017,
+              7
+            ]
+          ],
+          "url": "https://doi.org/10.1016/j.polymertesting.2017.03.016",
+          "status": "Fresh Crossref metadata"
+        },
+        {
+          "doi": "10.1016/j.matdes.2018.07.001",
+          "status": "metadata_refresh_429; earlier primary evidence retained"
+        }
+      ]
+    },
+    {
+      "id": "P10",
+      "dois": [
+        "10.3390/polym14071292"
+      ],
+      "year": 2022,
+      "title": "Fused-Filament Fabrication of Short Carbon Fiber-Reinforced Polyamide: Parameter Optimization for Improved Performance under Uniaxial Tensile Loading",
+      "display_title": "Belei et al. — PAHT-CF printing parameter interactions",
+      "primary_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9002508/",
+      "public_fulltext": null,
+      "verification_scope": "Existing verified primary extraction reused",
+      "access_level": "Public PMC fulltext",
+      "engine_modules": [
+        "temperature_speed_interaction",
+        "tensile_strength",
+        "material_grade"
+      ],
+      "limitations": "Opposite temperature slopes at different speeds reject a universal nozzle factor. Do not relabel PAHT CF15 as PA6/PA12/PPA. Optimized n=8 remains same-study evidence.",
+      "raw_data_status": "Public fulltext; raw data on request.",
+      "lineage_id": "BELEI_PAHT_CF15",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "BASF Ultrafuse PAHT CF15, Ultimaker S5, 0.6 mm nozzle; ISO 527 I-BA, 0/90 raster; 2 mm/min at 19 °C, n=4. Bed 100 °C, h=0.4 mm; dry box 40 °C plus silica gel, moisture not measured.",
+      "quantified_observations": [
+        {
+          "property": "UTS",
+          "unit": "MPa",
+          "conditions": "nozzle 240→280 °C at 30 mm/s",
+          "values": [
+            97,
+            89.2
+          ],
+          "n": {
+            "value": 4,
+            "scope": "per condition"
+          },
+          "scatter": "±5.4 / ±2.5; convention unconfirmed",
+          "source": "Existing interaction catalog"
+        },
+        {
+          "property": "UTS",
+          "unit": "MPa",
+          "conditions": "same temperatures at 80 mm/s",
+          "values": [
+            91,
+            100.2
+          ],
+          "n": {
+            "value": 4,
+            "scope": "per condition"
+          },
+          "scatter": "±3.5 / ±3.3; convention unconfirmed",
+          "source": "Existing interaction catalog"
+        }
+      ],
+      "title_kind": null,
+      "bibliographic_metadata": [
+        {
+          "doi": "10.3390/polym14071292",
+          "verified_title": "Fused-Filament Fabrication of Short Carbon Fiber-Reinforced Polyamide: Parameter Optimization for Improved Performance under Uniaxial Tensile Loading",
+          "authors": [
+            "Belei",
+            "Joeressen",
+            "Amancio-Filho"
+          ],
+          "published_date_parts": [
+            [
+              2022,
+              3,
+              23
+            ]
+          ],
+          "url": "https://doi.org/10.3390/polym14071292",
+          "status": "Fresh Crossref metadata"
+        }
+      ]
+    },
+    {
+      "id": "P11",
+      "dois": [
+        "10.1016/j.addma.2025.104705"
+      ],
+      "year": 2025,
+      "title": "Identifying thermal effects during 3D printing by comparing in-layer infrared pre- and postheating of carbon fiber reinforced polyamide 6",
+      "display_title": "Nesheim et al. — PA6-CF interlayer strength with pre-/post-deposition IR heating",
+      "primary_url": "https://doi.org/10.1016/j.addma.2025.104705",
+      "public_fulltext": null,
+      "verification_scope": "Existing 108-row/eight-source-hash audit reused; institutional primary abstract only, full article Methods unavailable; no fresh checksum replay",
+      "access_level": "Primary paper + public numeric dataset",
+      "engine_modules": [
+        "local_heating",
+        "speed",
+        "interlayer_tensile"
+      ],
+      "limitations": "3 mm/s workbook excludes three numeric rows (8 versus 5); thermal formula mismatches remain. Do not calibrate disputed cells; no full curves verified.",
+      "raw_data_status": "Mendeley CSV/workbooks public; prior checksums retained privately.",
+      "lineage_id": "NESHEIM_PA6CF_IR",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "PA6-CF single-wall width 0.8 mm, h=0.3 mm; IR approximately 40 W, preheat/postheat/no heat, 3–50 mm/s. Exact grade, test speed, bed/chamber and area method incomplete.",
+      "quantified_observations": [
+        {
+          "property": "UTS from Load/Area",
+          "unit": "MPa",
+          "conditions": "40 mm/s: no heat / preheat / postheat",
+          "values": [
+            11.67175,
+            26.314369,
+            21.424642
+          ],
+          "n": {
+            "values": [
+              6,
+              6,
+              5
+            ],
+            "scope": "numeric CSV rows"
+          },
+          "scatter": "SD 1.364523 / 2.462484 / 1.481089",
+          "source": "Existing private raw-data audit"
+        }
+      ],
+      "title_kind": "Canonical title from existing primary-source registry; fresh Crossref rate-limited",
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1016/j.addma.2025.104705",
+          "status": "metadata_refresh_429; earlier primary evidence retained"
+        }
+      ]
+    },
+    {
+      "id": "P12",
+      "dois": [
+        "10.1017/pds.2026.10563"
+      ],
+      "year": 2026,
+      "title": "Characterising thermal effects on ultimate tensile strength, strain and tensile modulus by material extrusion of carbon fibre reinforced polyamide 6",
+      "display_title": "Ørnes et al. — PA6-CF temperature during deposition and Z tensile behavior",
+      "primary_url": "https://doi.org/10.1017/pds.2026.10563",
+      "public_fulltext": null,
+      "verification_scope": "Existing publisher-fulltext extraction reused",
+      "access_level": "Publisher fulltext",
+      "engine_modules": [
+        "measured_deposition_temperature",
+        "fan_speed_confounding",
+        "interlayer_tensile"
+      ],
+      "limitations": "PDT is 1 Hz outer-wall minimum, not direct interface temperature. Speed, fan and enclosure are confounded; no independent fan coefficient.",
+      "raw_data_status": "Publisher fulltext; raw per-specimen data not verified.",
+      "lineage_id": "ORNES_PA6CF_PDT",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "Polymaker PA6-CF, K2 Plus, standing modified ISO 527-2; 280/120 °C nozzle/bed, h=0.2 mm, max flow 12 mm³/s; conditioned 80 °C ≥6 h; tensile 5 mm/min; generally n=5, 69/119 °C cells n=3 due corruption.",
+      "quantified_observations": [
+        {
+          "property": "UTS",
+          "unit": "MPa",
+          "conditions": "measured outer-wall PDT 104 / 106 / 140 / 165 °C",
+          "values": [
+            14.26,
+            11.82,
+            28.41,
+            36.04
+          ],
+          "n": {
+            "value": 5,
+            "scope": "these cells"
+          },
+          "scatter": "SD 1.73 / 0.79 / 1.36 / 1.88",
+          "source": "Prior publisher extraction"
+        }
+      ],
+      "title_kind": "Canonical title from existing primary-source registry; fresh Crossref rate-limited",
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1017/pds.2026.10563",
+          "status": "metadata_refresh_429; earlier primary evidence retained"
+        }
+      ]
+    },
+    {
+      "id": "P13",
+      "dois": [
+        "10.3390/polym13030399"
+      ],
+      "year": 2021,
+      "title": "Fused Filament Deposition of PLA: The Role of Interlayer Adhesion in the Mechanical Performances",
+      "display_title": "Liparoti et al. — Thermal history, morphology and mechanical performance of FFF PLA",
+      "primary_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7865617/",
+      "public_fulltext": null,
+      "verification_scope": "Existing fulltext extraction reused",
+      "access_level": "Public PMC fulltext",
+      "engine_modules": [
+        "bed_temperature",
+        "cooling_history",
+        "crystallinity"
+      ],
+      "limitations": "Whole-coupon strength can fall as bed temperature rises. Nominal-area and uncertainty conventions need completion; no independent interlayer fracture energy.",
+      "raw_data_status": "Public fulltext; curves not acquired.",
+      "lineage_id": "LIPAROTI_PLA_THERMAL",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "Robotics3D PLA 02-B-0015, Replicator 2X, 0.4 mm nozzle, 40 mm/s, 99% infill, adjacent 90° raster, Type V; ≥5 specimens; tensile 0.16 mm/min.",
+      "quantified_observations": [
+        {
+          "property": "UTS",
+          "unit": "MPa",
+          "conditions": "nozzle 200 °C; bed 70 / 90 / 110 °C",
+          "values": [
+            76.5,
+            74.6,
+            73.6
+          ],
+          "n": {
+            "minimum": 5,
+            "scope": "tensile tests"
+          },
+          "scatter": "±0.7 each; convention unresolved",
+          "source": "Existing extraction"
+        },
+        {
+          "property": "cooling rate",
+          "unit": "C/s",
+          "conditions": "same bed sequence",
+          "values": [
+            80,
+            35,
+            20
+          ],
+          "n": null,
+          "scatter": "not uncertainty",
+          "source": "Existing extraction"
+        }
+      ],
+      "title_kind": null,
+      "bibliographic_metadata": [
+        {
+          "doi": "10.3390/polym13030399",
+          "verified_title": "Fused Filament Deposition of PLA: The Role of Interlayer Adhesion in the Mechanical Performances",
+          "authors": [
+            "Liparoti",
+            "Sofia",
+            "Romano",
+            "Marra",
+            "Pantani"
+          ],
+          "published_date_parts": [
+            [
+              2021,
+              1,
+              27
+            ]
+          ],
+          "url": "https://doi.org/10.3390/polym13030399",
+          "status": "Fresh Crossref metadata"
+        }
+      ]
+    },
+    {
+      "id": "P14",
+      "dois": [
+        "10.1089/3dp.2023.0170"
+      ],
+      "year": 2024,
+      "title": "Markovic et al. — Extrusion multiplier and ABS mechanical performance",
+      "display_title": "Markovic et al. — Extrusion multiplier and ABS mechanical performance",
+      "primary_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11669824/",
+      "public_fulltext": null,
+      "verification_scope": "Existing fulltext/table extraction reused",
+      "access_level": "Public PMC fulltext",
+      "engine_modules": [
+        "flow",
+        "extruded_geometry",
+        "tensile_strength"
+      ],
+      "limitations": "Response is nonmonotonic. Outer layers mean top/bottom rather than wall count. G-code E already incorporates commanded flow; avoid counting twice.",
+      "raw_data_status": "Public fulltext; full raw curves unverified.",
+      "lineage_id": "MARKOVIC_ABS_FLOW",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "Devil Design ABS; nozzle 235 °C, bed 90 °C, h=0.09 mm, nozzle 0.4 mm; flat ISO 527 5A, 10 mm/min; n=5.",
+      "quantified_observations": [
+        {
+          "property": "UTS",
+          "unit": "MPa",
+          "conditions": "flow multiplier 1.00 / 1.25 / 1.50",
+          "values": [
+            31.1,
+            36.4,
+            34.4
+          ],
+          "n": {
+            "value": 5,
+            "scope": "per condition"
+          },
+          "scatter": "SD 1.7 / 1.4 / 1.6",
+          "source": "Existing interaction catalog"
+        }
+      ],
+      "title_kind": "Descriptive review label; canonical title linked below when available",
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1089/3dp.2023.0170",
+          "status": "metadata_refresh_429; earlier primary evidence retained"
+        }
+      ]
+    },
+    {
+      "id": "P15",
+      "dois": [
+        "10.3390/ma17215207"
+      ],
+      "year": 2024,
+      "title": "Notch Effect in Acrylonitrile Styrene Acrylate (ASA) Single-Edge-Notch Bending Specimens Manufactured by Fused Filament Fabrication",
+      "display_title": "ASA tensile and notch-sensitive SENB fracture study",
+      "primary_url": "https://doi.org/10.3390/ma17215207",
+      "public_fulltext": null,
+      "verification_scope": "Existing paper and private raw-curve audit reused",
+      "access_level": "Open paper + public raw dataset",
+      "engine_modules": [
+        "notch",
+        "fracture_mode_I",
+        "tensile_curve_validation"
+      ],
+      "limitations": "Do not transfer a notch result to smooth-section allowable stress. Curves and specimen geometry can validate parsing/fixture-specific response, not arbitrary part failure.",
+      "raw_data_status": "Public Zenodo curves; audit not rerun.",
+      "lineage_id": "ASA_NOTCH_2024",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "3DJake ASA; 9 tensile and 72 SENB tests, raster 0/90°, 30/−60°, ±45°; notch radii 0/0.5/1/2 mm. Paired protocol: flat, h/width 0.2/0.42 mm, 250/90 °C, 40 mm/s; ASTM D638/SENB D6068, 1 mm/min; machined notch and razor crack.",
+      "quantified_observations": [],
+      "title_kind": null,
+      "bibliographic_metadata": [
+        {
+          "doi": "10.3390/ma17215207",
+          "verified_title": "Notch Effect in Acrylonitrile Styrene Acrylate (ASA) Single-Edge-Notch Bending Specimens Manufactured by Fused Filament Fabrication",
+          "authors": [
+            "Cicero",
+            "Devito",
+            "Sánchez",
+            "Arrieta",
+            "Arroyo"
+          ],
+          "published_date_parts": [
+            [
+              2024,
+              10,
+              25
+            ]
+          ],
+          "url": "https://doi.org/10.3390/ma17215207",
+          "status": "Fresh Crossref metadata"
+        }
+      ]
+    },
+    {
+      "id": "P16",
+      "dois": [
+        "10.3390/jcs9040185"
+      ],
+      "year": 2025,
+      "title": "Fracture Behavior of Additively Manufactured Carbon Fiber Reinforced Acrylonitrile-Styrene-Acrylate Containing Cracks and Notches",
+      "display_title": "ASA-CF tensile and notch-sensitive SENB fracture study",
+      "primary_url": "https://doi.org/10.3390/jcs9040185",
+      "public_fulltext": null,
+      "verification_scope": "Existing paper and private raw-curve audit reused",
+      "access_level": "Publisher indexed methods/metadata + public raw dataset; complete PDF/figure review not claimed",
+      "engine_modules": [
+        "short_fiber",
+        "notch",
+        "fracture_mode_I"
+      ],
+      "limitations": "Fiber content is a grade attribute, not a universal uplift. Match notch/fixture/raster and material conditioning before comparing ASA to ASA-CF.",
+      "raw_data_status": "Public Zenodo raw curves; audit not rerun.",
+      "lineage_id": "ASA_CF_NOTCH_2025",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "3DJake ASA-CF10, 10 wt% CF; 9 tensile and 72 SENB tests; four public XLSX files. Paired protocol: flat, h/width 0.2/0.42 mm, 250/90 °C, 40 mm/s; ASTM D638/SENB D6068, 1 mm/min; machined notch and razor crack.",
+      "quantified_observations": [],
+      "title_kind": "Canonical title from existing primary-source registry; fresh Crossref rate-limited",
+      "bibliographic_metadata": [
+        {
+          "doi": "10.3390/jcs9040185",
+          "status": "metadata_refresh_429; earlier primary evidence retained"
+        }
+      ]
+    },
+    {
+      "id": "P17",
+      "dois": [
+        "10.1007/s40192-020-00188-y"
+      ],
+      "year": 2020,
+      "title": "AMB2018-03: Benchmark Physical Property Measurements for Material Extrusion Additive Manufacturing of Polycarbonate",
+      "display_title": "Cole et al. — NIST AM-Bench 2018-03 material-extrusion PC benchmark",
+      "primary_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10938461/",
+      "public_fulltext": null,
+      "verification_scope": "Existing NIST public-PDF extraction reused",
+      "access_level": "NIST/PMC public fulltext",
+      "engine_modules": [
+        "voids",
+        "raster_interfaces",
+        "actual_failure_observation"
+      ],
+      "limitations": "Reported inch/mm dimensional text discrepancy must be reconciled from figures/actual specimen metadata before area normalization. Benchmark is not arbitrary terminal-root validation.",
+      "raw_data_status": "NIST primary fulltext; public benchmark lineage, raw payload not replayed.",
+      "lineage_id": "NIST_AMB2018_03_PC",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "PC AM-Bench specimens; tensile failure and CT/void/raster-interface characterization. Local private PDF already retained.",
+      "quantified_observations": [],
+      "title_kind": null,
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1007/s40192-020-00188-y",
+          "verified_title": "AMB2018-03: Benchmark Physical Property Measurements for Material Extrusion Additive Manufacturing of Polycarbonate",
+          "authors": [
+            "Cole",
+            "Gardea",
+            "Henry",
+            "Seppala",
+            "Garboczi",
+            "Migler",
+            "Shumeyko",
+            "Westrich",
+            "Orski",
+            "Gair"
+          ],
+          "published_date_parts": [
+            [
+              2020,
+              10,
+              29
+            ]
+          ],
+          "url": "https://doi.org/10.1007/s40192-020-00188-y",
+          "status": "Fresh Crossref metadata"
+        }
+      ]
+    },
+    {
+      "id": "P18",
+      "dois": [
+        "10.1017/pds.2026.10548"
+      ],
+      "year": 2026,
+      "title": "Achievable mechanical performance of generatively designed PA6-CF and PLA components fabricated by desktop material extrusion",
+      "display_title": "Elverum et al. — Strength and fracture behavior of a printed generative-design armrest",
+      "primary_url": "https://doi.org/10.1017/pds.2026.10548",
+      "public_fulltext": "https://www.cambridge.org/core/services/aop-cambridge-core/content/view/9CAC2CB69BC9B57A7D5D0C0080534AAD/S2732527X26105483a.pdf/achievable-mechanical-performance-of-generatively-designed-pa6-cf-and-pla-components-fabricated-by-desktop-material-extrusion.pdf",
+      "verification_scope": "Fresh Cambridge primary fulltext",
+      "access_level": "Publisher fulltext",
+      "engine_modules": [
+        "whole_part_validation",
+        "terminal_root",
+        "buckling_vs_fracture",
+        "fixture"
+      ],
+      "limitations": "Small n, differing printers/nozzles, strut/clamp failure, interlocking and post-failure buckling. No common material factor; post-failure peak is not first-fracture load.",
+      "raw_data_status": "Primary fulltext; detailed synchronized raw force/crack paths unverified.",
+      "lineage_id": "ELVERUM_ARMREST_2026",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "n=3 per material; PolyMide PA6-CF on H2D 275/100/60 °C, nozzle 0.4 mm; Polyterra PLA on X1C 220/45 °C, nozzle 0.6 mm; h=0.2 mm, two walls, full rectilinear infill. PA6 dried 85 °C/24 h; PLA RH<2%. Arm fixture 0.1 mm/s, 10 Hz.",
+      "quantified_observations": [
+        {
+          "property": "maximum reported peak / pre-failure load",
+          "unit": "kN",
+          "conditions": "PA6-CF peak / PLA pre-failure maximum",
+          "values": [
+            1.9089,
+            1.6825
+          ],
+          "n": {
+            "value": 3,
+            "scope": "each material"
+          },
+          "scatter": "maxima, not means or uncertainty bounds",
+          "source": "Publisher result discussion"
+        }
+      ],
+      "title_kind": "Canonical publisher title refreshed",
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1017/pds.2026.10548",
+          "status": "metadata_refresh_429; earlier primary evidence retained"
+        }
+      ]
+    },
+    {
+      "id": "P19",
+      "dois": [
+        "10.3390/jmmp7010044"
+      ],
+      "year": 2023,
+      "title": "Influence of Ambient Temperature and Crystalline Structure on Fracture Toughness and Production of Thermoplastic by Enclosure FDM 3D Printer",
+      "display_title": "Thumsorn et al. — PLA chamber temperature and cooling-fan study",
+      "primary_url": "https://doi.org/10.3390/jmmp7010044",
+      "public_fulltext": null,
+      "verification_scope": "Fresh institutional metadata; publisher XML/PDF attempts blocked (403/429)",
+      "access_level": "Institutional metadata only",
+      "engine_modules": [
+        "fan_chamber_interaction",
+        "crystallinity"
+      ],
+      "limitations": "Cannot claim numeric fan×chamber coefficients or full factorial coverage from accessible metadata.",
+      "raw_data_status": "No newly verified fulltext or public raw dataset.",
+      "lineage_id": "THUMSORN_PLA_CHAMBER_FAN",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "Five commercial/laboratory PLA formulations; chamber room temperature–75 °C with/without cooling fan. Exact grade mapping, specimen method, n and tables not verified.",
+      "quantified_observations": [],
+      "title_kind": null,
+      "bibliographic_metadata": [
+        {
+          "doi": "10.3390/jmmp7010044",
+          "verified_title": "Influence of Ambient Temperature and Crystalline Structure on Fracture Toughness and Production of Thermoplastic by Enclosure FDM 3D Printer",
+          "authors": [
+            "Thumsorn",
+            "Prasong",
+            "Ishigami",
+            "Kurose",
+            "Kobayashi",
+            "Ito"
+          ],
+          "published_date_parts": [
+            [
+              2023,
+              2,
+              8
+            ]
+          ],
+          "url": "https://doi.org/10.3390/jmmp7010044",
+          "status": "Fresh Crossref metadata"
+        }
+      ]
+    },
+    {
+      "id": "P20",
+      "dois": [
+        "10.1016/j.polymertesting.2026.109340"
+      ],
+      "year": 2026,
+      "title": "Characterization of the mode II interlayer fracture toughness of two three-dimensional printed polymers",
+      "display_title": "Zheng et al. — Modified short-beam shear fracture characterization of printed PA/PLA",
+      "primary_url": "https://doi.org/10.1016/j.polymertesting.2026.109340",
+      "public_fulltext": null,
+      "verification_scope": "Fresh publisher abstract/Crossref metadata; September 2026 volume 162",
+      "access_level": "Publisher abstract/metadata",
+      "engine_modules": [
+        "fracture_mode_II_candidate",
+        "elastic_plastic_fracture"
+      ],
+      "limitations": "PA may use a different additive route; FFF applicability unconfirmed. Exclude from FFF calibration. Shear-dominated coupon fracture is not a pure interface law automatically.",
+      "raw_data_status": "Raw available on request; full methods not verified.",
+      "lineage_id": "ZHENG_SBSF_2026",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": null,
+      "test_context": "Modified SBSF notch and manually sharpened crack; PA/PLA, FEA+DIC. Exact manufacturing route, grade, geometry, n and numerical table inaccessible.",
+      "quantified_observations": [],
+      "title_kind": null,
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1016/j.polymertesting.2026.109340",
+          "verified_title": "Characterization of the mode II interlayer fracture toughness of two three-dimensional printed polymers",
+          "authors": [
+            "Zheng",
+            "Wang",
+            "Xu"
+          ],
+          "published_date_parts": [
+            [
+              2026,
+              9
+            ]
+          ],
+          "url": "https://doi.org/10.1016/j.polymertesting.2026.109340",
+          "status": "Fresh Crossref metadata"
+        }
+      ]
+    },
+    {
+      "id": "P21",
+      "dois": [
+        "10.1111/str.70009"
+      ],
+      "year": 2025,
+      "title": "Experimental Investigation on Mode I/II/III Fracture Behaviour of Additively Manufactured PLA Materials: Effects of Build Orientation",
+      "display_title": "Paygozar and Gorguluarslan — FFF PLA fracture under Modes I, II and III",
+      "primary_url": "https://onlinelibrary.wiley.com/doi/10.1111/str.70009",
+      "public_fulltext": null,
+      "verification_scope": "Fresh Wiley fulltext, Tables 1–2 and methods",
+      "access_level": "Publisher fulltext",
+      "engine_modules": [
+        "fracture_modes_I_II_III",
+        "anisotropy",
+        "mode_purity",
+        "notch"
+      ],
+      "limitations": "Mode II not pure interlayer; Mode III crack deviations; LEFM despite nonlinear behavior. Prose SD<1% conflicts with table. Table 2 E header GPa contains ~3300 (MPa scale); methods print m instead of mm. No clean three-mode interface calibration.",
+      "raw_data_status": "Per-specimen supplementary DOCX linked, fetch 403; raw request only.",
+      "lineage_id": "PAYGOZAR_PLA_3MODE_2025",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": [
+        "UNCERTAINTY_PROSE_TABLE_CONFLICT",
+        "MODULUS_UNIT_HEADER_CONFLICT",
+        "METHOD_LENGTH_UNIT_TYPO"
+      ],
+      "test_context": "Porima 3D Tough PLA, ZAXE X3; H/L/V builds, ±45° raster, 30 mm/s, 215/60 °C, h/width 0.2/0.45 mm; n=5 per build/mode. SENB symmetric/asymmetric four-point bending at 5 mm/min; blade-sharpened a=10 mm, w/t=20/10 mm. Mode III TSCP fixture.",
+      "quantified_observations": [
+        {
+          "property": "KI / KII / KIII",
+          "unit": "MPa sqrt(m)",
+          "conditions": "H / L / V",
+          "values": [
+            {
+              "mode": "I",
+              "mean": [
+                4.19,
+                4.15,
+                3.73
+              ],
+              "sd": [
+                0.153,
+                0.109,
+                0.241
+              ]
+            },
+            {
+              "mode": "II",
+              "mean": [
+                3.54,
+                3.32,
+                3.79
+              ],
+              "sd": [
+                0.042,
+                0.064,
+                0.039
+              ]
+            },
+            {
+              "mode": "III",
+              "mean": [
+                2.86,
+                3.2,
+                3.23
+              ],
+              "sd": [
+                0.1,
+                0.23,
+                0.17
+              ]
+            }
+          ],
+          "n": {
+            "value": 5,
+            "scope": "per build/mode"
+          },
+          "scatter": "Table 1 SD",
+          "source": "Publisher Table 1"
+        }
+      ],
+      "title_kind": "Canonical publisher title refreshed",
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1111/str.70009",
+          "status": "metadata_refresh_429; earlier primary evidence retained"
+        }
+      ]
+    },
+    {
+      "id": "P22",
+      "dois": [
+        "10.1007/s40964-026-01594-y"
+      ],
+      "year": 2026,
+      "title": "Influence of molecular weight distribution on mechanical and interlayer properties of FFF printed PA12",
+      "display_title": "Pejak Simunec et al. — Influence of molecular weight distribution on mechanical and interlayer properties of FFF printed PA12",
+      "primary_url": "https://link.springer.com/article/10.1007/s40964-026-01594-y",
+      "public_fulltext": "https://link.springer.com/content/pdf/10.1007/s40964-026-01594-y.pdf",
+      "verification_scope": "Fresh publisher fulltext/PDF Table 6; CC BY 4.0",
+      "access_level": "Publisher open fulltext",
+      "engine_modules": [
+        "material_grade",
+        "fracture_mode_I",
+        "temperature",
+        "thermal_history"
+      ],
+      "limitations": "Initial versus propagation energy differs; grade comparisons confound speed/flow. Large scatter, no direct diffusion kinetics. Data-availability statement claims no datasets despite experiments; public raw unresolved.",
+      "raw_data_status": "Fulltext CC BY; supplementary curves mentioned, complete raw not verified.",
+      "lineage_id": "SIMUNEC_PA12_MWD_2026",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": [
+        "RAW_AVAILABILITY_STATEMENT_CONFLICT",
+        "EXACT_DCB_N_UNRESOLVED"
+      ],
+      "test_context": "UBE 3012U/Kodak Nylon12 Natural/Evonik L2140/50:50 UBE–Evonik blend; dried vacuum 80 °C overnight. Ultimaker 3, nozzle/h=0.4/0.2 mm, bed 100 °C; speed 15/15/8/15 mm/s, extrusion 100/100/100/106%. ASTM D5528-13 DCB with steel skins/Kapton starter, 1 mm/min.",
+      "quantified_observations": [
+        {
+          "property": "initial GIc",
+          "unit": "J/m2",
+          "conditions": "grade order above; nozzle 210 °C",
+          "values": [
+            464,
+            232,
+            96.6,
+            521
+          ],
+          "n": {
+            "minimum_reported": 5,
+            "exact_per_DCB_cell": null,
+            "scope": "mechanical section; DCB-specific exact n unclear"
+          },
+          "scatter": "SD 94.7 / 11.2 / 19.6 / 352",
+          "source": "PDF Table 6"
+        },
+        {
+          "property": "initial GIc",
+          "unit": "J/m2",
+          "conditions": "same grade order; nozzle 250 °C",
+          "values": [
+            5757,
+            5063,
+            3210,
+            7579
+          ],
+          "n": {
+            "minimum_reported": 5,
+            "exact_per_DCB_cell": null,
+            "scope": "same qualification"
+          },
+          "scatter": "SD 1794 / 1676 / 646.9 / 3667",
+          "source": "PDF Table 6"
+        }
+      ],
+      "title_kind": "Canonical publisher title refreshed",
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1007/s40964-026-01594-y",
+          "status": "metadata_refresh_429; earlier primary evidence retained"
+        }
+      ]
+    },
+    {
+      "id": "P23",
+      "dois": [
+        "10.1007/s00170-024-14079-5"
+      ],
+      "year": 2024,
+      "title": "A multidisciplinary approach to investigate the influence of process parameters on interlayer adhesion in material extrusion additive manufacturing",
+      "display_title": "Lambiase et al. — A multidisciplinary approach to investigate process parameters and interlayer adhesion",
+      "primary_url": "https://link.springer.com/article/10.1007/s00170-024-14079-5",
+      "public_fulltext": "https://link.springer.com/content/pdf/10.1007/s00170-024-14079-5.pdf",
+      "verification_scope": "Fresh publisher fulltext/PDF Tables 2 and 4; CC BY 4.0",
+      "access_level": "Publisher open fulltext",
+      "engine_modules": [
+        "flow_speed_raster_interaction",
+        "fracture_mode_I",
+        "thermal_history",
+        "censored_tests"
+      ],
+      "limitations": "Table zeros represent uncomputable unstable/off-plane initiation, not physical zero. Prose/table conflict for 0/90°, 4000, 100% and ±45°, 1000, 96%. Quarantine disputed cells. Increased flow is nonmonotonic despite hotter substrate.",
+      "raw_data_status": "Raw data on request only.",
+      "lineage_id": "LAMBIASE_PLA_DCB_FLOW_2024",
+      "engine_use": "EVIDENCE_COMPARISON_ONLY; no transferred coefficient or failure label",
+      "quality_flags": [
+        "ZERO_AS_UNCOMPUTABLE_STATUS",
+        "PROSE_TABLE_CELL_CONFLICT"
+      ],
+      "test_context": "RS PRO PLA, Ender 6, 210/60 °C; nozzle/h/width=0.4/0.2/0.5 mm, no shells, full grid. 2 rasters × 3 flows (96/100/104%) × 3 speeds (1000/2000/4000 mm/min); n=4, 72 DCB; ASTM D5528 VIS initiation, 1 mm/min.",
+      "quantified_observations": [
+        {
+          "property": "average GIc",
+          "unit": "kJ/m2",
+          "conditions": "±45°; flow 100→104% at 1000 mm/min",
+          "values": [
+            7.58,
+            2.44
+          ],
+          "n": {
+            "value": 4,
+            "scope": "per cell"
+          },
+          "scatter": "sigma 0.04 / 0.25",
+          "source": "PDF Table 4"
+        },
+        {
+          "property": "average GIc",
+          "unit": "kJ/m2",
+          "conditions": "±45°; flow 100→104% at 2000 mm/min",
+          "values": [
+            4.85,
+            3.85
+          ],
+          "n": {
+            "value": 4,
+            "scope": "per cell"
+          },
+          "scatter": "sigma 0.94 / 0.65",
+          "source": "PDF Table 4"
+        }
+      ],
+      "title_kind": null,
+      "bibliographic_metadata": [
+        {
+          "doi": "10.1007/s00170-024-14079-5",
+          "verified_title": "A multidisciplinary approach to investigate the influence of process parameters on interlayer adhesion in material extrusion additive manufacturing",
+          "authors": [
+            "Lambiase",
+            "Liparoti",
+            "Pace",
+            "Scipioni",
+            "Paoletti"
+          ],
+          "published_date_parts": [
+            [
+              2024,
+              7,
+              4
+            ]
+          ],
+          "url": "https://doi.org/10.1007/s00170-024-14079-5",
+          "status": "Fresh Crossref metadata"
+        }
+      ]
+    }
+  ],
+  "dataset_candidates": [
+    {
+      "id": "D01",
+      "doi": "10.5281/zenodo.21939238",
+      "url": "https://zenodo.org/records/21939238",
+      "title": "Bayesian Sequential Experiments for Tensile Testing of Multi-material FFF Dogbones",
+      "license": "CC BY 4.0",
+      "access_level": "Repository metadata + supporting ZIP payload verified",
+      "raw_curve_status": "RawData.zip 3,882,395,590 bytes, MD5 fc29e858a8a730b34058a2c2360a0de1; not downloaded or checksum-verified here.",
+      "property_semantics": "Notebook integrates tensile stress versus strain. This is unnotched energy per volume once units are resolved, NOT GIc or K.",
+      "uncertainty": "Stress/strain units, percent-versus-dimensionless strain and specimen lineage unresolved; no numeric toughness ingested.",
+      "engine_use": "Curve parser and units/lineage test candidate only; no interlayer fracture calibration."
+    },
+    {
+      "id": "D02",
+      "doi": "10.48804/B0CMEN",
+      "url": "https://rdr.kuleuven.be/dataset.xhtml?persistentId=doi:10.48804/B0CMEN",
+      "title": "Thermal data for fault detection and parameter optimization",
+      "license": "CC BY 4.0",
+      "access_level": "Dataverse metadata + README and DoE CSV read",
+      "raw_curve_status": "564 metadata files, large thermal corpus not downloaded; G-code ZIP repository checksum only.",
+      "property_semantics": "Print fault/success and thermal observations, not mechanical first-fracture labels.",
+      "uncertainty": "Printer/material grade and full measurement protocol absent from fetched README/CSV; data-descriptor manuscript stated as submitted.",
+      "engine_use": "Thermal-context/return-time holdout candidate; cannot train a strength outcome from G-code alone."
+    },
+    {
+      "id": "D03",
+      "doi": "10.5281/zenodo.21792790",
+      "url": "https://github.com/VISTA-Laboratory/dataset-FFF-printer-full-lifecycle-vibration-monitoring",
+      "title": "FFF printer full-lifecycle vibration monitoring with tensile tests",
+      "license": "CC BY-SA 4.0 per repository",
+      "access_level": "Primary lab README; full raw curves not checksum-verified",
+      "raw_curve_status": "Repository raw-curve inventory not independently replayed.",
+      "property_semantics": "Tensile machine-health degradation and raw force N/displacement mm; not interfacial fracture energy.",
+      "uncertainty": "0.6 mm nozzle period excluded from comparisons; exact filament grade, drying and print thermal conditions incomplete. Preprint SSRN 7349238, journal publication unverified.",
+      "engine_use": "Independent curve-parser/machine-health confounder candidate; no spatial first-failure validation."
+    }
+  ],
+  "numerical_scope": "Representative published aggregates with conditions and locators; not complete source tables, curves or invented individual specimens."
+}
