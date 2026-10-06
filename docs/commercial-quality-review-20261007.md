@@ -59,7 +59,7 @@ The [calibration contract](process-calibration.md) documents `PROCESS_CALIBRATIO
 
 ### Executed verification
 
-- Actual agent tool results show **56 focused / 281 full core** tests passing on prepared Python **3.12.14**. Original stdout was not saved; a retrospective tool-result receipt records that limitation. This is separate from final-image host proof.
+- Actual agent tool results show **56 focused / 281 full core** tests passing; the full run used prepared Python **3.12.14**. The focused run's exact interpreter/version was not retained. Original stdout was not saved; a retrospective tool-result receipt records those limitations. This is separate from final-image host proof.
 - The final frozen image passed **651 tests and 164 subtests**, with **20 skipped**, two dependency deprecation warnings and exit zero in **276.57 seconds**, using an isolated test database and read-only tests. Earlier stale-label failure receipts are retained.
 - All four deployed services match the final image, 106 runtime hashes, versions and native scanner modules. Deployment had no active jobs; verification found zero restarts/OOM. Local/build/service identities match for the R6 archive, loaded private pricing document and material catalogue without publishing private contents.
 - Existing 100-estimate input/result snapshots and cached viewer geometry are unchanged, with no whole-corpus rescan or new quote saved. Current first-page monetary amounts match prior reports.
