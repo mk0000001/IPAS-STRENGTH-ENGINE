@@ -2,6 +2,8 @@
 
 ## 한국어
 
+최신 배포: [PrintOps v0.5.24 견적 목록 지연 수정·실측 보정 적격성](docs/history-calibration-review-20261007.md). 목록은 요약 응답으로 전환했으며, 실측 강도 보정은 적격한 측정자료 부족으로 미완료입니다. 강도 v0.24.0 유지.
+
 최종 화면 배포: [PrintOps v0.5.23 후보 카드 반응형 검증](docs/responsive-candidates-release-20261007.md). 강도 v0.24.0 유지.
 
 최신 품질 검토: [관측 출처·보고서 단면·견적 이력 성능 검증](docs/commercial-quality-review-20261007.md).
@@ -35,6 +37,8 @@ python -m unittest discover -s tests
 ```
 
 ## English
+
+Latest deployment: [PrintOps v0.5.24 history latency and empirical qualification](docs/history-calibration-review-20261007.md). The UI uses compact summary responses; empirical strength calibration remains incomplete without eligible measurements. Strength remains v0.24.0.
 
 Final presentation deployment: [PrintOps v0.5.23 responsive candidate verification](docs/responsive-candidates-release-20261007.md). Strength remains v0.24.0.
 

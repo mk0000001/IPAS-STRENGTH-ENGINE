@@ -2,6 +2,8 @@
 
 ## 한국어
 
+후속 이력 지연 개선: [PrintOps v0.5.24 요약 목록·원본 상세 조회와 실측 자료 적격성](history-calibration-review-20261007.md). 아래 큰 전체 이력의 성능 수치는 v0.5.22 당시의 기록이며, 최신 UI 목록은 요약 경로를 사용한다. 실측 보정 한계는 유지된다.
+
 후속 화면 수정 배포: [PrintOps v0.5.23 후보 카드 반응형 검증](responsive-candidates-release-20261007.md). 아래 v0.5.22 결과는 해당 릴리스 당시의 검증 기록이며, 좁은 후보 카드 문제는 후속 수정에서 해결했다.
 
 **강도 v0.24.0 / PrintOps v0.5.22-commercial-quality를 실제 운영 서비스에 배포했다.** 최종 동결 이미지의 전체 시험, 네 서비스, 실제 HTML/PDF, 브라우저 및 읽기 전용 API 검증을 수행했다. 완료된 [v0.23 전체 엔진 검토](whole-engine-review-20261007.md)의 물리 계산 수정에 이어 출처 감사·표시·견적 이력 응답을 보완한다. 이전 운영 결과를 새 릴리스의 증명으로 대신하지 않는다.
@@ -48,6 +50,8 @@
 [재료 근거](material-evidence-review-20261007.md), [접합·파괴 근거](fracture-evidence-review-20261007.md), [D01 Supporting 데이터 검토](d01-supporting-data-qualification-20261007.md)를 함께 읽어야 한다. D01은 작은 supporting ZIP과 35조건을 확인했지만 원시 CSV의 force/stress/strain 단위·gauge area·first-failure는 미확인이다. 이 작업은 calibrated physical accuracy, 안전 설계 하중, 특허 가능성 또는 상용 인증을 입증하지 않는다.
 
 ## English
+
+Subsequent history improvement: [PrintOps v0.5.24 summary lists, original-detail retrieval and empirical qualification](history-calibration-review-20261007.md). The full-history timings below remain historical v0.5.22 observations; the current UI uses summaries. The physical calibration limitation remains.
 
 Subsequent presentation deployment: [PrintOps v0.5.23 responsive candidate verification](responsive-candidates-release-20261007.md). The v0.5.22 results below are historical release evidence; the narrow-card issue is resolved by the follow-up.
 

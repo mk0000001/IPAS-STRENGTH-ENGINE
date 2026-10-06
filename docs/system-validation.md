@@ -1,5 +1,9 @@
 # 시스템 검증 결과와 적용 한계
 
+최신 배포(2026-10-07): [PrintOps v0.5.24 견적 목록 지연 수정·실측 보정 적격성](history-calibration-review-20261007.md). 이력은 개선됐으며 실측 보정은 적격한 측정자료 부족으로 미완료다. 강도 v0.24.0 유지.
+
+Latest deployment (2026-10-07): [PrintOps v0.5.24 history latency and empirical qualification](history-calibration-review-20261007.md). List latency improved; empirical calibration remains incomplete without eligible measurements. Strength remains v0.24.0.
+
 최종 화면 배포(2026-10-07): [PrintOps v0.5.23 후보 카드 반응형 배치 검증](responsive-candidates-release-20261007.md). 강도 v0.24.0 유지.
 
 Final presentation deployment (2026-10-07): [PrintOps v0.5.23 responsive candidate verification](responsive-candidates-release-20261007.md). Strength remains v0.24.0.

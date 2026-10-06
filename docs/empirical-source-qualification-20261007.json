@@ -1,0 +1,231 @@
+{
+  "schema": "BOUNDED_EMPIRICAL_SOURCE_QUALIFICATION_V1",
+  "generated_at_utc": "2026-10-06T17:39:11.987380+00:00",
+  "status": "NO_ELIGIBLE_CALIBRATION_DATASET_IN_BOUNDED_REVIEW",
+  "reviewed_candidate_datasets": 2,
+  "reviewed_candidates_are_previously_retained": true,
+  "new_large_archives_downloaded": 0,
+  "d03_review_repeated": false,
+  "calibration_contract": "PROCESS_CALIBRATION_AUDIT_V2_OBSERVATION_PROVENANCE",
+  "minimum_evaluation_campaigns_per_matched_stratum": 3,
+  "contract_preserved": true,
+  "model_fitting_performed": false,
+  "approved_model_ids_observed": [],
+  "new_approved_models": 0,
+  "actual_target_part_first_failure_records_verified": 0,
+  "eligible_fit_rows": 0,
+  "independent_campaign_holdout_rows": 0,
+  "source_reviews": [
+    {
+      "candidate_id": "ASA_FRADDCO_2024",
+      "primary_dataset_url": "https://zenodo.org/records/14065523",
+      "primary_paper_url": "https://doi.org/10.3390/ma17215207",
+      "trade_grade": "3DJake ASA",
+      "target": "Peak engineering tensile stress = peak load N / measured initial width-times-thickness mm2",
+      "target_is_first_failure": false,
+      "stress_area_basis": "GROSS_COUPON; not net deposited or bonded contact area",
+      "specimen_count_basis": "Saved source-linked tensile extraction, original workbook retained; curves not re-extracted this turn.",
+      "original_specimen_count": 9,
+      "saved_peak_load_area_arithmetic_rechecked": true,
+      "checked_process_settings": {
+        "printer": "CreatBot F430",
+        "layer_height_mm": 0.2,
+        "line_width_mm": 0.42,
+        "nozzle_c": 250,
+        "bed_c": 90,
+        "speed_mm_s": 40,
+        "speed_basis": "PRINT_SETTING",
+        "infill_percent": 100,
+        "orientation": "FLAT_BUILD",
+        "raster_angles": [
+          "0/90",
+          "45/-45",
+          "30/-60"
+        ],
+        "test_standard": "ASTM D638",
+        "crosshead_speed_mm_min": 1,
+        "test_temperature_note": "Room temperature; no exact numeric temperature or RH assigned."
+      },
+      "settings_source_locator": "ASA-paper.xml#sec2-materials-17-05207; Table 1 is aggregate comparison only",
+      "specimen_locators": [
+        "UC_FRADDCO_TensileTests_ASA.xlsx#0-90_1!A675",
+        "UC_FRADDCO_TensileTests_ASA.xlsx#0-90_2!A637",
+        "UC_FRADDCO_TensileTests_ASA.xlsx#0-90_3!A600",
+        "UC_FRADDCO_TensileTests_ASA.xlsx#30-60_1!A517",
+        "UC_FRADDCO_TensileTests_ASA.xlsx#30-60_2!A539",
+        "UC_FRADDCO_TensileTests_ASA.xlsx#30-60_3!A526",
+        "UC_FRADDCO_TensileTests_ASA.xlsx#45-45_1!A326",
+        "UC_FRADDCO_TensileTests_ASA.xlsx#45-45_2!A524",
+        "UC_FRADDCO_TensileTests_ASA.xlsx#45-45_3!A636"
+      ],
+      "complete_contract_specimen_rows": 0,
+      "missing_contract_context_even_after_narrow_methods_check": [
+        "annealing",
+        "chamber_c",
+        "conditioning_duration_h",
+        "fan_percent",
+        "flow_ratio",
+        "moisture_condition",
+        "nozzle_diameter_mm",
+        "pattern",
+        "test_relative_humidity_percent",
+        "test_temperature_c",
+        "walls"
+      ],
+      "distinct_experimental_campaigns_represented": 1,
+      "independently_established_campaigns_for_holdout": 0,
+      "blockers": [
+        "Unreported batch, moisture/conditioning and process/test fields.",
+        "Only one same-grade campaign, below minimum of three.",
+        "Supported process variables are fixed; raster variation changes matching context.",
+        "Peak tensile stress and SENB outcomes do not label actual target-part first crack."
+      ],
+      "decision": "COMPARISON_AND_PARSER_EVIDENCE_ONLY; NOT_ELIGIBLE_FOR_FIT_OR_CAMPAIGN_HOLDOUT",
+      "current_primary_workbook_check": {
+        "url": "https://zenodo.org/api/records/14065523",
+        "status": "CHECKED_LIVE",
+        "local_md5": "e14fd985fb799ccf36883e644f360ace",
+        "local_bytes": 377305,
+        "local_original_matches_primary_md5_and_size": true
+      },
+      "retained_workbook_sha256": "f2a6ca65c89a2cc7ad1bf860d4fde61be628d6850c26a727897548d6d0394b94"
+    },
+    {
+      "candidate_id": "NESHEIM_PA6CF_IR_2024_2025",
+      "primary_dataset_url": "https://data.mendeley.com/datasets/pdfz6y8bmh/1",
+      "primary_paper_url": "https://doi.org/10.1016/j.addma.2025.104705",
+      "primary_institution_abstract_url": "https://research-information.bris.ac.uk/en/publications/identifying-thermal-effects-during-3d-printing-by-comparing-in-la/",
+      "trade_grade": null,
+      "target": "Reported peak Load/Area/UTS table; full force-displacement curves unavailable in inspected receipt",
+      "target_is_first_failure": false,
+      "stress_area_basis": "Source-reported Area; gauge and actual-versus-nominal/contact meaning unresolved",
+      "original_numeric_record_count_in_retained_audit": 108,
+      "fresh_raw_row_extraction_performed": false,
+      "raw_target_units_verified_again_this_turn": false,
+      "checked_process_settings": {
+        "material_family": "carbon-fiber-reinforced polyamide 6",
+        "single_wall_thickness_mm": 0.8,
+        "layer_height_mm": 0.3,
+        "speed_min_mm_per_s": 3,
+        "speed_max_mm_per_s": 50,
+        "heater_nominal_power_W_approximate": 40,
+        "treatments": [
+          "noheat",
+          "preheat",
+          "postheat"
+        ],
+        "property": "interlayer tensile ultimate stress"
+      },
+      "complete_contract_specimen_rows": 0,
+      "unknown_required_context": [
+        "exact trade grade",
+        "filament batch",
+        "conditioning and residual moisture",
+        "bed temperature",
+        "chamber temperature",
+        "mechanical test speed",
+        "complete specimen geometry and gauge definition",
+        "actual vs nominal area definition",
+        "per-specimen failure-location flag"
+      ],
+      "distinct_experimental_campaigns_represented": 1,
+      "independently_established_campaigns_for_holdout": 0,
+      "source_discrepancies_retained_without_reinterpretation": [
+        {
+          "locator": "Thermal and strength data.xlsx, Strength data!D11:D12",
+          "detail": "3 mm/s preheat workbook statistics reference D6:D10 (five observations); CSV contains eight numeric observations. B30 legend Broke in gripper and cell styles imply exclusion but CSV lacks per-specimen flag. Excluded from selected aggregates and calibration."
+        },
+        {
+          "locator": "Thermal and strength data.xlsx, Thermal data, right summary",
+          "detail": "Some noheat 6 mm/s summary formula cells reference 12 mm/s cells; some 30 mm/s summaries differ from complete original rows. Summary temperatures not ingested."
+        },
+        {
+          "locator": "temp_plot.py",
+          "detail": "Tnozzle=300 is an author script constant, not verified measured nozzle data. Heater efficiency 0.85 is a study modelling assumption, not an empirical part-strength margin."
+        }
+      ],
+      "blockers": [
+        "Exact trade grade, batch, moisture, area/gauge and several test/process settings unresolved.",
+        "One paper/data experimental lineage does not supply three independent campaigns.",
+        "3 mm/s preheat row exclusion differs between workbook and CSV; summary thermal formulas conflict.",
+        "No full force curves or per-specimen first-failure location/time manifest."
+      ],
+      "decision": "COMPARISON_EVIDENCE_ONLY; NOT_ELIGIBLE_FOR_FIT_OR_CAMPAIGN_HOLDOUT",
+      "retained_file_manifest": {
+        "all_eight_sha256_matched": true,
+        "original_source_files_replicated_in_repository": false,
+        "author_python_executed": false,
+        "files": [
+          {
+            "name": "Thermal and strength data.xlsx",
+            "file_id": "44641240-0f0c-4871-8239-730d271b7d3b",
+            "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/44641240-0f0c-4871-8239-730d271b7d3b/file_downloaded",
+            "byte_count": 66784,
+            "sha256": "1a69d48f14e487daed92188675ef381c2e094347b0e9a770e54565357a1e176a",
+            "sha256_matches_official_manifest": true
+          },
+          {
+            "name": "temp_plot.py",
+            "file_id": "fb0f1275-2373-4662-b4e7-52657e83bcb6",
+            "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/fb0f1275-2373-4662-b4e7-52657e83bcb6/file_downloaded",
+            "byte_count": 16008,
+            "sha256": "93cac13e70888b27f4fedd07129e6f0ee197ac06ff8f2f99be77e52121121118",
+            "sha256_matches_official_manifest": true
+          },
+          {
+            "name": "Strength_noheat.csv",
+            "file_id": "a97a41a1-b766-4304-a25e-a8ff50d9cb57",
+            "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/a97a41a1-b766-4304-a25e-a8ff50d9cb57/file_downloaded",
+            "byte_count": 635,
+            "sha256": "c08d9923acfdea427effcaa77d9bca784f40c747cd0387aba057054b2a32d530",
+            "sha256_matches_official_manifest": true
+          },
+          {
+            "name": "Strength_postheat.csv",
+            "file_id": "70bdc9fc-7cc1-42d8-b1c5-139f1bc25787",
+            "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/70bdc9fc-7cc1-42d8-b1c5-139f1bc25787/file_downloaded",
+            "byte_count": 1080,
+            "sha256": "a3a7c972563f5a5d5d79a2b54b5ded833ae51164e367dfe9cbebf49c42c2a593",
+            "sha256_matches_official_manifest": true
+          },
+          {
+            "name": "Strength_preheat.csv",
+            "file_id": "730e7d63-c522-42c3-b814-7ba3b42a558c",
+            "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/730e7d63-c522-42c3-b814-7ba3b42a558c/file_downloaded",
+            "byte_count": 1259,
+            "sha256": "4ec57e26d1d49a7988e23624de3c0c33c0275d5642c298714015fd564718ebe7",
+            "sha256_matches_official_manifest": true
+          },
+          {
+            "name": "Temp_noheat.csv",
+            "file_id": "4f6f8de2-00b5-4636-b143-7c430dfef01c",
+            "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/4f6f8de2-00b5-4636-b143-7c430dfef01c/file_downloaded",
+            "byte_count": 810,
+            "sha256": "6e60c16182620a4b6265e36b49a619d0a068ebdef88648b628be5f7db8192737",
+            "sha256_matches_official_manifest": true
+          },
+          {
+            "name": "Temp_postheat.csv",
+            "file_id": "2d9645e6-0a7f-4116-a837-466c275bc7f1",
+            "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/2d9645e6-0a7f-4116-a837-466c275bc7f1/file_downloaded",
+            "byte_count": 1064,
+            "sha256": "3316271a3c63a808169097d34c0bfeb14b28904cb3b6e555891c2fa324bf88ff",
+            "sha256_matches_official_manifest": true
+          },
+          {
+            "name": "Temp_preheat.csv",
+            "file_id": "4ba84c16-c2ab-4570-a605-30ef5bdeb324",
+            "download_url": "https://data.mendeley.com/public-files/datasets/pdfz6y8bmh/files/4ba84c16-c2ab-4570-a605-30ef5bdeb324/file_downloaded",
+            "byte_count": 1054,
+            "sha256": "8908caf08c9d3b7cd171e4d45527d60fe5b6c0bec2363973217b657eb774e376",
+            "sha256_matches_official_manifest": true
+          }
+        ]
+      }
+    }
+  ],
+  "user_measured_failure_records": "USER_CONFIRMED_NONE",
+  "physical_calibration_limit_resolved": false,
+  "runtime_model_changed": false,
+  "derivation": "Sanitized qualification receipt; original curves were not newly extracted."
+}

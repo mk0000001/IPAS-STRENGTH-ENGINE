@@ -2,6 +2,8 @@
 
 ## 한국어
 
+후속 범위 한정 배포: [PrintOps v0.5.24 견적 목록 지연 수정·실측 보정 적격성](history-calibration-review-20261007.md). 아래 v0.5.23 결과는 해당 릴리스 당시의 기록이다.
+
 **PrintOps v0.5.23-responsive-candidates를 실제 운영 네 서비스에 배포했다.** 강도 **v0.24.0**, G-code **v0.28.0**, 가격 **v0.13.0**은 유지한다. [이전 품질 검토](commercial-quality-review-20261007.md)의 완료된 계산·보고서·성능 검증을 반복하지 않고, 이번 화면 변경에 필요한 확인만 수행했다.
 
 기존 후보 영역은 515px 폭에서도 3열로 배치되어 카드가 약 156.9px까지 좁아졌다. 이제 후보 영역의 실제 content 폭에 따라 1·2·3열을 선택한다. 상세 설명을 열면 해당 카드가 전체 열을 사용하고, 닫으면 기존 배치로 돌아간다. 카드 번호와 문서 순서는 유지하며 빈칸을 채우려고 순서를 재배치하지 않는다.
@@ -25,6 +27,8 @@
 이 검증은 한 운영 파일의 화면 표시와 수치 보존에 대한 것이다. 실측 파단 정확도, 전체 입력의 UI 무결함, 특허 가능성 또는 상용 인증을 입증하지 않는다. 큰 견적 이력 응답의 지연과 물리 보정 데이터 부족은 [이전 검토의 한계](commercial-quality-review-20261007.md)로 남는다. 사용자 요청에 따라 자동 실행을 **PAUSED**로 바꾸었으며, 이번 마지막 작업 턴 후 추가 예약 작업을 진행하지 않는다.
 
 ## English
+
+Subsequent bounded deployment: [PrintOps v0.5.24 history latency and empirical qualification](history-calibration-review-20261007.md). The v0.5.23 results below remain historical release evidence.
 
 **PrintOps v0.5.23-responsive-candidates is deployed to the actual four-service installation.** Strength **v0.24.0**, G-code **v0.28.0** and quote **v0.13.0** remain unchanged. Completed numerical, report and performance validation from the [previous quality review](commercial-quality-review-20261007.md) was not repeated.
 

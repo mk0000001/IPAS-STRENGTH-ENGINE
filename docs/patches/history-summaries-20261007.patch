@@ -1,0 +1,148 @@
+--- a/app/calculator_api.py
++++ b/app/calculator_api.py
+@@ -305,14 +305,23 @@
+ 
+ @router.get('/estimates')
+ def estimates(project_id:UUID|None=None,limit:int=Query(default=30,ge=1,le=100),latest_per_source:bool=False,
+-              source_file_version_ids:list[UUID]|None=Query(default=None,max_length=50)):
++              source_file_version_ids:list[UUID]|None=Query(default=None,max_length=50),summary:bool=False):
+     from .stored_estimate_response import stored_estimates_response
+     if latest_per_source and project_id is None:raise DomainError('BATCH_PROJECT_REQUIRED',422)
++    columns='id,project_id,input_json AS input,result_json AS result,created_at'
++    if summary:
++        # Project in PostgreSQL: analysis/strength snapshots never cross the DB
++        # connection or get decoded just to display a price and three labels.
++        columns='''id,project_id,
++          jsonb_build_object('printer',input_json->'printer','material',input_json->'material',
++            'input_source',input_json->'input_source') AS input,
++          jsonb_build_object('grand_total',result_json->'grand_total','currency',result_json->'currency') AS result,
++          created_at'''
+     with connect() as conn:
+         if latest_per_source:
+             # Apply the bound after collapsing revisions, so repeated quotes for
+             # one source cannot evict the newest quote for every other file.
+-            rows=conn.execute('''SELECT id,project_id,input_json AS input,result_json AS result,created_at
++            rows=conn.execute(f'''SELECT {columns}
+               FROM (SELECT DISTINCT ON (source_file_version_id)
+                 id,project_id,input_json,result_json,created_at
+                 FROM calculator_estimates
+@@ -321,9 +330,19 @@
+                 ORDER BY source_file_version_id,created_at DESC,id DESC) AS latest
+               ORDER BY created_at DESC,id DESC LIMIT %s''',(project_id,source_file_version_ids,source_file_version_ids,limit)).fetchall()
+         else:
+-            rows=conn.execute('''SELECT id,project_id,input_json AS input,result_json AS result,created_at
++            rows=conn.execute(f'''SELECT {columns}
+               FROM calculator_estimates WHERE (%s::uuid IS NULL OR project_id=%s) ORDER BY created_at DESC LIMIT %s''',(project_id,project_id,limit)).fetchall()
+     return stored_estimates_response(rows)
++
++
++@router.get('/estimates/{estimate_id}')
++def estimate_detail(estimate_id:UUID):
++    from .stored_estimate_response import stored_estimates_response
++    with connect() as conn:
++        row=conn.execute('''SELECT id,project_id,input_json AS input,result_json AS result,created_at
++          FROM calculator_estimates WHERE id=%s''',(estimate_id,)).fetchone()
++    if not row:raise DomainError('ESTIMATE_NOT_FOUND',404)
++    return stored_estimates_response([row],single=True)
+ 
+ 
+ @router.post('/estimates/{estimate_id}/discount',status_code=201)
+--- a/app/config.py
++++ b/app/config.py
+@@ -4 +4 @@
+-VERSION = '0.5.23-responsive-candidates'
++VERSION = '0.5.24-history-summaries'
+--- a/app/stored_estimate_response.py
++++ b/app/stored_estimate_response.py
+@@ -3,13 +3,15 @@
+ from fastapi.responses import JSONResponse
+ 
+ 
+-def stored_estimates_response(rows):
++def stored_estimates_response(rows, *, single=False):
+     # input/result are PostgreSQL JSONB decoded by psycopg, already limited to
+     # JSON types. Preserve them verbatim; only SQL UUID/timestamp columns need
+     # normalization. Build the response in the sync route's worker thread so
+     # large histories do not monopolize the ASGI event loop during encoding.
+     content = [{key: value if key in ('input', 'result') else jsonable_encoder(value)
+                 for key, value in row.items()} for row in rows]
++    if single:
++        content = content[0]
+     response = JSONResponse(content)
+     # FastAPI's legacy sqlalchemy_safe default removes nested keys starting
+     # '_sa'. Detect their ASCII prefix in the rendered JSON and use that same
+--- a/app/web/app.js
++++ b/app/web/app.js
+@@ -29,6 +29,8 @@
+     appliedAnalysisKey: null,
+     plateAnalysis: null,
+     history: [],
++    historyListRevision: 0,
++    historyDetailRevision: 0,
+   };
+   const resourceSamples = {};
+   let jobsPoller = null, resourcesPoller = null;
+@@ -2011,6 +2013,7 @@
+   }
+ 
+   function renderEstimate(estimate,freshStrength=false) {
++    state.historyDetailRevision++;
+     const result = estimate.result || estimate;
+     if(freshStrength)syncEstimateStrength(estimate);
+     state.displayedEstimateId=estimate.id||null;
+@@ -2136,6 +2139,8 @@
+ 
+   async function loadHistory() {
+     const list = $('#history-list');
++    const revision=++state.historyListRevision;
++    state.historyDetailRevision++;
+     if (!state.project) {
+       state.history=[];
+       $('#history-list').innerHTML='<p class="empty-state">빠른 견적은 저장 이력 없이 계산됩니다.</p>';
+@@ -2144,14 +2149,29 @@
+     list.innerHTML = '<p class="empty-state">견적 이력을 불러오는 중입니다.</p>';
+     const projectId=state.project.id;
+     try {
+-      const history = await api(`/api/calculator/estimates?project_id=${encodeURIComponent(projectId)}`);
+-      if(state.project?.id!==projectId)return;
++      const history = await api(`/api/calculator/estimates?project_id=${encodeURIComponent(projectId)}&summary=true`);
++      if(state.project?.id!==projectId||revision!==state.historyListRevision)return;
+       state.history=history;
+       renderHistory();
+     } catch (error) {
+-      if(state.project?.id!==projectId)return;
++      if(state.project?.id!==projectId||revision!==state.historyListRevision)return;
+       list.innerHTML = '<p class="empty-state">견적 이력을 불러오지 못했습니다.</p>';
+       handleError(error, '견적 이력을 불러오지 못했습니다.');
++    }
++  }
++
++  async function openHistoryEstimate(estimate,button) {
++    if(button.disabled||!state.project)return;
++    const projectId=state.project.id,revision=++state.historyDetailRevision;
++    button.disabled=true;button.setAttribute('aria-busy','true');
++    try {
++      const complete=await api(`/api/calculator/estimates/${encodeURIComponent(estimate.id)}`);
++      if(state.project?.id!==projectId||revision!==state.historyDetailRevision)return;
++      renderEstimate(complete);
++    } catch(error) {
++      if(state.project?.id===projectId&&revision===state.historyDetailRevision)handleError(error,'견적 상세를 불러오지 못했습니다.');
++    } finally {
++      button.disabled=false;button.removeAttribute('aria-busy');
+     }
+   }
+ 
+@@ -2179,7 +2199,7 @@
+       const meta = document.createElement('small');
+       meta.textContent = `${printerDisplayName(estimate.input?.printer)} · ${estimate.input?.material || '—'} · ${estimate.input?.input_source || '—'}`;
+       button.append(row, meta);
+-      button.addEventListener('click', () => renderEstimate(estimate));
++      button.addEventListener('click', () => openHistoryEstimate(estimate,button));
+       list.append(button);
+     });
+   }
+--- a/app/web/index.html
++++ b/app/web/index.html
+@@ -11 +11 @@
+-  <script defer src="/web/app.js?v=20261007-commercial-quality"></script>
++  <script defer src="/web/app.js?v=20261007-history-summaries"></script>
