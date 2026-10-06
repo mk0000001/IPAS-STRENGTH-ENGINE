@@ -1,5 +1,5 @@
 """Local declared-road reference scenarios and unsupported-geometry metadata."""
-from math import isfinite,hypot,sqrt
+from math import isfinite,isclose,hypot,sqrt
 from . import automatic_sections
 from .process import settings as process_settings
 
@@ -45,10 +45,11 @@ def _valid_automatic_details(deposited,axis,candidate=None):
     spans=[bounds[index][1]-bounds[index][0] for index in plane]
     crop_area=spans[0]*spans[1]
     def equal(left,right):
-        return _number(left) is not None and _number(right) is not None and abs(left-right)<=1e-6*max(1.,abs(left),abs(right))
+        return _number(left) is not None and _number(right) is not None and isclose(left,right,rel_tol=1e-6,abs_tol=0)
     for name in ('axial','bending'):
         section=deposited.get(name)
         if not isinstance(section,dict):return False
+        if not automatic_sections.valid_plane_mechanics(section,[bounds[index] for index in plane]):return False
         area=_number(section.get('area_mm2'));station=section.get('station_mm')
         if area is None or area>crop_area+1e-6:return False
         if isinstance(station,bool) or not isinstance(station,(int,float)) or not isfinite(station) or not bounds[normal][0]<=station<=bounds[normal][1]:return False
@@ -70,6 +71,7 @@ def _valid_automatic_details(deposited,axis,candidate=None):
         if not isinstance(moments,list) or len(moments)!=2 or not all(equal(left,right) for left,right in zip(moments,expected)):return False
     if not equal(deposited.get('area_mm2'),deposited['axial']['area_mm2']):return False
     if not equal(deposited.get('minimum_all_direction_section_modulus_mm3'),deposited['bending']['minimum_all_direction_section_modulus_mm3']):return False
+    if any(abs(gradient[plane[i]]-deposited['bending']['critical_stress_gradient_uv'][i])>1e-6 for i in range(2)):return False
     return True
 
 

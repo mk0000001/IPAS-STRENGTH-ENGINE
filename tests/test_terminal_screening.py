@@ -171,6 +171,19 @@ class TerminalScreening(unittest.TestCase):
         self.assertAlmostEqual(high['screening_score'],low['screening_score'])
         self.assertAlmostEqual(high['terminal_root_station_mm']+low['terminal_root_station_mm'],120)
 
+    def test_reflection_preserves_abrupt_selected_root_description(self):
+        solid=strip(narrow_end=True)
+        high=screen_solid(solid,[0,0,0],.4)['candidates'][0]
+        low=screen_solid(solid[:,:,::-1],[0,0,0],.4)['candidates'][0]
+        for end in (high,low):
+            self.assertEqual(end['terminal_root_selection_basis'],'ABRUPT_NARROWING_IN_INTERIOR_HALF')
+            # The selected root has four 0.4 mm cells across and two in height:
+            # its 1.6 x 0.8 mm section is the same under reflection.
+            self.assertAlmostEqual(end['terminal_geometry']['interior_median_area_mm2'],1.28)
+            self.assertAlmostEqual(end['terminal_geometry']['outer_to_interior_area_ratio'],1.)
+            self.assertEqual(end['selection_reason'],'THIN_TERMINAL_ROOT')
+        self.assertEqual(high['terminal_geometry'],low['terminal_geometry'])
+
     def test_short_both_end_metadata_translates_with_world_origin(self):
         solid=np.zeros((12,25,35),bool);solid[4:6,5:20,4:25]=True
         first=screen_solid(solid,[0,0,0],.4)['candidates'][0]

@@ -81,8 +81,9 @@ def evaluate_load_case(load_case,geometry,directional_mpa=None,*,reference_area_
     reference=None
     if isinstance(directional_mpa,dict):
         try:
-            reference=float(directional_mpa.get('XYZ'[axis]))
-            if not isfinite(reference) or not 0<reference<=1e5:reference=None
+            raw=directional_mpa.get('XYZ'[axis])
+            reference=None if isinstance(raw,bool) else float(raw)
+            if reference is not None and (not isfinite(reference) or not 0<reference<=1e5):reference=None
         except (TypeError,ValueError):pass
     comparison={'reference_mpa':reference,'reference_area_basis':reference_area_basis,
                 'local_stress_area_basis':'DECLARED_ROAD_ENVELOPE_UNION',

@@ -7,7 +7,7 @@ contact, temperature history, peeling, shear strength and failure load are unkno
 from math import hypot,isfinite,ulp
 from .deposition_section import finite_number,vector,UnsupportedGeometry
 
-VERSION='LOCAL_DECLARED_INTERLAYER_CONTACT_V2_BOUNDED_ROUNDOFF'
+VERSION='LOCAL_DECLARED_INTERLAYER_CONTACT_V3_ZERO_OVERLAP_PLANE_IDENTITY'
 PROVENANCE='GCODE_WIDTH_HEIGHT_ASSUMPTION'
 SCOPE='LOCAL_DECLARED_ROAD_INTERLAYER_WINDOW'
 MAX_CANDIDATES=6
@@ -153,6 +153,7 @@ def _valid_contact_descriptor(value,expected_bounds):
         if not row['qualifies_for_diagnostic']:continue
         if row['geometric_vertical_gap_mm']>PLANE_TOLERANCE_MM:kind='DECLARED_VERTICAL_GAP'
         elif row['geometric_vertical_gap_mm']<-PLANE_TOLERANCE_MM:kind='OVERLAPPING_DECLARED_LAYER_INTERVALS'
+        elif row['adjacent_plane_verified'] and row['overlap_area_mm2']<=1e-10:kind='NO_DECLARED_LAYER_OVERLAP'
         elif row['persistent_low_overlap']:kind='NO_DECLARED_LAYER_OVERLAP' if row['overlap_area_mm2']<=1e-10 else 'LOW_DECLARED_LAYER_OVERLAP'
         else:continue
         expected_observations.append({'kind':kind,'interface_index':index})
@@ -164,7 +165,8 @@ def _valid_contact_descriptor(value,expected_bounds):
         row=interfaces[index]
         if observation['kind']=='DECLARED_VERTICAL_GAP' and row['geometric_vertical_gap_mm']<=PLANE_TOLERANCE_MM:return False
         if observation['kind']=='OVERLAPPING_DECLARED_LAYER_INTERVALS' and row['geometric_vertical_gap_mm']>=-PLANE_TOLERANCE_MM:return False
-        if observation['kind'] in ('NO_DECLARED_LAYER_OVERLAP','LOW_DECLARED_LAYER_OVERLAP') and (not row['persistent_low_overlap'] or not row['adjacent_plane_verified']):return False
+        if observation['kind']=='NO_DECLARED_LAYER_OVERLAP' and (not row['adjacent_plane_verified'] or row['overlap_area_mm2']>1e-10):return False
+        if observation['kind']=='LOW_DECLARED_LAYER_OVERLAP' and (not row['persistent_low_overlap'] or not row['adjacent_plane_verified']):return False
     return tools(value.get('tools'),empty=not bool(layers)) and value['tools']==sorted({tool for row in layers for tool in row['tools']})
 
 
@@ -263,6 +265,10 @@ class StreamingInterlayerContact:
             polygons=list(shape.geoms) if shape.geom_type=='MultiPolygon' else [shape]
             vertices+=sum(len(p.exterior.coords)+sum(len(r.coords) for r in p.interiors) for p in polygons)
             if vertices>MAX_UNION_VERTICES:raise UnsupportedGeometry('INTERLAYER_GEOMETRY_BUDGET_EXCEEDED')
+            # Distinct source histories at one numeric plane cannot form an
+            # adjacent Z interface. Do not merge their object/layer identities.
+            if descriptors and raw['top_z_mm']<=descriptors[-1]['top_z_mm']:
+                raise UnsupportedGeometry('REPEATED_DECLARED_LAYER_PLANE_AMBIGUOUS')
             xy=list(shape.bounds)
             descriptors.append({'layer_number':raw['layer_number'],'top_z_mm':raw['top_z_mm'],
                 'bottom_z_mm':raw['bottom_min'],'height_mm':raw['height_max'],'area_mm2':float(shape.area),
@@ -325,6 +331,8 @@ class StreamingInterlayerContact:
                 observations.append({'kind':'DECLARED_VERTICAL_GAP','interface_index':index})
             elif row['geometric_vertical_gap_mm']<-PLANE_TOLERANCE_MM:
                 observations.append({'kind':'OVERLAPPING_DECLARED_LAYER_INTERVALS','interface_index':index})
+            elif row['adjacent_plane_verified'] and row['overlap_area_mm2']<=1e-10:
+                observations.append({'kind':'NO_DECLARED_LAYER_OVERLAP','interface_index':index})
             elif persistent:
                 kind='NO_DECLARED_LAYER_OVERLAP' if row['overlap_area_mm2']<=1e-10 else 'LOW_DECLARED_LAYER_OVERLAP'
                 observations.append({'kind':kind,'interface_index':index})

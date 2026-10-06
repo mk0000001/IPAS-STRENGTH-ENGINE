@@ -3,7 +3,7 @@
 Only local cropped section geometry is reconstructed. Geometric continuity,
 printed bead shape, weld strength and a whole-part load path are not certified.
 """
-from math import fsum,hypot,isfinite
+from math import fsum,hypot,isfinite,isclose
 from .deposition_section import finite_number,vector,UnsupportedGeometry
 
 MAX_CANDIDATES=6
@@ -11,9 +11,10 @@ MAX_CUTS=12
 MAX_SECTION_PIECES=100_000
 MAX_TOTAL_SECTION_PIECES=250_000
 MAX_UNION_VERTICES=1_000_000
+MAX_SUPPORT_VERTICES=4096
 PROVENANCE='GCODE_WIDTH_HEIGHT_ASSUMPTION'
 SCOPE='LOCAL_DECLARED_ROAD_REGION'
-VERSION='LOCAL_DECLARED_ROAD_SECTIONS_V2'
+VERSION='LOCAL_DECLARED_ROAD_SECTIONS_V3_BOUNDARY_SUPPORT_PROOF'
 
 
 def _plane_properties(shape):
@@ -55,6 +56,12 @@ def _plane_properties(shape):
     resultant=responses[index]/response
     gradient=np.linalg.solve(tensor,resultant)
     gradient/=np.linalg.norm(gradient)
+    # A linear normal stress reaches its extreme on the convex support hull.
+    # Retain this small geometric witness so cache readers can recompute all
+    # moduli from the same inertia, rather than merely bound finite values.
+    support=[(x-cu,y-cv) for x,y in list(shape.convex_hull.exterior.coords)[:-1]]
+    if len(support)>MAX_SUPPORT_VERTICES:
+        raise UnsupportedGeometry('LOCAL_SECTION_SUPPORT_PROOF_BUDGET_EXCEEDED')
     return {'area_mm2':float(shape.area),'centroid_uv_mm':[cu,cv],
             'coordinate_second_moment_mm4':tensor.tolist(),
             'principal_second_moments_mm4':moments.tolist(),
@@ -63,7 +70,78 @@ def _plane_properties(shape):
             'minimum_all_direction_section_modulus_mm3':float(1/response),
             'critical_stress_gradient_uv':gradient.tolist(),
             'critical_bending_moment_direction_uv':[float(resultant[1]),float(-resultant[0])],
+            'boundary_support_vertices_relative_uv_mm':support,
             'component_count':len(polygons),'hole_count':holes,'boundary_vertex_count':len(vertices)}
+
+
+def valid_plane_mechanics(section,bounds_uv_mm):
+    """Check cached derived mechanics against bounded geometric support.
+
+    This checks internal geometry/arithmetic consistency. It does not certify
+    source authenticity, physical bead shape, bonding or fracture resistance.
+    """
+    try:
+        return _valid_plane_mechanics(section,bounds_uv_mm)
+    except (ValueError,TypeError,KeyError,OverflowError,ZeroDivisionError):
+        return False
+
+
+def _valid_plane_mechanics(section,bounds):
+    import numpy as np
+    def numeric(x):
+        return isinstance(x,(int,float)) and not isinstance(x,bool) and isfinite(x)
+    def pairs(values,count=None):
+        return isinstance(values,(list,tuple)) and (count is None or len(values)==count) and all(
+            isinstance(row,(list,tuple)) and len(row)==2 and all(numeric(x) for x in row) for row in values)
+    if not isinstance(section,dict) or not pairs(bounds,2):return False
+    support=section.get('boundary_support_vertices_relative_uv_mm')
+    if not pairs(support) or not 3<=len(support)<=MAX_SUPPORT_VERTICES:return False
+    centroid=section.get('centroid_uv_mm')
+    if not isinstance(centroid,(list,tuple)) or len(centroid)!=2 or not all(numeric(x) for x in centroid):return False
+    points=np.asarray(support,dtype=float)
+    for i in range(2):
+        if bounds[i][0]>=bounds[i][1]:return False
+        if any(not bounds[i][0]-1e-6<=value+centroid[i]<=bounds[i][1]+1e-6 for value in points[:,i]):return False
+    # The witness must span a nondegenerate envelope containing the net area.
+    envelope=abs(fsum(a*d-c*b for (a,b),(c,d) in zip(support,(*support[1:],support[0]))))/2
+    area=section.get('area_mm2')
+    if not numeric(area) or area<=0 or not isfinite(envelope) or envelope<area*(1-1e-6):return False
+    tensor=section.get('coordinate_second_moment_mm4')
+    directions=section.get('principal_stress_gradient_directions_uv')
+    if not pairs(tensor,2) or not pairs(directions,2):return False
+    matrix=np.asarray(tensor,dtype=float);vectors=np.asarray(directions,dtype=float)
+    # Relative dimensional tolerances must scale with the geometry. An
+    # absolute mm^3/mm^4 allowance could accept large errors in tiny sections.
+    matrix_scale=float(np.max(np.abs(matrix)))
+    if not np.allclose(matrix,matrix.T,rtol=1e-6,atol=matrix_scale*1e-9):return False
+    moments=section.get('principal_second_moments_mm4')
+    moduli=section.get('principal_section_moduli_mm3')
+    if any(not isinstance(values,(list,tuple)) or len(values)!=2 or any(not numeric(x) or x<=0 for x in values)
+           for values in (moments,moduli)):return False
+    if not np.allclose(vectors@vectors.T,np.eye(2),rtol=1e-6,atol=1e-6):return False
+    eigenvalues=np.linalg.eigvalsh(matrix)
+    if (eigenvalues<=0).any() or not np.isfinite(eigenvalues).all():return False
+    if not np.allclose(eigenvalues,moments,rtol=1e-6,atol=0):return False
+    if not np.allclose(vectors@matrix,np.asarray(moments)[:,None]*vectors,rtol=1e-6,atol=matrix_scale*1e-9):return False
+    distances=np.max(np.abs(points@vectors.T),axis=0)
+    if (distances<=0).any():return False
+    expected_moduli=np.asarray(moments)/distances
+    if not np.allclose(expected_moduli,moduli,rtol=1e-6,atol=0):return False
+    responses=np.linalg.solve(matrix,points.T).T
+    maximum=float(np.max(np.linalg.norm(responses,axis=1)))
+    minimum=section.get('minimum_all_direction_section_modulus_mm3')
+    if not numeric(minimum) or minimum<=0 or maximum<=0 or not isfinite(maximum):return False
+    if not isclose(minimum,1/maximum,rel_tol=1e-6,abs_tol=0):return False
+    gradient=section.get('critical_stress_gradient_uv')
+    moment=section.get('critical_bending_moment_direction_uv')
+    if any(not isinstance(values,(list,tuple)) or len(values)!=2 or any(not numeric(x) for x in values)
+           for values in (gradient,moment)):return False
+    g=np.asarray(gradient);resultant=matrix@g;scale=float(np.linalg.norm(resultant))
+    if scale<=0 or not isfinite(scale) or not isclose(float(g@g),1,rel_tol=1e-6,abs_tol=1e-6):return False
+    # Any tied extreme direction is valid; don't require a particular corner.
+    if not isclose(float(np.max(np.abs(points@g)))/scale,maximum,rel_tol=1e-6,abs_tol=0):return False
+    expected_moment=np.asarray([resultant[1],-resultant[0]])/scale
+    return bool(np.allclose(expected_moment,moment,rtol=1e-6,atol=1e-6))
 
 
 def _xy_interval(footprint,axis,station):

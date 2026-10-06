@@ -1,6 +1,6 @@
 """Finished-part thin-region screening from outer contours; not FEA or failure load."""
 import math
-VERSION='LOCAL_OUTER_ENVELOPE_V6_TERMINAL_ROOT_SCREENING'
+VERSION='LOCAL_OUTER_ENVELOPE_V7_SELECTED_TERMINAL_ROOT_METADATA'
 AXIS_NAMES=('Z','Y','X')
 
 
@@ -311,7 +311,7 @@ def screen_solid(solid,origin_xyz,spacing_mm,*,threshold_mm=2.4,max_candidates=6
                             root=profile[station_interval[0]-profile_low[axis]:station_interval[1]-profile_low[axis]+1]
                         else:
                             outer=profile[:n] if end_role=='LOW_END' else profile[-n:]
-                            root=profile[-n:] if end_role=='LOW_END' else profile[:n]
+                            root=profile[station_interval[0]-profile_low[axis]:station_interval[1]-profile_low[axis]+1]
                         root_area=float(np.median(root))*spacing**2
                         outer_area=float(np.median(outer))*spacing**2
                         ratio=outer_area/root_area if root_area>0 else None

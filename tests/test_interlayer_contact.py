@@ -106,6 +106,65 @@ class InterlayerContactTests(unittest.TestCase):
         self.assertAlmostEqual(worst['smaller_footprint_overlap_ratio'],.375)
         self.assertAlmostEqual(worst['overlap_area_mm2'],6)
 
+    def test_single_complete_contact_separation_is_retained_without_persistence(self):
+        from print_strength_engine.weakness import assess_candidates
+        region=candidate();collector=StreamingInterlayerContact([region])
+        for z in range(1,7):add_square(collector,z,shift=0 if z<=3 else 6)
+        value=collector.finish()['region'];interface=value['interfaces'][2]
+        self.assertTrue(interface['qualifies_for_diagnostic'])
+        self.assertTrue(interface['adjacent_plane_verified'])
+        self.assertFalse(interface['persistent_low_overlap'])
+        self.assertEqual(interface['overlap_area_mm2'],0.)
+        self.assertEqual(value['observations'],[{'kind':'NO_DECLARED_LAYER_OVERLAP','interface_index':2}])
+        self.assertTrue(valid_contact_descriptor(value,region['section_window_bounds_mm']))
+        damaged=deepcopy(value);damaged['observations']=[]
+        self.assertFalse(valid_contact_descriptor(damaged,region['section_window_bounds_mm']))
+        row={**region,'kind':'LOCAL_THIN_SECTION','rank':1,'interlayer_contact':value}
+        assessment=assess_candidates([row])['candidates'][0]['weakness_assessment']
+        self.assertIn('NO_DECLARED_LAYER_OVERLAP',assessment['mechanisms'])
+        self.assertEqual(assessment['weld_strength_status'],'UNMEASURED')
+        self.assertIsNone(assessment['interlayer_failure_load_n'])
+
+    def test_single_partial_contact_loss_still_requires_persistence(self):
+        region=candidate();collector=StreamingInterlayerContact([region])
+        for z in range(1,7):add_square(collector,z,shift=0 if z<=3 else 2.5)
+        value=collector.finish()['region'];interface=value['interfaces'][2]
+        self.assertTrue(interface['qualifies_for_diagnostic'])
+        self.assertAlmostEqual(interface['smaller_footprint_overlap_ratio'],.375)
+        self.assertFalse(interface['persistent_low_overlap'])
+        self.assertEqual(value['observations'],[])
+        self.assertTrue(valid_contact_descriptor(value,region['section_window_bounds_mm']))
+
+    def test_single_displaced_footprint_across_z_gap_reports_vertical_gap(self):
+        region=candidate();collector=StreamingInterlayerContact([region])
+        for z in range(1,7):add_square(collector,z if z<=3 else z+.25,shift=0 if z<=3 else 6,layer=z)
+        value=collector.finish()['region'];interface=value['interfaces'][2]
+        self.assertTrue(interface['qualifies_for_diagnostic'])
+        self.assertFalse(interface['adjacent_plane_verified'])
+        self.assertEqual(interface['overlap_area_mm2'],0.)
+        self.assertEqual(value['observations'],[{'kind':'DECLARED_VERTICAL_GAP','interface_index':2}])
+        self.assertTrue(valid_contact_descriptor(value,region['section_window_bounds_mm']))
+
+    def test_repeated_z_with_distinct_source_layers_is_conservatively_withheld(self):
+        region=candidate();collector=StreamingInterlayerContact([region])
+        for z in range(1,7):add_square(collector,z)
+        add_square(collector,3,layer=99)
+        value=collector.finish()['region']
+        self.assertEqual(value['status'],'WITHHELD')
+        self.assertIn('REPEATED_DECLARED_LAYER_PLANE_AMBIGUOUS',value['assessment_gaps'])
+        self.assertEqual(value['interfaces'],[])
+        self.assertIsNone(value['minimum_smaller_footprint_overlap_ratio'])
+        self.assertTrue(valid_contact_descriptor(value,region['section_window_bounds_mm']))
+
+    def test_duplicate_roads_on_same_source_layer_do_not_create_plane_ambiguity(self):
+        region=candidate();collector=StreamingInterlayerContact([region])
+        for z in range(1,7):add_square(collector,z)
+        add_square(collector,3,layer=3)
+        value=collector.finish()['region']
+        self.assertEqual(value['status'],'COMPLETE')
+        self.assertEqual(value['layer_count'],6)
+        self.assertTrue(valid_contact_descriptor(value,region['section_window_bounds_mm']))
+
     def test_expansion_and_shrinkage_are_not_bad_bonds(self):
         collector=StreamingInterlayerContact([candidate()])
         for z,side in enumerate((3,3,4,4,3,3),1):add_square(collector,z,side=side)

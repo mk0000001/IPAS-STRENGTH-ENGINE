@@ -179,6 +179,18 @@ class LoadCaseTests(unittest.TestCase):
             self.assertIsNone(result['reference_comparison']['load_at_tensile_reference_n'])
             self.assertEqual(result['reference_comparison']['status'],'INCOMPATIBLE_STRESS_AREA_BASIS')
 
+    def test_boolean_reference_does_not_become_one_mpa_or_remove_normal_stress(self):
+        for reference in (True,False):
+            result=evaluate_load_case(load(),beam(),{'X':reference},reference_area_basis='NET_MATERIAL')
+            with self.subTest(reference=reference):
+                self.assertEqual(result['status'],'CONDITIONAL_NORMAL_STRESS')
+                self.assertAlmostEqual(result['normal_stress_per_n_mpa'],13.5)
+                self.assertAlmostEqual(result['normal_stress_mpa'],27.)
+                comparison=result['reference_comparison']
+                self.assertEqual(comparison['status'],'DIRECTIONAL_REFERENCE_UNAVAILABLE')
+                self.assertIsNone(comparison['reference_mpa'])
+                self.assertIsNone(comparison['load_at_tensile_reference_n'])
+
     def test_partial_fixture_and_torsion_are_not_supported(self):
         case=load();case['fixed_region_mm'][1]=[-1,1]
         self.assertIn('FULL_SECTION_FIXTURE_REQUIRED',self.evaluate(case)['assessment_gaps'])
