@@ -1,4 +1,8 @@
-# 시스템 검증 결과와 적용 한계
+# IPAS 시스템 검증 결과와 적용 한계
+
+통합 시스템 이름: **IPAS · Integrated Printing Analysis System**. 최신 브랜딩과 저장소 변경은 [IPAS v0.5.25 릴리스](ipas-branding-release-20261008.md)를 참조한다. 아래의 날짜별 PrintOps 표기는 당시 릴리스 이름이며 수치 검증 결과를 새로 주장하지 않는다.
+
+System identity: **IPAS · Integrated Printing Analysis System**. See the [IPAS v0.5.25 release](ipas-branding-release-20261008.md) for branding and repository migration. Dated PrintOps entries below retain their historical release names and validation boundaries.
 
 최신 배포(2026-10-07): [PrintOps v0.5.24 견적 목록 지연 수정·실측 보정 적격성](history-calibration-review-20261007.md). 이력은 개선됐으며 실측 보정은 적격한 측정자료 부족으로 미완료다. 강도 v0.24.0 유지.
 
@@ -56,9 +60,9 @@ Latest integrated validation (2026-10-03): [terminal roots, layer contact and se
 
 |구성|담당 범위|다른 구성에 넘기는 값|
 |---|---|---|
-|[G-code engine](https://github.com/mk0000001/print-gcode-engine)|G-code/슬라이스 3MF, 활성 소재·프린터, 모달 이동 상태, 레이어·공정 명령과 방향 통계|분석 사실 및 설정. 소재 강도·가격을 결정하지 않는다.|
-|[Strength engine](https://github.com/mk0000001/print-strength-engine)|레이어 협착과 연결된 국부 단면 선별, 문헌 비교, 미보정 하중 가정|위치 후보, 출처·미확인 조건, 시나리오. 실제 파손 위치·하중의 예측으로 확정하지 않는다.|
-|[Quote engine](https://github.com/mk0000001/print-quote-engine)|호스트 정책에 따른 Decimal 비용, 전력 추정, 할인·세금·반올림|정책과 입력의 계산 결과. 운영 요율·접속정보는 공개 엔진에 포함하지 않는다.|
+|[IPAS-GCODE ENGINE](https://github.com/mk0000001/IPAS-GCODE-ENGINE)|G-code/슬라이스 3MF, 활성 소재·프린터, 모달 이동 상태, 레이어·공정 명령과 방향 통계|분석 사실 및 설정. 소재 강도·가격을 결정하지 않는다.|
+|[IPAS-STRENGTH ENGINE](https://github.com/mk0000001/IPAS-STRENGTH-ENGINE)|레이어 협착과 연결된 국부 단면 선별, 문헌 비교, 미보정 하중 가정|위치 후보, 출처·미확인 조건, 시나리오. 실제 파손 위치·하중의 예측으로 확정하지 않는다.|
+|[IPAS-QUOTE ENGINE](https://github.com/mk0000001/IPAS-QUOTE-ENGINE)|호스트 정책에 따른 Decimal 비용, 전력 추정, 할인·세금·반올림|정책과 입력의 계산 결과. 운영 요율·접속정보는 공개 엔진에 포함하지 않는다.|
 |통합 앱|프로젝트·파일 버전, 업로드·작업 복원, API, 소재 참조 연결, 뷰어·PDF, 저장·백업|각 엔진 출력의 출처를 유지하고 소재 참고값과 부품 하중을 구분한다.|
 
 ## 이번 점검에서 수정한 문제

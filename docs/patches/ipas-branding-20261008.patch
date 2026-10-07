@@ -1,0 +1,519 @@
+--- a/app/main.py
++++ b/app/main.py
+@@ -50,7 +50,7 @@
+                 if resource_stopped:clear_resource_snapshot()
+                 clear_job_snapshot()
+ 
+-app=FastAPI(title='3D Print Operations Calculator',version=config.VERSION,lifespan=lifespan,
++app=FastAPI(title='IPAS · Integrated Printing Analysis System',version=config.VERSION,lifespan=lifespan,
+             description='내부 프로젝트·대용량 파일·G-code 분석·견적 계산 웹.')
+ bearer=HTTPBearer(auto_error=False)
+ 
+@@ -139,11 +139,23 @@
+         raise DomainError('ASSET_NOT_FOUND',404)
+     return FileResponse(__import__('pathlib').Path(__file__).with_name('web')/name,headers={'Cache-Control':'no-store'})
+ 
++BRAND_ASSETS = {
++    **{name:'image/svg+xml' for name in ('ipas-symbol.svg','ipas-wordmark.svg',
++       'ipas-wordmark-light.svg','ipas-logo.svg','ipas-logo-light.svg')},
++    **{name:'image/png' for name in ('favicon-16.png','favicon-32.png',
++       'apple-touch-icon.png','icon-192.png','icon-512.png')},
++    'favicon.ico':'image/x-icon','site.webmanifest':'application/manifest+json',
++}
++
++@app.get('/favicon.ico',include_in_schema=False)
++def favicon():
++    return FileResponse(__import__('pathlib').Path(__file__).with_name('web')/'favicon.ico',media_type='image/x-icon')
++
+ @app.get('/web/{name}',include_in_schema=False)
+ def web_asset(name:str):
+-    if name not in ('styles.css','app.js','gcode-viewer.js','load-case.js'):
++    if name not in ('styles.css','app.js','gcode-viewer.js','load-case.js') and name not in BRAND_ASSETS:
+         raise DomainError('ASSET_NOT_FOUND',404)
+-    return FileResponse(__import__('pathlib').Path(__file__).with_name('web')/name,headers={'Cache-Control':'no-store'})
++    return FileResponse(__import__('pathlib').Path(__file__).with_name('web')/name,media_type=BRAND_ASSETS.get(name),headers={'Cache-Control':'no-store'})
+ 
+ def probe_health():
+     with status_connect() as conn:
+--- a/app/config.py
++++ b/app/config.py
+@@ -1,7 +1,7 @@
+ import os
+ from pathlib import Path
+ 
+-VERSION = '0.5.24-history-summaries'
++VERSION = '0.5.25-ipas-branding'
+ 
+ def secret(name: str) -> str:
+     file = os.getenv(name + '_FILE')
+--- a/app/web/index.html
++++ b/app/web/index.html
+@@ -4,18 +4,26 @@
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="color-scheme" content="light">
+-  <title>PrintOps 견적 계산기</title>
+-  <link rel="stylesheet" href="/web/styles.css?v=20261007-responsive-candidates">
++  <meta name="application-name" content="IPAS">
++  <meta name="theme-color" content="#152533">
++  <title>IPAS · Integrated Printing Analysis System</title>
++  <link rel="icon" type="image/svg+xml" sizes="any" href="/web/ipas-symbol.svg?v=20261008-ipas">
++  <link rel="icon" type="image/png" sizes="32x32" href="/web/favicon-32.png?v=20261008-ipas">
++  <link rel="icon" type="image/png" sizes="16x16" href="/web/favicon-16.png?v=20261008-ipas">
++  <link rel="shortcut icon" href="/favicon.ico?v=20261008-ipas">
++  <link rel="apple-touch-icon" sizes="180x180" href="/web/apple-touch-icon.png?v=20261008-ipas">
++  <link rel="manifest" href="/web/site.webmanifest?v=20261008-ipas">
++  <link rel="stylesheet" href="/web/styles.css?v=20261008-ipas">
+   <script defer src="/web/load-case.js?v=20261003-profile-match"></script>
+   <script defer src="/web/gcode-viewer.js?v=20261007-commercial-quality"></script>
+-  <script defer src="/web/app.js?v=20261007-history-summaries"></script>
++  <script defer src="/web/app.js?v=20261008-ipas"></script>
+ </head>
+ <body>
+   <a class="skip-link" href="#calculator">계산기로 바로가기</a>
+   <header class="topbar">
+-    <a class="brand" href="#calculator" aria-label="PrintOps 메인 페이지로 이동">
+-      <span class="brand-mark" aria-hidden="true">P</span>
+-      <div><strong>PrintOps</strong><span>내부 견적 계산기</span></div>
++    <a class="brand" href="#calculator" aria-label="IPAS · Integrated Printing Analysis System 메인 페이지로 이동">
++      <img class="brand-mark" src="/web/ipas-symbol.svg?v=20261008-ipas" width="38" height="38" alt="">
++      <div class="brand-copy"><img class="brand-wordmark" src="/web/ipas-wordmark-light.svg?v=20261008-ipas" width="78" height="22" alt="IPAS"><span class="brand-name">Integrated Printing Analysis System</span></div>
+     </a>
+     <div class="top-actions">
+       <span id="connection-state" class="connection"><i aria-hidden="true"></i>연결 확인 중</span>
+--- a/app/web/styles.css
++++ b/app/web/styles.css
+@@ -23,7 +23,7 @@
+ }
+ 
+ * { box-sizing: border-box; }
+-body { margin: 0; min-width: 320px; max-width: 100vw; overflow-x: hidden; background: var(--canvas); font-size: 14px; }
++body { margin: 0; min-width: min(320px, 100%); max-width: 100vw; overflow-x: hidden; background: var(--canvas); font-size: 14px; }
+ button, input, select, textarea { font: inherit; }
+ button { cursor: pointer; }
+ [hidden] { display: none !important; }
+@@ -32,12 +32,12 @@
+ .skip-link:focus { top: 12px; }
+ 
+ .topbar { height: 62px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; color: #fff; background: var(--navy-2); border-bottom: 3px solid var(--teal); }
+-.brand { display: flex; align-items: center; gap: 11px; color: inherit; text-decoration: none; border-radius: 7px; }
++.brand { display: flex; align-items: center; gap: 11px; min-width: 0; color: inherit; text-decoration: none; border-radius: 7px; }
+ .brand:focus-visible { outline: 2px solid #fff; outline-offset: 5px; }
+-.brand-mark { display: grid; place-items: center; width: 32px; height: 32px; color: var(--navy-2); background: #fff; border-radius: 7px; font-size: 18px; font-weight: 900; }
+-.brand strong, .brand span { display: block; }
+-.brand strong { font-size: 16px; letter-spacing: .02em; }
+-.brand div span { color: #b8c4cd; font-size: 11px; }
++.brand-mark { display: block; flex: 0 0 38px; width: 38px; height: 38px; }
++.brand-copy { min-width: 0; }
++.brand-wordmark { display: block; width: 78px; height: 22px; }
++.brand-name { display: block; margin-top: 2px; color: #c1ced6; font-size: 10px; line-height: 1.3; }
+ .top-actions { display: flex; align-items: center; gap: 12px; }
+ .connection { display: flex; align-items: center; gap: 7px; color: #c7d0d7; font-size: 12px; }
+ .connection i { width: 7px; height: 7px; border-radius: 50%; background: #93a1ac; }
+@@ -260,6 +260,9 @@
+   .project-item { flex:0 0 200px; }
+   .main-content { padding:20px 14px 40px; }
+   .topbar { padding-inline:14px; }
++  .brand { gap:7px; }
++  .brand-name { max-width:150px; font-size:9px; }
++  .top-actions { flex-shrink:0; gap:7px; }
+   .connection { font-size:11px; }
+   .field-grid.cols-2, .field-grid.cols-3, .toggle-grid { grid-template-columns:minmax(0,1fr); }
+   .span-2 { grid-column:auto; }
+@@ -268,6 +271,13 @@
+   .submit-bar { flex-direction:column; align-items:stretch; }
+   .policy-chip { max-width:100%; }
+   .strength-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
++}
++@media (max-width:420px) {
++  .topbar { padding-inline:10px; gap:8px; }
++  .brand-name { max-width:126px; font-size:8px; }
++  .top-actions { gap:5px; }
++  .top-actions .button { padding-inline:7px; font-size:10px; }
++  .connection { gap:4px; font-size:9px; }
+ }
+ @media (prefers-reduced-motion:reduce) {
+   *, *::before, *::after { scroll-behavior:auto !important; transition-duration:.01ms !important; }
+--- a/app/web/app.js
++++ b/app/web/app.js
+@@ -164,7 +164,7 @@
+     try {
+       const config = await api('/api/calculator/config');
+       state.config = config;
+-      $('#engine-versions').textContent=`PrintOps v${config.app_version||'확인 필요'} · 현재 엔진 · `+Object.entries({gcode:'G-code',strength:'강도',quote:'가격'}).map(([key,label])=>`${label} v${config.engine_versions?.[key]?.version||'확인 필요'}`).join(' · ');
++      $('#engine-versions').textContent=`IPAS v${config.app_version||'확인 필요'} · `+Object.entries({gcode:'IPAS-GCODE ENGINE',strength:'IPAS-STRENGTH ENGINE',quote:'IPAS-QUOTE ENGINE'}).map(([key,label])=>`${label} v${config.engine_versions?.[key]?.version||'확인 필요'}`).join(' · ');
+       $('#policy-revision').textContent = config.policy_revision || '미지정';
+       state.config.printers=config.printers||[];
+       const brands=[...new Map(state.config.printers.map(item=>[item.brand,item.brand])).values()].map(brand=>({key:brand,label:brand}));
+@@ -1005,7 +1005,7 @@
+       if(!response.ok){let body={};try{body=await response.json();}catch(_){}const code=body?.error?.code||body?.detail||`HTTP_${response.status}`;throw new ApiError(errorMessage(code),response.status,code);}
+       const blob=await response.blob(),url=URL.createObjectURL(blob),link=document.createElement('a');
+       const project=String(state.project?.project_name||'project').replace(/[\\/:*?"<>|]+/g,'_').slice(0,80)||'project';
+-      link.href=url;link.download=`PrintOps-${project}-상세견적서.zip`;document.body.append(link);link.click();link.remove();
++      link.href=url;link.download=`IPAS-${project}-상세견적서.zip`;document.body.append(link);link.click();link.remove();
+       setTimeout(()=>URL.revokeObjectURL(url),1000);notify(`${items.length}개 거래처용 상세 견적서를 만들었습니다.`,'success');
+     }catch(error){handleError(error,'PDF 묶음을 만들지 못했습니다.');}
+     finally{button.textContent=original;renderBatchPanel();}
+@@ -1024,7 +1024,7 @@
+       if(!response.ok){let body={};try{body=await response.json();}catch(_){}const code=body?.error?.code||body?.detail||`HTTP_${response.status}`;throw new ApiError(errorMessage(code),response.status,code);}
+       const blob=await response.blob(),url=URL.createObjectURL(blob),link=document.createElement('a');
+       const project=String(state.project?.project_name||'project').replace(/[\\/:*?"<>|]+/g,'_').slice(0,80)||'project';
+-      link.href=url;link.download=`PrintOps-${project}-통합견적서.pdf`;document.body.append(link);link.click();link.remove();
++      link.href=url;link.download=`IPAS-${project}-통합견적서.pdf`;document.body.append(link);link.click();link.remove();
+       setTimeout(()=>URL.revokeObjectURL(url),1000);notify(`${items.length}개 파일의 거래처용 통합 견적서를 만들었습니다.`,'success');
+     }catch(error){handleError(error,'통합 견적서를 만들지 못했습니다.');}
+     finally{button.textContent=original;renderBatchPanel();}
+--- a/app/calculator_api.py
++++ b/app/calculator_api.py
+@@ -408,7 +408,7 @@
+             stem=re.sub(r'[^0-9A-Za-z가-힣._-]+','_',stem).strip('._')[:80] or 'quote'
+             archive.writestr(f'{index:02d}-{stem}-{data.kind}.pdf',render_pdf(row,data.kind))
+     return Response(output.getvalue(),media_type='application/zip',headers={
+-        'Content-Disposition':f'attachment; filename="printops-{data.kind}-reports.zip"',
++        'Content-Disposition':f'attachment; filename="ipas-{data.kind}-reports.zip"',
+         'Cache-Control':'no-store'})
+ 
+ 
+@@ -416,7 +416,7 @@
+ def report_combined(data:BatchReportInput):
+     from .report_pdf import render_combined_pdf
+     return Response(render_combined_pdf(_report_rows(data.estimate_ids),kind=data.kind),media_type='application/pdf',headers={
+-        'Content-Disposition':'attachment; filename="printops-combined-quote.pdf"','Cache-Control':'no-store'})
++        'Content-Disposition':'attachment; filename="ipas-combined-quote.pdf"','Cache-Control':'no-store'})
+ 
+ 
+ @router.get('/estimates/{estimate_id}/report',response_class=HTMLResponse)
+@@ -469,11 +469,11 @@
+     discount=result.get('discount') or {};discount_html=''
+     if Decimal(str(discount.get('percent','0')))>0:
+         discount_html=f"<section><h2>할인 {html.escape(discount['percent'])}%</h2><p>할인 전 {_money(discount['before_total'])} · 할인액 −{_money(discount['amount'])}</p><p style='white-space:pre-wrap'>할인 사유: {html.escape(discount['reason'])}</p></section>"
+-    document=f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>견적 {estimate_id}</title><style>
++    document=f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>IPAS 견적 {estimate_id}</title><link rel="icon" href="/favicon.ico?v=20261008-ipas"><style>
+     body{{font-family:sans-serif;color:#172d2a;max-width:760px;margin:50px auto;line-height:1.7}}header{{border-bottom:3px solid #087c67;padding-bottom:20px}}table{{width:100%;border-collapse:collapse;margin:30px 0}}td{{padding:10px;border-bottom:1px solid #ddd}}td:last-child{{text-align:right}}.total{{font-size:28px;text-align:right}}pre{{white-space:pre-wrap;background:#f1f5f3;padding:15px}}
+     .load-summary,.candidate-technical{{table-layout:fixed;margin:16px 0;font-size:13px;line-height:1.6;overflow-wrap:anywhere}}.load-summary th,.candidate-technical th{{background:#eaf3f0;padding:10px;text-align:left}}.load-summary td,.candidate-technical td{{text-align:left;vertical-align:top}}.load-summary th:first-child{{width:28%}}.candidate-technical th{{width:18%;vertical-align:top}}@media(max-width:600px){{body{{margin:20px 12px}}.load-summary td,.load-summary th,.candidate-technical td,.candidate-technical th{{padding:7px}}}}@media print{{button{{display:none}}}}</style></head><body>
+     <p style="color:#68787c;font-size:13px">처리 안내 · G-code 분석 및 견적 계산은 로컬 서버에서 처리됩니다.</p>
+-    <header><h1>3D 프린팅 {html.escape({'basic':'기본','detailed':'상세','admin':'관리자'}[kind])} 견적서</h1><p>견적 ID {estimate_id}</p></header>
++    <header><img src="/web/ipas-logo.svg?v=20261008-ipas" width="310" height="72" style="max-width:100%;height:auto" alt="IPAS · Integrated Printing Analysis System"><h1>3D 프린팅 {html.escape({'basic':'기본','detailed':'상세','admin':'관리자'}[kind])} 견적서</h1><p>견적 ID {estimate_id}</p></header>
+     <table>{cost_rows_html}</table><p>공급가 {_money(result['subtotal'])} · VAT {_money(result['vat'])} · 배송 {_money(result['shipping'])}</p>
+     {discount_html}<p class="total">총 {_money(result['grand_total'])}</p>{internal}<ul>{warning}</ul><p>강도 수치는 제공되는 경우에도 보수적 참고 추정이며 실제 성능을 보증하지 않습니다. 사용 소재 공급사는 변경될 수 있습니다.</p><button onclick="print()">PDF로 인쇄</button></body></html>'''
+     return HTMLResponse(document,headers={'Cache-Control':'no-store'})
+--- a/app/report_pdf.py
++++ b/app/report_pdf.py
+@@ -12,6 +12,7 @@
+ from reportlab.pdfbase.ttfonts import TTFont
+ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, CondPageBreak, KeepTogether, PageBreak
+ from .report_materials import AGGREGATE_REVIEW_CODE, AGGREGATE_REVIEW_MESSAGE, material_summary, selection_notes, review_message
++from .report_branding import BRAND_NAME, ReportBrand
+ 
+ _font_lock=Lock()
+ 
+@@ -25,7 +26,7 @@
+             pdfmetrics.registerFont(TTFont('PrintOpsKR','/usr/share/fonts/truetype/nanum/NanumGothic.ttf'))
+             pdfmetrics.registerFont(TTFont('PrintOpsKRBold','/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf'))
+     out=BytesIO();doc=SimpleDocTemplate(out,pagesize=A4,leftMargin=36,rightMargin=36,topMargin=42,bottomMargin=42,
+-        title='3D 프린팅 통합 견적서',author='PrintOps')
++        title='3D 프린팅 통합 견적서',author=BRAND_NAME)
+     body=ParagraphStyle('CombinedBody',fontName='PrintOpsKR',fontSize=9,leading=14,wordWrap='CJK',textColor=colors.HexColor('#263b3e'))
+     heading=ParagraphStyle('CombinedHeading',parent=body,fontName='PrintOpsKRBold',fontSize=22,leading=30,spaceAfter=12)
+     small=ParagraphStyle('CombinedSmall',parent=body,fontSize=7.5,leading=12,textColor=colors.HexColor('#68787c'))
+@@ -33,7 +34,7 @@
+     p=lambda value,style=body:Paragraph(escape(str(value)).replace('\n','<br/>'),style)
+     money=lambda value:f'{Decimal(str(value)):,.0f}원'
+     story=[p('처리 안내 · G-code 분석 및 견적 계산은 로컬 서버에서 처리됩니다.',small),Spacer(1,8),
+-        p('PRINTOPS / 3D PRINTING',small),Spacer(1,12),p('관리자 통합 견적 보고서' if administrator else '3D 프린팅 통합 견적서',heading),
++        ReportBrand(),p('관리자 통합 견적 보고서' if administrator else '3D 프린팅 통합 견적서',heading),
+         p('관리자 전용 · 통합 금액 및 파일별 상세 분석·내부 계산 근거' if administrator else '고객 전달용 · 파일별 출력 조건과 금액을 합산한 견적',small)]
+     project=rows[0].get('project_name') or '프로젝트';code=rows[0].get('project_code') or ''
+     story.extend([p(f'프로젝트  {project}'+(f' · {code}' if code else ''),small),Spacer(1,18)])
+@@ -81,7 +82,7 @@
+             story.extend([PageBreak(),*render_pdf(row,'admin',_story_only=True)])
+     def footer(canvas,document):
+         canvas.saveState();canvas.setFont('PrintOpsKR',7);canvas.setFillColor(colors.HexColor('#68787c'))
+-        canvas.drawString(36,24,'PrintOps · '+('관리자 전용 통합 보고서' if administrator else '고객 전달용 통합 견적서'));canvas.drawRightString(A4[0]-36,24,str(document.page));canvas.restoreState()
++        canvas.drawString(36,24,BRAND_NAME+' · '+('관리자 전용 통합 보고서' if administrator else '고객 전달용 통합 견적서'));canvas.drawRightString(A4[0]-36,24,str(document.page));canvas.restoreState()
+     doc.build(story,onFirstPage=footer,onLaterPages=footer)
+     return out.getvalue()
+ 
+@@ -92,7 +93,7 @@
+             pdfmetrics.registerFont(TTFont('PrintOpsKRBold','/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf'))
+     out=BytesIO()
+     doc=SimpleDocTemplate(out,pagesize=A4,leftMargin=42,rightMargin=42,topMargin=42,bottomMargin=42,
+-        title='3D 프린팅 견적',author='PrintOps')
++        title='3D 프린팅 견적',author=BRAND_NAME)
+     body=ParagraphStyle('Body',fontName='PrintOpsKR',fontSize=10,leading=16,wordWrap='CJK',textColor=colors.HexColor('#263b3e'))
+     heading=ParagraphStyle('Heading',parent=body,fontName='PrintOpsKRBold',fontSize=23,leading=32,spaceAfter=16,keepWithNext=True)
+     section=ParagraphStyle('Section',parent=body,fontName='PrintOpsKRBold',spaceBefore=6,spaceAfter=4,keepWithNext=True)
+@@ -124,7 +125,7 @@
+     printer_name=lambda key:{'Q1':'QIDI Q1 Pro','Q2':'QIDI Q2 Combo'}.get(key,key)
+     title={'basic':'3D 프린팅 견적서','detailed':'3D 프린팅 상세 견적서','admin':'관리자 견적 보고서'}[kind]
+     subtitle='고객 전달용 · 출력 조건 기반 상세 견적' if kind=='detailed' else '고객 전달용 · 출력 서비스 견적' if kind=='basic' else '관리자 전용 · 내부 계산 근거 포함'
+-    story=[p('처리 안내 · G-code 분석 및 견적 계산은 로컬 서버에서 처리됩니다.',small),Spacer(1,8),p('PRINTOPS / 3D PRINTING',small),Spacer(1,14),p(title,heading),
++    story=[p('처리 안내 · G-code 분석 및 견적 계산은 로컬 서버에서 처리됩니다.',small),Spacer(1,8),ReportBrand(),p(title,heading),
+         p(subtitle,small),p('견적 번호  '+str(row['id']),small),Spacer(1,22)]
+     notes=selection_notes(result,data.get('grams','—'))
+     if notes:story.extend([p('소재 선택 및 단가 적용 근거',section),*[p(note,small) for note in notes],Spacer(1,10)])
+@@ -352,6 +353,6 @@
+     if _story_only:return story
+     def footer(canvas,document):
+         canvas.setFont('PrintOpsKR',8);canvas.setFillColor(colors.HexColor('#68787c'))
+-        canvas.drawString(42,25,'PrintOps · '+('고객 전달용' if kind in ('basic','detailed') else '관리자 전용'));canvas.drawRightString(A4[0]-42,25,str(document.page))
++        canvas.drawString(42,25,BRAND_NAME+' · '+('고객 전달용' if kind in ('basic','detailed') else '관리자 전용'));canvas.drawRightString(A4[0]-42,25,str(document.page))
+     doc.build(story,onFirstPage=footer,onLaterPages=footer)
+     return out.getvalue()
+--- a/app/engine_versions.py
++++ b/app/engine_versions.py
+@@ -5,7 +5,7 @@
+ from print_strength_engine._version import RELEASE as STRENGTH
+ from print_quote_engine._version import RELEASE as QUOTE
+ 
+-LABELS={'gcode':'G-code','strength':'강도','quote':'가격'}
++LABELS={'gcode':'IPAS-GCODE ENGINE','strength':'IPAS-STRENGTH ENGINE','quote':'IPAS-QUOTE ENGINE'}
+ 
+ def current_versions():
+     return deepcopy({'gcode':GCODE,'strength':STRENGTH,'quote':QUOTE})
+@@ -23,5 +23,5 @@
+ 
+ def report_version_lines(result):
+     return ['견적 저장 시 엔진: '+version_text(result.get('engine_versions') or {}),
+-            '보고서 생성 환경: PrintOps v'+config.VERSION+' · '+version_text(current_versions()),
++            '보고서 생성 환경: IPAS v'+config.VERSION+' · '+version_text(current_versions()),
+             '상세 보고서의 소재 참고·하중 가정 재계산에는 보고서 생성 환경의 강도 엔진을 사용합니다.']
+--- /dev/null
++++ b/app/report_branding.py
+@@ -0,0 +1,53 @@
++"""Compact vector branding shared by every PDF report audience."""
++from reportlab.lib import colors
++from reportlab.pdfbase import pdfmetrics
++from reportlab.platypus import Flowable
++
++BRAND_NAME = 'IPAS'
++BRAND_FULL_NAME = 'Integrated Printing Analysis System'
++
++
++class ReportBrand(Flowable):
++    """A vector lockup that fits the space reserved for the report masthead."""
++
++    def __init__(self):
++        super().__init__()
++        self.width = 34 + pdfmetrics.stringWidth(BRAND_FULL_NAME, 'Helvetica', 7.5)
++        self.height = 26
++        self.keepWithNext = True
++
++    def draw(self):
++        canvas = self.canv
++        canvas.saveState()
++        canvas.translate(0, 2)
++        canvas.scale(24 / 64, 24 / 64)
++        canvas.setFillColor(colors.HexColor('#152533'))
++        canvas.roundRect(0, 0, 64, 64, 12, stroke=0, fill=1)
++        canvas.setFillColor(colors.HexColor('#21C6B7'))
++        top = canvas.beginPath()
++        top.moveTo(32, 54)
++        for x, y in ((53, 43), (32, 32), (11, 43)):
++            top.lineTo(x, y)
++        top.close()
++        canvas.drawPath(top, stroke=0, fill=1)
++        canvas.setLineWidth(5)
++        canvas.setLineCap(1)
++        canvas.setLineJoin(1)
++        for stroke, points in (
++            ('#F6FBFC', ((11, 33), (32, 22), (53, 33))),
++            ('#21C6B7', ((11, 22), (32, 11), (53, 22))),
++        ):
++            canvas.setStrokeColor(colors.HexColor(stroke))
++            layer = canvas.beginPath()
++            layer.moveTo(*points[0])
++            for point in points[1:]:
++                layer.lineTo(*point)
++            canvas.drawPath(layer, stroke=1, fill=0)
++        canvas.restoreState()
++        canvas.saveState()
++        canvas.setFillColor(colors.HexColor('#152533'))
++        canvas.setFont('Helvetica-Bold', 18)
++        canvas.drawString(34, 12.5, BRAND_NAME)
++        canvas.setFont('Helvetica', 7.5)
++        canvas.drawString(34, 1.5, BRAND_FULL_NAME)
++        canvas.restoreState()
+--- /dev/null
++++ b/tests/test_brand_assets.py
+@@ -0,0 +1,77 @@
++"""Browser icons must be public, correctly typed, complete and allowlisted."""
++from html.parser import HTMLParser
++from io import BytesIO
++from urllib.parse import urlsplit
++from xml.etree import ElementTree
++
++from fastapi.testclient import TestClient
++from PIL import Image
++import pytest
++
++from app.main import app, BRAND_ASSETS
++
++
++class BrandLinks(HTMLParser):
++    def __init__(self):
++        super().__init__()
++        self.links = []
++    def handle_starttag(self, tag, attrs):
++        attrs = dict(attrs)
++        if tag == 'link' and ('icon' in attrs.get('rel','') or attrs.get('rel') == 'manifest'):
++            self.links.append(attrs)
++
++
++def test_browser_icon_links_work_without_operator_session(monkeypatch):
++    from app import config
++    monkeypatch.setattr(config, 'AUTH_REQUIRED', True)
++    browser = TestClient(app)
++    page = browser.get('/')
++    assert page.status_code == 200
++    links = BrandLinks(); links.feed(page.text)
++    assert len(links.links) == 6
++    for link in links.links:
++        response = browser.get(link['href'])
++        assert response.status_code == 200, link
++        assert response.headers['x-content-type-options'] == 'nosniff'
++        assert response.headers['cache-control'] == 'no-store'
++        path = urlsplit(link['href']).path
++        media_type = 'image/x-icon' if path == '/favicon.ico' else BRAND_ASSETS[path.rsplit('/',1)[1]]
++        assert response.headers['content-type'].split(';')[0] == media_type
++    assert browser.get('/favicon.ico').content == browser.get('/web/favicon.ico').content
++
++
++@pytest.mark.parametrize('name,media_type', sorted(BRAND_ASSETS.items()))
++def test_brand_asset_formats_are_real_and_portable(name, media_type):
++    response = TestClient(app).get('/web/' + name)
++    assert response.status_code == 200
++    assert response.headers['content-type'].split(';')[0] == media_type
++    if name.endswith('.svg'):
++        root = ElementTree.fromstring(response.content)
++        assert root.tag == '{http://www.w3.org/2000/svg}svg'
++        assert root.attrib.get('viewBox')
++        # Fonts may be used for the full name, but the IPAS letters are outlines.
++        assert not any(node.tag.endswith('}script') or 'href' in node.attrib for node in root.iter())
++    elif name.endswith('.png'):
++        expected = {'favicon-16.png':16,'favicon-32.png':32,'apple-touch-icon.png':180,
++                    'icon-192.png':192,'icon-512.png':512}[name]
++        with Image.open(BytesIO(response.content)) as image:
++            assert image.format == 'PNG' and image.size == (expected,expected)
++            assert image.convert('RGBA').getpixel((expected//2,expected//2))[3] == 255
++    elif name.endswith('.ico'):
++        with Image.open(BytesIO(response.content)) as image:
++            assert image.format == 'ICO'
++            assert {(16,16),(32,32),(48,48),(256,256)} <= image.ico.sizes()
++    else:
++        manifest = response.json()
++        assert manifest['name'] == 'Integrated Printing Analysis System'
++        assert manifest['short_name'] == 'IPAS'
++        for icon in manifest['icons']:
++            icon_response = TestClient(app).get(icon['src'])
++            with Image.open(BytesIO(icon_response.content)) as image:
++                assert icon['sizes'] == f'{image.width}x{image.height}'
++
++
++@pytest.mark.parametrize('path', ['/web/config.py','/web/main.py','/web/.env',
++                                '/web/%2e%2e%2fconfig.py','/assets/favicon.ico'])
++def test_asset_routes_do_not_expose_non_allowlisted_files(path):
++    assert TestClient(app).get(path).status_code == 404
+--- /dev/null
++++ b/tests/test_report_branding.py
+@@ -0,0 +1,100 @@
++"""The same printable identity appears on all report audiences and formats."""
++from copy import deepcopy
++from io import BytesIO
++from pathlib import Path
++import shutil
++import subprocess
++import sys
++from unittest.mock import patch
++from xml.etree import ElementTree
++
++import pytest
++
++from app import report_pdf
++from app.engine_versions import report_version_lines
++
++
++def pdf_contents(data):
++    command = shutil.which('pdftotext')
++    if command:
++        xml = subprocess.run([command, '-bbox', '-', '-'], input=data,
++            stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True).stdout
++        root = ElementTree.fromstring(xml)
++        namespace = {'pdf': 'http://www.w3.org/1999/xhtml'}
++        pages = root.findall('.//pdf:page', namespace)
++        words = [{'text': word.text or '', 'x0': float(word.attrib['xMin']),
++                  'x1': float(word.attrib['xMax']), 'top': float(word.attrib['yMin']),
++                  'bottom': float(word.attrib['yMax'])}
++                 for word in pages[0].findall('pdf:word', namespace)]
++        text = ' '.join(word.text or '' for word in root.findall('.//pdf:word', namespace))
++        return text, words, float(pages[0].attrib['width'])
++    # Bundled Windows QA supplies pdfplumber; the production image uses Poppler.
++    import pdfplumber
++    with pdfplumber.open(BytesIO(data)) as pdf:
++        return ('\n'.join(page.extract_text() or '' for page in pdf.pages),
++                pdf.pages[0].extract_words(), pdf.pages[0].width)
++
++
++@pytest.fixture
++def report_row():
++    return {
++        'id': 'ipas-branding-check',
++        'original_filename': 'branding-part.gcode',
++        'input_json': {'printer': 'H2C', 'material': 'PLA', 'colors': 1,
++            'duration_seconds': 600, 'grams': '10', 'part_count': 1,
++            'input_source': 'GCODE'},
++        'result_json': {'components': [{'code': 'BASE', 'label': '출력', 'amount': '100'}],
++            'subtotal': '100', 'vat': '10', 'shipping': '4000', 'grand_total': '4110',
++            'manual_review_reasons': [], 'warnings': [], 'detected_settings': {}}}
++
++
++@pytest.fixture(autouse=True)
++def report_dependencies():
++    real_font = report_pdf.TTFont
++    def font(name, filename, *args, **kwargs):
++        if sys.platform == 'win32' and not Path(filename).is_file():
++            filename = {'PrintOpsKR': 'C:/Windows/Fonts/malgun.ttf',
++                        'PrintOpsKRBold': 'C:/Windows/Fonts/malgunbd.ttf'}[name]
++        return real_font(name, filename, *args, **kwargs)
++    with patch.object(report_pdf, 'TTFont', side_effect=font), \
++         patch('app.report_geometry.geometry_for_report', return_value={
++             'status': 'NO_GCODE_SOURCE', 'images': [], 'candidates': []}), \
++         patch('app.report_geometry.report_reference', return_value={}):
++        yield
++
++
++@pytest.mark.parametrize('kind', ['basic', 'detailed', 'admin'])
++@pytest.mark.parametrize('combined', [False, True])
++def test_branding_preserves_report_notice_audience_and_amounts(report_row, kind, combined):
++    snapshot = deepcopy(report_row)
++    data = (report_pdf.render_combined_pdf([report_row], kind=kind) if combined
++            else report_pdf.render_pdf(report_row, kind))
++    text, words, page_width = pdf_contents(data)
++    assert data.startswith(b'%PDF')
++    assert b'/Author (IPAS)' in data
++    assert 'Integrated Printing Analysis System' in text
++    assert 'IPAS · ' + ('관리자 전용' if kind == 'admin' else '고객 전달용') in text
++    assert 'PrintOps' not in text and 'PRINTOPS' not in text and 'PIAS' not in text
++    assert '4,110원' in text
++    assert ('보고서 생성 환경: IPAS v' in text) == (kind == 'admin')
++    assert report_row == snapshot
++    notice = next(word for word in words if word['text'] == '처리')
++    brand = next(word for word in words if word['text'] == 'IPAS' and word['top'] < 150)
++    full_name = [word for word in words if word['text'] in
++                 ('Integrated', 'Printing', 'Analysis', 'System') and word['top'] < 150]
++    title = next(word for word in words if word['text'] == ('관리자' if kind == 'admin' else '3D'))
++    assert notice['bottom'] < brand['top'] < min(word['top'] for word in full_name)
++    assert max(word['bottom'] for word in full_name) < title['top']
++    assert len(full_name) == 4
++    assert b'/Subtype /Image' not in data, 'The brand must not add a raster image dependency.'
++    for word in [brand, *full_name]:
++        assert 36 <= word['x0'] < word['x1'] <= page_width - 36
++
++
++def test_report_environment_uses_current_identity_without_touching_saved_versions():
++    result = {'engine_versions': {'gcode': {'version': 'saved-parser'}}}
++    snapshot = deepcopy(result)
++    lines = report_version_lines(result)
++    assert 'IPAS-GCODE ENGINE vsaved-parser' in lines[0]
++    assert lines[1].startswith('보고서 생성 환경: IPAS v')
++    assert result == snapshot

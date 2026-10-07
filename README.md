@@ -1,8 +1,21 @@
-# Print Strength Engine
+# IPAS-STRENGTH ENGINE
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="branding/ipas/ipas-logo-light.svg">
+  <img src="branding/ipas/ipas-logo.svg" alt="IPAS · Integrated Printing Analysis System">
+</picture>
 
 ## 한국어
 
-최신 배포: [PrintOps v0.5.24 견적 목록 지연 수정·실측 보정 적격성](docs/history-calibration-review-20261007.md). 목록은 요약 응답으로 전환했으며, 실측 강도 보정은 적격한 측정자료 부족으로 미완료입니다. 강도 v0.24.0 유지.
+**IPAS · Integrated Printing Analysis System**의 강도·취약부 분석 엔진입니다. 이전 통합 시스템 이름은 PrintOps입니다. [IPAS 브랜딩·운영 릴리스](docs/ipas-branding-release-20261008.md) · [로고·워드마크·아이콘](branding/ipas/README.md).
+
+| 엔진 | 역할 |
+|---|---|
+| [IPAS-GCODE ENGINE](https://github.com/mk0000001/IPAS-GCODE-ENGINE) | G-code·슬라이스 3MF의 경로·소재·공정 명령 분석 |
+| [IPAS-STRENGTH ENGINE](https://github.com/mk0000001/IPAS-STRENGTH-ENGINE) | 취약부 선별·조건부 강도와 하중 검토 |
+| [IPAS-QUOTE ENGINE](https://github.com/mk0000001/IPAS-QUOTE-ENGINE) | 비용·전력·세금·할인 계산 |
+
+이전 성능 배포: [PrintOps v0.5.24 견적 목록 지연 수정·실측 보정 적격성](docs/history-calibration-review-20261007.md). 목록은 요약 응답으로 전환했으며, 실측 강도 보정은 적격한 측정자료 부족으로 미완료입니다. 강도 v0.24.0 유지.
 
 최종 화면 배포: [PrintOps v0.5.23 후보 카드 반응형 검증](docs/responsive-candidates-release-20261007.md). 강도 v0.24.0 유지.
 
@@ -38,7 +51,9 @@ python -m unittest discover -s tests
 
 ## English
 
-Latest deployment: [PrintOps v0.5.24 history latency and empirical qualification](docs/history-calibration-review-20261007.md). The UI uses compact summary responses; empirical strength calibration remains incomplete without eligible measurements. Strength remains v0.24.0.
+Strength and weak-region analysis engine for **IPAS · Integrated Printing Analysis System**, formerly PrintOps. [IPAS branding and deployment](docs/ipas-branding-release-20261008.md) · [Brand kit](branding/ipas/README.md). Related engines: [IPAS-GCODE ENGINE](https://github.com/mk0000001/IPAS-GCODE-ENGINE) and [IPAS-QUOTE ENGINE](https://github.com/mk0000001/IPAS-QUOTE-ENGINE). Import/package names remain compatible; branding does not change the numerical model.
+
+Previous performance deployment: [PrintOps v0.5.24 history latency and empirical qualification](docs/history-calibration-review-20261007.md). The UI uses compact summary responses; empirical strength calibration remains incomplete without eligible measurements. Strength remains v0.24.0.
 
 Final presentation deployment: [PrintOps v0.5.23 responsive candidate verification](docs/responsive-candidates-release-20261007.md). Strength remains v0.24.0.
 
