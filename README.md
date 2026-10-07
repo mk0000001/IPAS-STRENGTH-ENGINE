@@ -7,6 +7,8 @@
 
 ## 한국어
 
+최신 호스트 릴리스: [IPAS v0.5.26 프로필 자동 선택·가격 근거 보존](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-profile-autoselect-20261008.md). 자동 가격과 실제 소재·강도 식별을 구분하며 강도 수치 엔진 v0.24.0을 유지합니다.
+
 **IPAS · Integrated Printing Analysis System**의 강도·취약부 분석 엔진입니다. 이전 통합 시스템 이름은 PrintOps입니다. [IPAS 브랜딩·운영 릴리스](docs/ipas-branding-release-20261008.md) · [로고·워드마크·아이콘](branding/ipas/README.md).
 
 | 엔진 | 역할 |
@@ -50,6 +52,8 @@ python -m unittest discover -s tests
 ```
 
 ## English
+
+Latest host release: [IPAS v0.5.26 profile auto-selection and price provenance](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-profile-autoselect-20261008.md). Automatic costing remains distinct from material/strength identity; the strength numerical engine remains v0.24.0.
 
 Strength and weak-region analysis engine for **IPAS · Integrated Printing Analysis System**, formerly PrintOps. [IPAS branding and deployment](docs/ipas-branding-release-20261008.md) · [Brand kit](branding/ipas/README.md). Related engines: [IPAS-GCODE ENGINE](https://github.com/mk0000001/IPAS-GCODE-ENGINE) and [IPAS-QUOTE ENGINE](https://github.com/mk0000001/IPAS-QUOTE-ENGINE). Import/package names remain compatible; branding does not change the numerical model.
 

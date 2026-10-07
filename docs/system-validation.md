@@ -1,12 +1,16 @@
 # IPAS 시스템 검증 결과와 적용 한계
 
+최신 배포(2026-10-08): [IPAS v0.5.26 프로필 자동 선택·가격 근거 보존](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-profile-autoselect-20261008.md). 최종 v3 전체 호스트 시험 792개·하위 검사 168개 통과, 실제 5슬롯 자동/수동 선택·PDF·저장 견적 보존·네 서비스 배포를 확인했다. 수치 엔진은 G-code v0.28.0·strength v0.24.0·quote v0.13.0을 유지하며 물리 출력·실측 강도 검증 범위는 확대되지 않았다.
+
+Latest deployment (2026-10-08): [IPAS v0.5.26 profile auto-selection and price provenance](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-profile-autoselect-20261008.md). Final v3 host tests passed 792 tests plus 168 subtests; live five-slot automatic/manual selection, PDFs, saved-estimate preservation and all four deployed services were verified. Numerical engines remain G-code v0.28.0, strength v0.24.0 and quote v0.13.0; physical-print and measured-strength validation scope is unchanged.
+
 통합 시스템 이름: **IPAS · Integrated Printing Analysis System**. 최신 브랜딩과 저장소 변경은 [IPAS v0.5.25 릴리스](ipas-branding-release-20261008.md)를 참조한다. 아래의 날짜별 PrintOps 표기는 당시 릴리스 이름이며 수치 검증 결과를 새로 주장하지 않는다.
 
 System identity: **IPAS · Integrated Printing Analysis System**. See the [IPAS v0.5.25 release](ipas-branding-release-20261008.md) for branding and repository migration. Dated PrintOps entries below retain their historical release names and validation boundaries.
 
-최신 배포(2026-10-07): [PrintOps v0.5.24 견적 목록 지연 수정·실측 보정 적격성](history-calibration-review-20261007.md). 이력은 개선됐으며 실측 보정은 적격한 측정자료 부족으로 미완료다. 강도 v0.24.0 유지.
+이전 배포(2026-10-07): [PrintOps v0.5.24 견적 목록 지연 수정·실측 보정 적격성](history-calibration-review-20261007.md). 이력은 개선됐으며 실측 보정은 적격한 측정자료 부족으로 미완료다. 강도 v0.24.0 유지.
 
-Latest deployment (2026-10-07): [PrintOps v0.5.24 history latency and empirical qualification](history-calibration-review-20261007.md). List latency improved; empirical calibration remains incomplete without eligible measurements. Strength remains v0.24.0.
+Previous deployment (2026-10-07): [PrintOps v0.5.24 history latency and empirical qualification](history-calibration-review-20261007.md). List latency improved; empirical calibration remains incomplete without eligible measurements. Strength remains v0.24.0.
 
 최종 화면 배포(2026-10-07): [PrintOps v0.5.23 후보 카드 반응형 배치 검증](responsive-candidates-release-20261007.md). 강도 v0.24.0 유지.
 
