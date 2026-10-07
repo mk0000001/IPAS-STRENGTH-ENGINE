@@ -12,9 +12,12 @@ MAX_SECTION_PIECES=100_000
 MAX_TOTAL_SECTION_PIECES=250_000
 MAX_UNION_VERTICES=1_000_000
 MAX_SUPPORT_VERTICES=4096
+MAX_SECTION_COMPONENTS=4096
 PROVENANCE='GCODE_WIDTH_HEIGHT_ASSUMPTION'
 SCOPE='LOCAL_DECLARED_ROAD_REGION'
-VERSION='LOCAL_DECLARED_ROAD_SECTIONS_V3_BOUNDARY_SUPPORT_PROOF'
+VERSION='LOCAL_DECLARED_ROAD_SECTIONS_V4_COMPONENT_SELECTION'
+COMPONENT_KINDS=frozenset(('COMPONENT_NECK_SECTION','COMPONENT_REFERENCE_SECTION'))
+COMPONENT_SELECTION='MINIMUM_ALL_DIRECTION_MODULUS_CONNECTED_POLYGON'
 
 
 def _plane_properties(shape):
@@ -156,6 +159,33 @@ def _xy_interval(footprint,axis,station):
     return (min(values),max(values)) if len(values)>1 else None
 
 
+def valid_component_selection(section):
+    """Verify the selected polygon proof, never accept a relabelled plate union."""
+    try:
+        count=section.get('component_count')
+        if not isinstance(count,int) or isinstance(count,bool) or not 1<=count<=MAX_SECTION_COMPONENTS:return False
+        if section.get('normal_axis')!='Z' or section.get('component_selection_basis')!=COMPONENT_SELECTION:return False
+        axial=section.get('axial');bending=section.get('bending')
+        if not isinstance(axial,dict) or axial!=bending or axial.get('component_count')!=1:return False
+        if axial.get('reference_component_count')!=count or axial.get('component_selection_basis')!=COMPONENT_SELECTION:return False
+        limits=section.get('component_selection_limits')
+        if limits!=axial.get('component_selection_limits') or not isinstance(limits,list) or not limits:return False
+        if any(not isinstance(limit,str) or len(limit)>256 for limit in limits):return False
+        bounds=section.get('selected_component_bounds_uv_mm');centroid=section.get('selected_component_centroid_uv_mm')
+        if bounds!=axial.get('selected_component_bounds_uv_mm') or centroid!=axial.get('centroid_uv_mm') or centroid!=axial.get('selected_component_centroid_uv_mm'):return False
+        if not isinstance(bounds,list) or len(bounds)!=2 or not isinstance(centroid,list) or len(centroid)!=2:return False
+        center=[finite_number(value) for value in centroid]
+        support=axial.get('boundary_support_vertices_relative_uv_mm')
+        if not isinstance(support,list) or not 3<=len(support)<=MAX_SUPPORT_VERTICES:return False
+        for index in range(2):
+            if not isinstance(bounds[index],list) or len(bounds[index])!=2:return False
+            lo,hi=[finite_number(value) for value in bounds[index]]
+            values=[finite_number(point[index])+center[index] for point in support]
+            if lo>=hi or not isclose(lo,min(values),rel_tol=1e-9,abs_tol=1e-7) or not isclose(hi,max(values),rel_tol=1e-9,abs_tol=1e-7):return False
+        return True
+    except (AttributeError,ValueError,TypeError,KeyError,IndexError,OverflowError):return False
+
+
 class StreamingSections:
     """Consume every model road; retain only bounded intersections of <=12 cuts."""
     def __init__(self,candidates):
@@ -166,6 +196,9 @@ class StreamingSections:
             key=str(candidate.get('region_id') or '')
             if not key or key in self.entries:raise ValueError('UNIQUE_LOCAL_REGION_ID_REQUIRED')
             entry={'cuts':{},'gaps':[],'intersecting_records':0,'candidate':candidate};self.entries[key]=entry
+            if candidate.get('kind') in COMPONENT_KINDS:
+                gaps=candidate.get('assessment_gaps',[])
+                if isinstance(gaps,list):entry['gaps'].extend(gap for gap in gaps[:64] if isinstance(gap,str) and len(gap)<=256)
             try:
                 axis='XYZ'.index(str(candidate.get('section_normal_axis') or '').upper())
                 bounds=candidate.get('section_window_bounds_mm')
@@ -182,13 +215,17 @@ class StreamingSections:
                     raise ValueError()
             except (ValueError,TypeError):
                 entry['gaps'].append('LOCAL_SECTION_WINDOW_REQUIRED');continue
+            component=candidate.get('kind') in COMPONENT_KINDS
+            if component and (axis!=2 or axial!=bending):
+                entry['gaps'].append('COMPONENT_REFERENCE_COMMON_Z_PLANE_REQUIRED');continue
             u=(axis+1)%3;v=(axis+2)%3
             entry.update(axis=axis,u=u,v=v,bounds=normalized)
             for name,station in (('axial',axial),('bending',bending)):
-                cut_key=(axis,station,tuple(normalized[u]),tuple(normalized[v]))
+                cut_key=(axis,station,tuple(normalized[u]),tuple(normalized[v]),component)
                 if cut_key not in self.cuts:
                     self.cuts[cut_key]={'axis':axis,'u':u,'v':v,'station':station,'bounds':normalized,
-                                        'pieces':set(),'tools':set(),'members':set(),'gaps':set()}
+                                         'pieces':set(),'tools':set(),'members':set(),'gaps':set(),
+                                         'component_selection':component,'piece_tools':{} if component else None}
                 self.cuts[cut_key]['members'].add(key);entry['cuts'][name]=cut_key
         if len(self.cuts)>MAX_CUTS:raise ValueError('LOCAL_SECTION_CUT_LIMIT')
 
@@ -242,6 +279,8 @@ class StreamingSections:
                 if low>=high or bottom>=top:continue
                 piece=(low,high,bottom,top) if u==other else (bottom,top,low,high)
             cut['tools'].add(tool);matched.update(cut['members'])
+            if cut['component_selection']:
+                cut['piece_tools'].setdefault(piece,set()).add(tool)
             if piece in cut['pieces']:continue
             if len(cut['pieces'])>=MAX_SECTION_PIECES or self.total_pieces>=MAX_TOTAL_SECTION_PIECES:
                 cut['gaps'].add('LOCAL_SECTION_GEOMETRY_BUDGET_EXCEEDED');continue
@@ -258,11 +297,34 @@ class StreamingSections:
             if not complete:gaps.add('INCOMPLETE_SOURCE_SCAN')
             if not gaps:
                 try:
+                    pieces=list(cut['pieces'])
                     shapes=[Polygon(piece) if cut['axis']==2 else box(piece[0],piece[2],piece[1],piece[3])
-                            for piece in cut['pieces']]
+                            for piece in pieces]
                     shape=union_all(shapes,grid_size=0)
-                    properties=_plane_properties(shape)
-                    properties.update(station_mm=cut['station'],tools=sorted(cut['tools']),
+                    tools=cut['tools']
+                    if cut['component_selection']:
+                        polygons=list(shape.geoms) if shape.geom_type=='MultiPolygon' else [shape]
+                        if len(polygons)>MAX_SECTION_COMPONENTS:
+                            raise UnsupportedGeometry('LOCAL_SECTION_GEOMETRY_BUDGET_EXCEEDED')
+                        if sum(len(ring.coords)-1 for polygon in polygons if polygon.geom_type=='Polygon'
+                               for ring in (polygon.exterior,*polygon.interiors))>MAX_UNION_VERTICES:
+                            raise UnsupportedGeometry('LOCAL_SECTION_GEOMETRY_BUDGET_EXCEEDED')
+                        choices=[(_plane_properties(polygon),polygon) for polygon in polygons]
+                        properties,selected=min(choices,key=lambda item:(item[0]['minimum_all_direction_section_modulus_mm3'],
+                                                                         item[1].bounds))
+                        tools=set()
+                        for piece,road in zip(pieces,shapes):
+                            if selected.intersects(road) and selected.intersection(road).area>0:
+                                tools.update(cut['piece_tools'][piece])
+                        x0,y0,x1,y1=selected.bounds
+                        properties.update(reference_component_count=len(polygons),
+                            selected_component_bounds_uv_mm=[[x0,x1],[y0,y1]],
+                            selected_component_centroid_uv_mm=list(selected.centroid.coords[0]),
+                            component_selection_basis=COMPONENT_SELECTION,
+                            component_selection_limits=['CONNECTED_2D_ROAD_POLYGON_NOT_SOURCE_OBJECT_ID',
+                                'NO_WHOLE_PART_LOAD_PATH_OR_WELD_STRENGTH_VERIFICATION'])
+                    else:properties=_plane_properties(shape)
+                    properties.update(station_mm=cut['station'],tools=sorted(tools),
                                       plane_axes=['XYZ'[cut['u']],'XYZ'[cut['v']]],
                                       station_side='POSITIVE_AXIS_LIMIT')
                     cut_results[key]=(properties,[])
@@ -297,5 +359,9 @@ class StreamingSections:
                     moment[axis]=local['bending']['critical_bending_moment_direction_uv'][index]
                 value.update(weakest_local_bending_stress_gradient_xyz=gradient,
                              critical_bending_moment_direction_xyz=moment)
+                if entry['candidate'].get('kind') in COMPONENT_KINDS:
+                    value.update(component_count=local['bending']['reference_component_count'],
+                                 **{key:local['bending'][key] for key in ('selected_component_bounds_uv_mm',
+                                    'selected_component_centroid_uv_mm','component_selection_basis','component_selection_limits')})
             results[key]=value
         return results

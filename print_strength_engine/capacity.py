@@ -4,7 +4,7 @@ from . import automatic_sections
 from .process import settings as process_settings
 
 GRAVITY=9.80665
-VERSION='CAPACITY_SCENARIO_V8_COMMANDED_VOLUME_CONTEXT'
+VERSION='CAPACITY_SCENARIO_V10_COMMON_PRODUCT_REFERENCE'
 AUTOMATIC_VERSION=VERSION
 BASIS_ENVELOPE='OUTER_ENVELOPE_GEOMETRY_ONLY'
 BASIS_PROXY='LAYER_EXTRUSION_GEOMETRY_COMPARISON_ONLY'
@@ -24,6 +24,7 @@ def _automatic_details_valid(deposited,axis,candidate=None):
 
 def _valid_automatic_details(deposited,axis,candidate=None):
     """Complete markers cannot replace finite required output metadata."""
+    if candidate and candidate.get('kind') in automatic_sections.COMPONENT_KINDS and not automatic_sections.valid_component_selection(deposited):return False
     bending=deposited.get('bending')
     if not isinstance(bending,dict):return False
     principal=bending.get('principal_section_moduli_mm3')
@@ -75,11 +76,56 @@ def _valid_automatic_details(deposited,axis,candidate=None):
     return True
 
 
-def capacity_for_candidate(candidate,directional_mpa,analysis=None,lever_mm=None,*,reference_area_basis='UNKNOWN'):
+def _common_tool_scope(tools,declared):
+    """An explicit caller assumption may cover exactly the recorded tool set."""
+    if not isinstance(tools,list) or not tools:return False
+    if any(isinstance(tool,bool) or not isinstance(tool,int) or tool<0 for tool in tools) or len(set(tools))!=len(tools):return False
+    if len(tools)==1:return True
+    return isinstance(declared,list) and len(declared)==len(tools) and all(
+        isinstance(tool,int) and not isinstance(tool,bool) and tool>=0 for tool in declared) and len(set(declared))==len(declared) and set(declared)==set(tools)
+
+
+def capacity_for_candidate(candidate,directional_mpa,analysis=None,lever_mm=None,*,reference_area_basis='UNKNOWN',bending_supported=True,homogeneous_reference_tools=None):
+    """Keep unsupported material bending out of every returned load scenario."""
+    if not isinstance(bending_supported,bool):raise ValueError('INVALID_BENDING_SUPPORT_FLAG')
+    result=_capacity_for_candidate(candidate,directional_mpa,analysis,lever_mm,reference_area_basis=reference_area_basis,homogeneous_reference_tools=homogeneous_reference_tools)
+    tools=(candidate.get('deposited_section') or {}).get('tools')
+    if result is not None and result.get('calculation_status')=='AUTOMATIC_REFERENCE_LOAD_ESTIMATE' and isinstance(tools,list) and len(tools)>1 and _common_tool_scope(tools,homogeneous_reference_tools):
+        result['homogeneous_material_assumption']={'basis':'CALLER_DECLARED_COMMON_PRODUCT_REFERENCE','tool_ids':sorted(tools),'verified':False}
+        result.setdefault('assessment_gaps',[]).append('MULTITOOL_COMMON_PRODUCT_HOMOGENEITY_ASSUMED')
+        result.setdefault('limitations',[]).append('The caller assigns one common product reference to these tools and assumes homogeneous stiffness and perfect tool-to-tool bonding. Color, batch, moisture and boundary strength are unmeasured; no empirical homogenization or color factor is applied.')
+    if result is None or bending_supported:return result
+    result.update(bending_supported=False,bending_calculation_status='WITHHELD_UNSUPPORTED_MATERIAL_MODEL',
+                  bending_force_n=None,bending_force_kgf=None,bending_capacity_nmm=None,bending_lever_mm=None,
+                  bending_basis=None,section_modulus_mm3=None,principal_section_moduli_mm3=None,
+                  weakest_local_bending_stress_gradient_xyz=None,
+                  governing_capacity_n=None,governing_capacity_kgf=None,
+                  governing_mode='AXIAL_REFERENCE_ONLY_BENDING_UNSUPPORTED_NOT_PART_FAILURE')
+    for scenario in result.get('bending_scenarios') or []:
+        scenario.update(force_n=None,force_kgf=None,calculation_status='WITHHELD_UNSUPPORTED_MATERIAL_MODEL')
+    geometries=result.get('geometry_scenarios') or {}
+    for name in ('declared','commanded_volume'):
+        if isinstance(geometries.get(name),dict):
+            geometries[name].update(bending_force_n=None,bending_calculation_status='WITHHELD_UNSUPPORTED_MATERIAL_MODEL')
+    if geometries:
+        geometries['selected_geometry']=None
+        volume=geometries.get('selected_axial_geometry')=='COMMANDED_VOLUME_EQUIVALENT'
+        result['structure_model']='LOCAL_COMMANDED_VOLUME_UNION' if volume else 'LOCAL_DECLARED_ROAD_UNION'
+        result['basis']='MATERIAL_REFERENCE_TIMES_COMMANDED_VOLUME_EQUIVALENT_SECTION' if volume else 'MATERIAL_REFERENCE_TIMES_LOCAL_DECLARED_ROAD_SECTION'
+        transfer=result.get('reference_transfer_assumption')
+        if isinstance(transfer,dict):
+            transfer['target_area_basis']=transfer.get('axial_target_area_basis') or ('COMMAND_VOLUME_EQUIVALENT_NET_SECTION' if volume else 'DECLARED_NET_ROAD_ENVELOPE')
+            transfer['bending_target_area_basis']=None
+    result.setdefault('assessment_gaps',[]).append('NONLINEAR_MATERIAL_BENDING_MODEL_UNSUPPORTED')
+    result.setdefault('limitations',[]).append('The material reference does not support this linear bending model; only the conditional axial reference is retained.')
+    return result
+
+
+def _capacity_for_candidate(candidate,directional_mpa,analysis=None,lever_mm=None,*,reference_area_basis='UNKNOWN',homogeneous_reference_tools=None):
     """Compare two explicitly labelled geometric assumptions, never flow factors."""
     from copy import deepcopy
     from .local_process import valid_process_descriptor,VOLUME_PROVENANCE
-    declared=_declared_capacity(candidate,directional_mpa,analysis,lever_mm,reference_area_basis=reference_area_basis)
+    declared=_declared_capacity(candidate,directional_mpa,analysis,lever_mm,reference_area_basis=reference_area_basis,homogeneous_reference_tools=homogeneous_reference_tools)
     if declared is None:return None
     local=candidate.get('local_process')
     if not valid_process_descriptor(local) or local.get('section_window_bounds_mm')!=candidate.get('section_window_bounds_mm'):return declared
@@ -87,12 +133,14 @@ def capacity_for_candidate(candidate,directional_mpa,analysis=None,lever_mm=None
     section=candidate.get('commanded_volume_section') or {}
     if not isinstance(section,dict):section={}
     axis=result.get('section_normal_axis');tools=section.get('tools')
+    component_ambiguous=candidate.get('kind') in automatic_sections.COMPONENT_KINDS and (
+        candidate.get('deposited_section',{}).get('component_count')!=1 or section.get('component_count')!=1)
     volume=None
-    if local.get('complete') is True and section.get('version')==automatic_sections.VERSION and section.get('status')=='COMPLETE' and \
+    if not component_ambiguous and local.get('complete') is True and section.get('version')==automatic_sections.VERSION and section.get('status')=='COMPLETE' and \
        section.get('complete') is True and section.get('sampled') is False and section.get('provenance')==VOLUME_PROVENANCE and \
        section.get('scope')=='LOCAL_DECLARED_ROAD_REGION' and section.get('normal_axis')==axis and \
        section.get('width_capped_at_declared') is True and section.get('commanded_volume_is_measured') is False and \
-       isinstance(tools,list) and len(tools)==1 and tools==candidate.get('deposited_section',{}).get('tools') and \
+       _common_tool_scope(tools,homogeneous_reference_tools) and tools==candidate.get('deposited_section',{}).get('tools') and \
        _automatic_details_valid(section,axis,candidate) and result.get('calculation_status')=='AUTOMATIC_REFERENCE_LOAD_ESTIMATE':
         volume=_automatic_reference(candidate,section,section['area_mm2'],section['minimum_all_direction_section_modulus_mm3'],
                                     result['material_reference_mpa'],axis,analysis,reference_area_basis)
@@ -116,7 +164,8 @@ def capacity_for_candidate(candidate,directional_mpa,analysis=None,lever_mm=None
         result['reference_transfer_assumption']['bending_target_area_basis']=result['reference_transfer_assumption']['target_area_basis']
     result['geometry_scenarios']={'declared':summary(declared),
         'commanded_volume':{**summary(volume,'COMPLETE' if volume else 'WITHHELD'),
-                            'assessment_gaps':section.get('assessment_gaps') or ([] if volume else ['COMMANDED_VOLUME_SECTION_INCOMPLETE'])},
+                            'assessment_gaps':(['COMMANDED_VOLUME_COMPONENT_IDENTITY_UNRESOLVED'] if component_ambiguous else
+                                section.get('assessment_gaps') or ([] if volume else ['COMMANDED_VOLUME_SECTION_INCOMPLETE']))},
         'selection':'LOWER_CONDITIONAL_REFERENCE' if volume else 'DECLARED_ONLY',
         'selected_geometry':'COMMANDED_VOLUME_EQUIVALENT' if selected else 'DECLARED_ROADS',
         'selected_axial_geometry':'COMMANDED_VOLUME_EQUIVALENT' if axial_selected else 'DECLARED_ROADS',
@@ -124,7 +173,7 @@ def capacity_for_candidate(candidate,directional_mpa,analysis=None,lever_mm=None
     return result
 
 
-def _declared_capacity(candidate,directional_mpa,analysis=None,lever_mm=None,*,reference_area_basis='UNKNOWN'):
+def _declared_capacity(candidate,directional_mpa,analysis=None,lever_mm=None,*,reference_area_basis='UNKNOWN',homogeneous_reference_tools=None):
     """Never turn an envelope or nominal infill setting into a force prediction.
 
     Complete streamed local road sections support explicit reference-stress
@@ -141,7 +190,7 @@ def _declared_capacity(candidate,directional_mpa,analysis=None,lever_mm=None,*,r
     if reference_area_basis not in ('UNKNOWN','GROSS_ENVELOPE','NET_MATERIAL','INTERLAYER_CONTACT'):
         raise ValueError('INVALID_STRESS_AREA_BASIS')
     deposited=candidate.get('deposited_section')
-    if candidate.get('kind')=='LOCAL_THIN_SECTION' and isinstance(deposited,dict) and deposited.get('status')=='COMPLETE' and \
+    if candidate.get('kind') in ({'LOCAL_THIN_SECTION'}|automatic_sections.COMPONENT_KINDS) and isinstance(deposited,dict) and deposited.get('status')=='COMPLETE' and \
        deposited.get('version')==automatic_sections.VERSION and \
        deposited.get('complete') is True and deposited.get('sampled') is False and \
        deposited.get('provenance')=='GCODE_WIDTH_HEIGHT_ASSUMPTION' and \
@@ -149,8 +198,7 @@ def _declared_capacity(candidate,directional_mpa,analysis=None,lever_mm=None,*,r
         net_area=_number(deposited.get('area_mm2'))
         modulus=_number(deposited.get('minimum_all_direction_section_modulus_mm3'))
         tools=deposited.get('tools')
-        if net_area is not None and modulus is not None and isinstance(tools,list) and len(tools)==1 and \
-           isinstance(tools[0],int) and not isinstance(tools[0],bool) and tools[0]>=0 and \
+        if net_area is not None and modulus is not None and _common_tool_scope(tools,homogeneous_reference_tools) and \
            _automatic_details_valid(deposited,axis,candidate):
             return _automatic_reference(candidate,deposited,net_area,modulus,reference,axis,analysis,reference_area_basis)
         if isinstance(tools,list) and len(tools)>1:

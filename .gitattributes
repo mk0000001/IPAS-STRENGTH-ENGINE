@@ -1,0 +1,6 @@
+print_strength_engine/_version.py -text whitespace=cr-at-eol
+print_strength_engine/automatic_sections.py -text whitespace=cr-at-eol
+print_strength_engine/capacity.py -text whitespace=cr-at-eol
+print_strength_engine/component_sections.py -text whitespace=cr-at-eol
+print_strength_engine/weakness.py -text whitespace=cr-at-eol
+tests/test_component_sections.py -text whitespace=cr-at-eol
