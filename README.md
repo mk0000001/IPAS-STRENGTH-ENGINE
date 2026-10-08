@@ -7,7 +7,10 @@
 
 ## 한국어
 
-최신 구현: [IPAS v0.5.27 예상 하중 기준 단면·소재별 전달 검증](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-reference-capacity-20261008.md). 강도 엔진 v0.25.0이며 실제 배포·검증 범위는 연결 문서에 기록합니다.
+최신 구현: [IPAS v0.5.30-compact-sections 대형 단면 예상 하중 복구](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-compact-sections-20261008.md). 강도 v0.27.0, 코드 개정 27회·업데이트 26회. 범위 밖 입력의 사유와 실제 검증 범위를 기록합니다.
+
+
+이전 구현: [IPAS v0.5.27 예상 하중 기준 단면·소재별 전달 검증](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-reference-capacity-20261008.md). 강도 엔진 v0.25.0이며 실제 배포·검증 범위는 연결 문서에 기록합니다.
 
 **IPAS · Integrated Printing Analysis System**의 강도·취약부 분석 엔진입니다. 이전 통합 시스템 이름은 PrintOps입니다. [IPAS 브랜딩·운영 릴리스](docs/ipas-branding-release-20261008.md) · [로고·워드마크·아이콘](branding/ipas/README.md).
 
@@ -27,7 +30,7 @@
 
 최신 공정 요인 개선: [온도·벽·명령 압출량을 연결한 취약부 검증](docs/process-aware-weakness-validation-20261003.md). 제조사 원자료와 조건부 단면 계산을 분리하며 보편적 강도 배율은 적용하지 않습니다.
 
-릴리스 **v0.25.0** · 코드 개정 25회(최초 등록 이후 업데이트 24회). [커밋 집계](VERSION_HISTORY.json). 패키지 변경 비병합 커밋을 세며 문서·시험 전용 변경과 자동 생성 버전 파일은 제외합니다. 개정 수는 정확도 검증 횟수가 아닙니다.
+릴리스 **v0.27.0** · 코드 개정 27회(최초 등록 이후 업데이트 26회). [커밋 집계](VERSION_HISTORY.json). 패키지 변경 비병합 커밋을 세며 문서·시험 전용 변경과 자동 생성 버전 파일은 제외합니다. 개정 수는 정확도 검증 횟수가 아닙니다.
 
 **힘을 입력하지 않아도 G-code의 국부 경로 단면으로 인장·굽힘 하중을 자동 추정합니다. 형상 선별·문헌 비교·명시적 하중 조건의 정상응력 계산도 제공합니다. 자동 추정은 조건을 명시한 참고 시나리오이며 실제 파단하중이나 가장 먼저 부러질 위치를 검증한 예측은 아닙니다.**
 
@@ -54,7 +57,10 @@ python -m unittest discover -s tests
 
 ## English
 
-Latest implementation: [IPAS v0.5.27 reference-section load delivery](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-reference-capacity-20261008.md), strength v0.25.0. Actual deployment and verification scope are recorded in the linked document.
+Latest implementation: [IPAS v0.5.30-compact-sections dense-section reference loads](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-compact-sections-20261008.md). Strength v0.27.0, 27 code revisions and 26 updates; unsupported inputs retain explicit reasons.
+
+
+Previous implementation: [IPAS v0.5.27 reference-section load delivery](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-reference-capacity-20261008.md), strength v0.25.0. Actual deployment and verification scope are recorded in the linked document.
 
 Strength and weak-region analysis engine for **IPAS · Integrated Printing Analysis System**, formerly PrintOps. [IPAS branding and deployment](docs/ipas-branding-release-20261008.md) · [Brand kit](branding/ipas/README.md). Related engines: [IPAS-GCODE ENGINE](https://github.com/mk0000001/IPAS-GCODE-ENGINE) and [IPAS-QUOTE ENGINE](https://github.com/mk0000001/IPAS-QUOTE-ENGINE). Import/package names remain compatible; branding does not change the numerical model.
 
@@ -66,7 +72,7 @@ Latest quality review: [observation provenance, report sections and estimate-his
 
 Latest whole-engine review: [contact, section-cache integrity, primary-source conflicts and validation boundaries](docs/whole-engine-review-20261007.md).
 
-Release **v0.25.0** · 25 package code revisions (24 updates after initial import). [Commit ledger](VERSION_HISTORY.json). Reachable non-merge package commits are counted; documentation-only, tests-only and generated version metadata changes are excluded. Revision count is not a validation rating.
+Release **v0.27.0** · 27 package code revisions (26 updates after initial import). [Commit ledger](VERSION_HISTORY.json). Reachable non-merge package commits are counted; documentation-only, tests-only and generated version metadata changes are excluded. Revision count is not a validation rating.
 
 **Automatic tensile and bending reference loads from local G-code road sections, without entering a force. Geometry screening, literature comparison and explicit-load normal-stress analysis remain available. Automatic values are conditional reference scenarios, not validated part fracture loads or failure locations.**
 

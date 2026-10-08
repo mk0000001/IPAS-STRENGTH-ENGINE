@@ -1,5 +1,12 @@
 # IPAS 시스템 검증 결과와 적용 한계
 
+<!-- COMPACT_SECTIONS_20261008 -->
+최신 검증(2026-10-09): [IPAS v0.5.30-compact-sections 대형 단면 예상 하중 복구](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-compact-sections-20261008.md), 강도 v0.27.0. 인쇄 1691개 중 수치 1654개·이유가 확인된 보류 37개, 대조군 2개. 기존 기하 1690개와 새 이미지 기하 1개를 구분하며, 실제 파단하중·안전 허용하중 정확도를 주장하지 않습니다.
+
+Latest verification (2026-10-09): [IPAS v0.5.30-compact-sections dense-section reference loads](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-compact-sections-20261008.md), strength v0.27.0. Of 1691 printing inputs, 1654 are numeric and 37 explained withheld, plus 2 controls. 1690 reused geometry records are distinct from 1 new-image geometry record. Measured fracture accuracy and safe allowable loads remain unvalidated.
+<!-- /COMPACT_SECTIONS_20261008 -->
+
+
 최신 배포(2026-10-08): [IPAS v0.5.27 예상 하중 기준 단면·전달 검증](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-reference-capacity-20261008.md). 강도 v0.25.0의 기준 단면, 동일 제품 다색 툴의 조건부 하중과 웹·PDF 전달을 수정했다. 동결 이미지의 호스트 시험 882개·하위 검사 199개, 강도 시험 316개·하위 검사 710개를 통과했다. 전체 캐시 재검사와 추가 원본 재분석은 구분해 기록하며 실제 파단하중 정확도 검증을 주장하지 않는다. G-code v0.28.0·quote v0.13.0과 가격 정책은 유지한다.
 
 Latest deployment (2026-10-08): [IPAS v0.5.27 reference-section load delivery](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-reference-capacity-20261008.md). Strength v0.25.0 fixes reference sections, conditional common-product color-tool loads and web/PDF delivery. The frozen image passed 882 host tests plus 199 subtests and 316 strength tests plus 710 subtests. Full cache replay is distinguished from additional original-source rescans; measured failure-load accuracy is not claimed. G-code v0.28.0, quote v0.13.0 and pricing policy remain unchanged.
