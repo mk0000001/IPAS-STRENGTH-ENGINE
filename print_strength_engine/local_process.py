@@ -49,8 +49,8 @@ def _fraction(start,end,bounds,height):
 
 
 class StreamingLocalProcess:
-    def __init__(self,candidates):
-        self.sections=StreamingSections(candidates)
+    def __init__(self,candidates,*,compact_budget=None):
+        self.sections=StreamingSections(candidates,compact_budget=compact_budget)
         self.entries={key:{'bounds':entry.get('bounds'),'roles':{},'length':0.,'records':0,'gaps':set(),
                            'ranges':{key:{'min':None,'max':None,'known_length_mm':0.} for key in RANGES}}
                       for key,entry in self.sections.entries.items()}

@@ -6,3 +6,7 @@ print_strength_engine/weakness.py -text whitespace=cr-at-eol
 tests/test_component_sections.py -text whitespace=cr-at-eol
 print_strength_engine/fusrock.py -text whitespace=cr-at-eol
 print_strength_engine/fusrock_directional_supplements.json -text whitespace=cr-at-eol
+print_strength_engine/compact_sections.py -text whitespace=cr-at-eol
+print_strength_engine/local_process.py -text whitespace=cr-at-eol
+tests/test_automatic_sections.py -text whitespace=cr-at-eol
+tests/test_compact_section_resources.py -text whitespace=cr-at-eol

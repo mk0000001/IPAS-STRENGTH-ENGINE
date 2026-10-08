@@ -18,6 +18,33 @@ def candidate(axis='X',station=50,bounds=None):
             'min_section_area_mm2':99999,'section_modulus_mm3':99999}
 
 
+def raw_component_properties(piece_tools):
+    """Exercise real raw geometry with controlled proof order and GEOS counters."""
+    from shapely.geometry.base import BaseGeometry
+    point=candidate('Z',.5,[[-30,30],[-30,30],[0,2]])
+    point['kind']='COMPONENT_REFERENCE_SECTION'
+    writer=StreamingSections([point]);cut=next(iter(writer.cuts.values()))
+    # Only the test orders the raw iterable; production keeps its original set.
+    cut['pieces']=[piece for piece,tools in piece_tools]
+    cut['piece_tools']={piece:set(tools) for piece,tools in piece_tools}
+    cut['tools']=set().union(*(tools for piece,tools in piece_tools))
+    calls={'intersects':0,'intersection':0}
+    intersects=BaseGeometry.intersects;intersection=BaseGeometry.intersection
+    def counted_intersects(shape,other):
+        calls['intersects']+=1
+        return intersects(shape,other)
+    def counted_intersection(shape,other,*args,**kwargs):
+        calls['intersection']+=1
+        return intersection(shape,other,*args,**kwargs)
+    with patch.object(BaseGeometry,'intersects',counted_intersects),patch.object(BaseGeometry,'intersection',counted_intersection):
+        result=writer._cut_properties(cut)
+    return result,calls
+
+
+def rectangle(x0,y0,x1,y1):
+    return ((x0,y0),(x1,y0),(x1,y1),(x0,y1))
+
+
 class AutomaticSectionTests(unittest.TestCase):
     def extract(self,geometry=None,point=None,complete=True):
         self.assertIsNotNone(StreamingSections,'streamed local section extraction is missing')
@@ -149,12 +176,13 @@ class AutomaticSectionTests(unittest.TestCase):
         maximum=max(abs(gu*y+gv*z) for y in (-5,5) for z in (-1,1))
         self.assertAlmostEqual(maximum,1/result['minimum_all_direction_section_modulus_mm3'])
 
-    def test_geometry_budget_never_publishes_retained_partial_section(self):
+    def test_raw_geometry_budget_uses_compact_fallback_without_retaining_prefix(self):
         with patch('print_strength_engine.automatic_sections.MAX_SECTION_PIECES',1):
             result=self.extract()
-        self.assertEqual(result['status'],'WITHHELD')
-        self.assertIn('LOCAL_SECTION_GEOMETRY_BUDGET_EXCEEDED',result['assessment_gaps'])
-        self.assertIsNone(result['area_mm2'])
+        self.assertEqual(result['status'],'COMPLETE')
+        self.assertAlmostEqual(result['area_mm2'],20)
+        self.assertTrue(result['resource_compaction']['attempted'])
+        self.assertTrue(result['resource_compaction']['applied'])
 
     def test_missing_crop_does_not_aggregate_whole_plate(self):
         point=candidate();del point['section_window_bounds_mm']
@@ -166,6 +194,40 @@ class AutomaticSectionTests(unittest.TestCase):
         geometry={'segments':[{'start':[0,.5,1],'end':[100,.5,1],'width_mm':1,'height_mm':1,'tool':0},
                               {'start':[0,1,1],'end':[100,1,1],'width_mm':1,'height_mm':1,'tool':0}]}
         self.assertAlmostEqual(self.extract(geometry)['area_mm2'],1.5)
+
+    def test_raw_component_tool_proof_stops_after_one_positive_same_tool_road(self):
+        pieces=[(rectangle(0,0,4,2),{0})]
+        pieces += [(rectangle(.25+i/1024,.25,3.5,1.75),{0}) for i in range(256)]
+        result,calls=raw_component_properties(pieces)
+        self.assertEqual(result['tools'],[0])
+        self.assertEqual(result['area_mm2'],8)
+        self.assertEqual(result['centroid_uv_mm'],[2,1])
+        self.assertAlmostEqual(result['minimum_all_direction_section_modulus_mm3'],16/(3*math.sqrt(5)))
+        self.assertEqual(calls,{'intersects':1,'intersection':1})
+
+    def test_raw_component_tool_proof_keeps_zero_area_boundary_tool_unproven(self):
+        pieces=[(rectangle(0,0,1,1),{0})]
+        pieces += [(rectangle(.1+i/1024,.1,.9,.9),{0}) for i in range(64)]
+        pieces.append((rectangle(1,1,4,4),{1}))
+        result,calls=raw_component_properties(pieces)
+        self.assertEqual(result['tools'],[0])
+        self.assertEqual(result['reference_component_count'],2)
+        self.assertEqual(result['area_mm2'],1)
+        self.assertAlmostEqual(result['minimum_all_direction_section_modulus_mm3'],1/(6*math.sqrt(2)))
+        self.assertEqual(calls,{'intersects':2,'intersection':2})
+
+    def test_raw_component_tool_proof_finds_late_selected_tool_without_unselected_tool(self):
+        pieces=[(rectangle(0,0,4,2),{0})]
+        pieces += [(rectangle(.25+i/1024,.25,3.5,1.75),{0}) for i in range(64)]
+        pieces += [(rectangle(10,0,18,8),{2}),(rectangle(4,2,12,10),{3}),
+                   (rectangle(.5,.5,3,1.5),{0,1})]
+        result,calls=raw_component_properties(pieces)
+        self.assertEqual(result['tools'],[0,1])
+        self.assertEqual(result['reference_component_count'],2)
+        self.assertEqual(result['area_mm2'],8)
+        self.assertEqual(result['selected_component_bounds_uv_mm'],[[0,4],[0,2]])
+        self.assertAlmostEqual(result['minimum_all_direction_section_modulus_mm3'],16/(3*math.sqrt(5)))
+        self.assertEqual(calls,{'intersects':4,'intersection':3})
 
 
 if __name__=='__main__':unittest.main()

@@ -5,6 +5,7 @@ printed bead shape, weld strength and a whole-part load path are not certified.
 """
 from math import fsum,hypot,isfinite,isclose
 from .deposition_section import finite_number,vector,UnsupportedGeometry
+from .compact_sections import CompactGeometryBudget,CompactCutUnion,POLICY_ID,RESOURCE_GAP,shape_cost
 
 MAX_CANDIDATES=6
 MAX_CUTS=12
@@ -188,7 +189,8 @@ def valid_component_selection(section):
 
 class StreamingSections:
     """Consume every model road; retain only bounded intersections of <=12 cuts."""
-    def __init__(self,candidates):
+    def __init__(self,candidates,*,compact_budget=None):
+        self.compact_budget=compact_budget if compact_budget is not None else CompactGeometryBudget()
         candidates=list(candidates)
         if len(candidates)>MAX_CANDIDATES:raise ValueError('LOCAL_SECTION_CANDIDATE_LIMIT')
         self.entries={};self.cuts={};self.source_records_scanned=0;self.total_pieces=0;self.gaps=set()
@@ -226,8 +228,35 @@ class StreamingSections:
                     self.cuts[cut_key]={'axis':axis,'u':u,'v':v,'station':station,'bounds':normalized,
                                          'pieces':set(),'tools':set(),'members':set(),'gaps':set(),
                                          'component_selection':component,'piece_tools':{} if component else None}
+                    self.cuts[cut_key].update(resource_owner=object(),raw_packed_bytes=0,raw_coordinates=0,
+                                             compact=None,compact_attempted=False)
                 self.cuts[cut_key]['members'].add(key);entry['cuts'][name]=cut_key
         if len(self.cuts)>MAX_CUTS:raise ValueError('LOCAL_SECTION_CUT_LIMIT')
+
+    def _raw_usage(self,cut):
+        self.compact_budget.update(cut['resource_owner'],cut['raw_packed_bytes'],cut['raw_coordinates'])
+
+    def _release_failed_cut(self,cut):
+        self.total_pieces-=len(cut['pieces']);cut['pieces'].clear()
+        if cut['piece_tools'] is not None:cut['piece_tools'].clear()
+        cut['raw_packed_bytes']=cut['raw_coordinates']=0
+        self.compact_budget.release(cut['resource_owner'])
+        if cut['compact'] is not None:cut['compact'].release()
+
+    def _begin_compaction(self,cut):
+        cut['compact_attempted']=True
+        cut['compact']=CompactCutUnion(cut['axis'],cut['component_selection'],self.compact_budget,
+                                       max_vertices=MAX_UNION_VERTICES)
+        # Pop each stored road only after preserving its tool proof. Register
+        # remaining raw storage while transferring; never reread the source.
+        while cut['pieces']:
+            piece=cut['pieces'].pop();self.total_pieces-=1
+            count=(len(piece) if cut['axis']==2 else 4)+1
+            cut['raw_coordinates']-=count;cut['raw_packed_bytes']-=13+16*count
+            self._raw_usage(cut)
+            tools=cut['piece_tools'].pop(piece) if cut['component_selection'] else cut['tools']
+            cut['compact'].add(piece,tools)
+        self.compact_budget.release(cut['resource_owner'])
 
     def segment(self,start,end,width,height,tool):
         self.source_records_scanned+=1
@@ -279,57 +308,111 @@ class StreamingSections:
                 if low>=high or bottom>=top:continue
                 piece=(low,high,bottom,top) if u==other else (bottom,top,low,high)
             cut['tools'].add(tool);matched.update(cut['members'])
+            if cut['compact'] is not None:
+                try:cut['compact'].add(piece,{tool})
+                except UnsupportedGeometry as error:
+                    cut['gaps'].add(str(error));self._release_failed_cut(cut)
+                continue
             if cut['component_selection']:
                 cut['piece_tools'].setdefault(piece,set()).add(tool)
             if piece in cut['pieces']:continue
             if len(cut['pieces'])>=MAX_SECTION_PIECES or self.total_pieces>=MAX_TOTAL_SECTION_PIECES:
-                cut['gaps'].add('LOCAL_SECTION_GEOMETRY_BUDGET_EXCEEDED');continue
+                try:
+                    self._begin_compaction(cut);cut['compact'].add(piece,{tool})
+                    if cut['piece_tools'] is not None:cut['piece_tools'].clear()
+                except UnsupportedGeometry as error:
+                    cut['gaps'].add(str(error));self._release_failed_cut(cut)
+                continue
             cut['pieces'].add(piece);self.total_pieces+=1
+            count=(len(piece) if axis==2 else 4)+1
+            cut['raw_coordinates']+=count;cut['raw_packed_bytes']+=13+16*count
+            try:self._raw_usage(cut)
+            except UnsupportedGeometry as error:
+                cut['compact_attempted']=True;cut['gaps'].add(str(error));self._release_failed_cut(cut)
         for key in matched:self.entries[key]['intersecting_records']+=1
 
-    def finish(self,complete=True):
+    def _cut_properties(self,cut):
         from shapely import union_all
         from shapely.geometry import Polygon,box
+        temporary=None;shapes=None;shape=None;polygons=None;choices=None;selected=None;road=None
+        try:
+            if cut['compact'] is None:
+                # Preserve the original set iteration, shapes and union order.
+                pieces=list(cut['pieces'])
+                shapes=[Polygon(piece) if cut['axis']==2 else box(piece[0],piece[2],piece[1],piece[3])
+                        for piece in pieces]
+                if self.compact_budget.active:
+                    temporary=object();costs=[shape_cost(road) for road in shapes]
+                    packed=sum(value[0] for value in costs);coords=sum(value[1] for value in costs)
+                    self.compact_budget.update(temporary,packed,coords)
+                shape=union_all(shapes,grid_size=0);by_tool=None
+                if temporary is not None:
+                    size,count,_=shape_cost(shape)
+                    self.compact_budget.update(temporary,packed+size,coords+count)
+            else:shape,by_tool=cut['compact'].finish()
+            tools=cut['tools']
+            if cut['component_selection']:
+                polygons=list(shape.geoms) if shape.geom_type=='MultiPolygon' else [shape]
+                if len(polygons)>MAX_SECTION_COMPONENTS:
+                    raise UnsupportedGeometry('LOCAL_SECTION_GEOMETRY_BUDGET_EXCEEDED')
+                if sum(len(ring.coords)-1 for polygon in polygons if polygon.geom_type=='Polygon'
+                       for ring in (polygon.exterior,*polygon.interiors))>MAX_UNION_VERTICES:
+                    raise UnsupportedGeometry('LOCAL_SECTION_GEOMETRY_BUDGET_EXCEEDED')
+                choices=[(_plane_properties(polygon),polygon) for polygon in polygons]
+                properties,selected=min(choices,key=lambda item:(item[0]['minimum_all_direction_section_modulus_mm3'],
+                                                                 item[1].bounds))
+                tools=set()
+                if by_tool is not None:
+                    for tool,road in by_tool.items():
+                        if selected.intersection(road).area>0:tools.add(tool)
+                else:
+                    for piece,road in zip(pieces,shapes):
+                        piece_tools=cut['piece_tools'][piece]
+                        if piece_tools<=tools:continue
+                        if selected.intersects(road) and selected.intersection(road).area>0:
+                            tools.update(piece_tools)
+                            if tools==cut['tools']:break
+                x0,y0,x1,y1=selected.bounds
+                properties.update(reference_component_count=len(polygons),
+                    selected_component_bounds_uv_mm=[[x0,x1],[y0,y1]],
+                    selected_component_centroid_uv_mm=list(selected.centroid.coords[0]),
+                    component_selection_basis=COMPONENT_SELECTION,
+                    component_selection_limits=['CONNECTED_2D_ROAD_POLYGON_NOT_SOURCE_OBJECT_ID',
+                        'NO_WHOLE_PART_LOAD_PATH_OR_WELD_STRENGTH_VERIFICATION'])
+            else:properties=_plane_properties(shape)
+            properties.update(station_mm=cut['station'],tools=sorted(tools),
+                              plane_axes=['XYZ'[cut['u']],'XYZ'[cut['v']]],
+                              station_side='POSITIVE_AXIS_LIMIT')
+            return properties
+        finally:
+            # Drop raw temporary geometry before releasing its reservation.
+            shapes=None;shape=None;polygons=None;choices=None;selected=None;road=None
+            if temporary is not None:self.compact_budget.release(temporary)
+
+    def finish(self,complete=True):
         from shapely.errors import GEOSException
         results={};cut_results={}
         for key,cut in self.cuts.items():
             gaps=set(self.gaps)|cut['gaps']
             if not complete:gaps.add('INCOMPLETE_SOURCE_SCAN')
             if not gaps:
-                try:
-                    pieces=list(cut['pieces'])
-                    shapes=[Polygon(piece) if cut['axis']==2 else box(piece[0],piece[2],piece[1],piece[3])
-                            for piece in pieces]
-                    shape=union_all(shapes,grid_size=0)
-                    tools=cut['tools']
-                    if cut['component_selection']:
-                        polygons=list(shape.geoms) if shape.geom_type=='MultiPolygon' else [shape]
-                        if len(polygons)>MAX_SECTION_COMPONENTS:
-                            raise UnsupportedGeometry('LOCAL_SECTION_GEOMETRY_BUDGET_EXCEEDED')
-                        if sum(len(ring.coords)-1 for polygon in polygons if polygon.geom_type=='Polygon'
-                               for ring in (polygon.exterior,*polygon.interiors))>MAX_UNION_VERTICES:
-                            raise UnsupportedGeometry('LOCAL_SECTION_GEOMETRY_BUDGET_EXCEEDED')
-                        choices=[(_plane_properties(polygon),polygon) for polygon in polygons]
-                        properties,selected=min(choices,key=lambda item:(item[0]['minimum_all_direction_section_modulus_mm3'],
-                                                                         item[1].bounds))
-                        tools=set()
-                        for piece,road in zip(pieces,shapes):
-                            if selected.intersects(road) and selected.intersection(road).area>0:
-                                tools.update(cut['piece_tools'][piece])
-                        x0,y0,x1,y1=selected.bounds
-                        properties.update(reference_component_count=len(polygons),
-                            selected_component_bounds_uv_mm=[[x0,x1],[y0,y1]],
-                            selected_component_centroid_uv_mm=list(selected.centroid.coords[0]),
-                            component_selection_basis=COMPONENT_SELECTION,
-                            component_selection_limits=['CONNECTED_2D_ROAD_POLYGON_NOT_SOURCE_OBJECT_ID',
-                                'NO_WHOLE_PART_LOAD_PATH_OR_WELD_STRENGTH_VERIFICATION'])
-                    else:properties=_plane_properties(shape)
-                    properties.update(station_mm=cut['station'],tools=sorted(tools),
-                                      plane_axes=['XYZ'[cut['u']],'XYZ'[cut['v']]],
-                                      station_side='POSITIVE_AXIS_LIMIT')
-                    cut_results[key]=(properties,[])
+                reason=None
+                try:cut_results[key]=(self._cut_properties(cut),[])
                 except (UnsupportedGeometry,GEOSException) as error:
-                    gaps.add(str(error) if isinstance(error,UnsupportedGeometry) else 'INVALID_LOCAL_SECTION_UNION')
+                    reason=str(error) if isinstance(error,UnsupportedGeometry) else 'INVALID_LOCAL_SECTION_UNION'
+                # Leave the exception handler before retrying: its traceback
+                # must not retain raw union geometry while compaction starts.
+                if reason=='LOCAL_SECTION_GEOMETRY_BUDGET_EXCEEDED' and cut['compact'] is None:
+                    try:
+                        self._begin_compaction(cut)
+                        cut_results[key]=(self._cut_properties(cut),[])
+                        reason=None
+                    except (UnsupportedGeometry,GEOSException) as retry_error:
+                        reason=str(retry_error) if isinstance(retry_error,UnsupportedGeometry) else 'INVALID_LOCAL_SECTION_UNION'
+                if reason:
+                    gaps.add(reason)
+                    if reason==RESOURCE_GAP:cut['compact_attempted']=True
+                    if cut['compact_attempted']:self._release_failed_cut(cut)
             if gaps:cut_results[key]=(None,sorted(gaps))
         for key,entry in self.entries.items():
             gaps=set(self.gaps)|set(entry['gaps'])
@@ -348,6 +431,15 @@ class StreamingSections:
                    'minimum_all_direction_section_modulus_mm3':None,'tools':[],
                    'printed_bead_geometry_measured':False,'bonded_contact_area_mm2':None,
                    'crop_boundary_applied':True,'whole_object_section_verified':False}
+            attempted=[self.cuts[cut_key] for cut_key in set(entry['cuts'].values())
+                       if self.cuts[cut_key]['compact_attempted']]
+            if attempted:
+                resource_failure=RESOURCE_GAP in gaps or 'LOCAL_SECTION_GEOMETRY_BUDGET_EXCEEDED' in gaps
+                value['resource_compaction']={'policy_id':POLICY_ID,'attempted':True,'applied':not gaps,
+                    'status':'RESOURCE_BUDGET_EXCEEDED' if resource_failure else 'WITHHELD' if gaps else 'APPLIED',
+                    'max_packed_bytes':self.compact_budget.max_packed_bytes,
+                    'peak_shared_packed_bytes':self.compact_budget.peak_packed_bytes,
+                    'peak_shared_coordinates':self.compact_budget.peak_coordinates}
             if not gaps:
                 value.update(local,area_mm2=local['axial']['area_mm2'],
                     min_principal_section_modulus_mm3=min(local['bending']['principal_section_moduli_mm3']),
