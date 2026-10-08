@@ -1,8 +1,12 @@
 # IPAS 시스템 검증 결과와 적용 한계
 
-최신 배포(2026-10-08): [IPAS v0.5.26 프로필 자동 선택·가격 근거 보존](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-profile-autoselect-20261008.md). 최종 v3 전체 호스트 시험 792개·하위 검사 168개 통과, 실제 5슬롯 자동/수동 선택·PDF·저장 견적 보존·네 서비스 배포를 확인했다. 수치 엔진은 G-code v0.28.0·strength v0.24.0·quote v0.13.0을 유지하며 물리 출력·실측 강도 검증 범위는 확대되지 않았다.
+최신 배포(2026-10-08): [IPAS v0.5.27 예상 하중 기준 단면·전달 검증](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-reference-capacity-20261008.md). 강도 v0.25.0의 기준 단면, 동일 제품 다색 툴의 조건부 하중과 웹·PDF 전달을 수정했다. 동결 이미지의 호스트 시험 882개·하위 검사 199개, 강도 시험 316개·하위 검사 710개를 통과했다. 전체 캐시 재검사와 추가 원본 재분석은 구분해 기록하며 실제 파단하중 정확도 검증을 주장하지 않는다. G-code v0.28.0·quote v0.13.0과 가격 정책은 유지한다.
 
-Latest deployment (2026-10-08): [IPAS v0.5.26 profile auto-selection and price provenance](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-profile-autoselect-20261008.md). Final v3 host tests passed 792 tests plus 168 subtests; live five-slot automatic/manual selection, PDFs, saved-estimate preservation and all four deployed services were verified. Numerical engines remain G-code v0.28.0, strength v0.24.0 and quote v0.13.0; physical-print and measured-strength validation scope is unchanged.
+Latest deployment (2026-10-08): [IPAS v0.5.27 reference-section load delivery](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-reference-capacity-20261008.md). Strength v0.25.0 fixes reference sections, conditional common-product color-tool loads and web/PDF delivery. The frozen image passed 882 host tests plus 199 subtests and 316 strength tests plus 710 subtests. Full cache replay is distinguished from additional original-source rescans; measured failure-load accuracy is not claimed. G-code v0.28.0, quote v0.13.0 and pricing policy remain unchanged.
+
+이전 배포(2026-10-08): [IPAS v0.5.26 프로필 자동 선택·가격 근거 보존](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-profile-autoselect-20261008.md). 당시 v3 호스트 시험 792개·하위 검사 168개와 실제 5슬롯 선택·PDF·견적 보존·네 서비스 배포를 확인했다. 당시 강도 v0.24.0이었다.
+
+Previous deployment (2026-10-08): [IPAS v0.5.26 profile auto-selection and price provenance](https://github.com/mk0000001/IPAS-QUOTE-ENGINE/blob/master/docs/ipas-profile-autoselect-20261008.md). Its v3 host verification passed 792 tests plus 168 subtests and verified live five-slot selection, PDFs, saved estimates and four services. Strength was v0.24.0.
 
 통합 시스템 이름: **IPAS · Integrated Printing Analysis System**. 최신 브랜딩과 저장소 변경은 [IPAS v0.5.25 릴리스](ipas-branding-release-20261008.md)를 참조한다. 아래의 날짜별 PrintOps 표기는 당시 릴리스 이름이며 수치 검증 결과를 새로 주장하지 않는다.
 
