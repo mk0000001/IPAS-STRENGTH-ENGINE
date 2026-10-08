@@ -1,9 +1,9 @@
 {
   "counting_rule": "All reachable non-merge commits (--full-history) modifying the engine package, excluding _version.py; initial import counts as revision 1. Docs, tests-only and host-app changes excluded. Not individual feature counts.",
-  "version": "0.26.0",
-  "revision_count": 26,
-  "update_count": 25,
-  "source_commit": "25a1ba1fcb5021d438e5c2f581f31d823eb7b5d4",
+  "version": "0.27.0",
+  "revision_count": 27,
+  "update_count": 26,
+  "source_commit": "7806089591b09d4f8e1b954a5219a2048eb3ca24",
   "commits": [
     {
       "commit": "b8d3aeeabebb80addc05a50ca25e2ad3e000a61d",
@@ -108,10 +108,14 @@
     {
       "commit": "25a1ba1fcb5021d438e5c2f581f31d823eb7b5d4",
       "subject": "FusRock ABS-GF 공식 인장 시편 자료로 예상 하중 누락 복구"
+    },
+    {
+      "commit": "7806089591b09d4f8e1b954a5219a2048eb3ca24",
+      "subject": "강도 v0.27.0: 단면 메모리 사용 개선 및 소재 도구 판정 중복 연산 제거"
     }
   ],
-  "frozen_runtime_source_commit_anchor": "03ce183d7e7f9ffa73fe8a0ba2e5bccc68cbec49",
+  "frozen_runtime_source_commit_anchor": "25a1ba1fcb5021d438e5c2f581f31d823eb7b5d4",
   "frozen_runtime_source_commit_semantics": "Previous published baseline anchor, not this release code commit. Actual executed bytes are identified by the source freeze and image digest.",
-  "source_freeze_identity_sha256": "29b2f9476b7b7ae45a5d622906ab0a1726f4462f25b119e8e09fb1a539a1b6cb",
-  "validated_image_id": "sha256:6233faaaf537a6affbbe6df6292a93675dbdec5ba8565def0f0322e20325fb31"
+  "source_freeze_identity_sha256": "b38289dc4bfc91928052c899fee34439b1ed647aff80c51b0a994ce584c0fcd8",
+  "validated_image_id": "sha256:a8fa50491814f6ca5b6f4413aa9d0971c1f5b60ab13ee5e76884623024be00e9"
 }
