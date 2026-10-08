@@ -3,17 +3,24 @@ from __future__ import annotations
 
 import json
 import re
+from copy import deepcopy
 from decimal import Decimal
 from functools import lru_cache
 from pathlib import Path
 
 
 CATALOG_FILE = Path(__file__).with_name('fusrock_material_catalog.json')
+SUPPLEMENT_FILE = Path(__file__).with_name('fusrock_directional_supplements.json')
 
 
 @lru_cache(maxsize=1)
 def catalog():
     return json.loads(CATALOG_FILE.read_text(encoding='utf-8'))
+
+
+@lru_cache(maxsize=1)
+def _directional_supplements():
+    return json.loads(SUPPLEMENT_FILE.read_text(encoding='utf-8'))['references']
 
 
 def _normalized(value):
@@ -50,6 +57,10 @@ def _match_one(profile):
                 candidates.append((len(alias), product))
             elif body.startswith(alias + ' '):
                 suffix = body[len(alias) + 1:]
+                # An unlabelled integer after ABS-GF can be a different fibre
+                # grade. It is not proof of the exact id108 product.
+                if product['id'] == 108 and re.match(r'^\d+(?:\s|$)', suffix):
+                    continue
                 if _ALLOWED_SUFFIX.fullmatch(suffix):
                     candidates.append((len(alias), product))
     if not candidates:
@@ -105,6 +116,12 @@ def exact_directional_reference(product):
     """
     if not product:
         return None
+    # Separate primary-source supplement: never rewrite the legacy comparison
+    # fields or extend an exact-product reference through a family/grade alias.
+    for supplement in _directional_supplements():
+        identity = supplement['product_identity']
+        if all(product.get(key) == value for key, value in identity.items()):
+            return deepcopy(supplement['reference'])
     metrics = product.get('metrics') or {}
     xy = _number(metrics.get('tbs_xy_unannealed'))
     z = _number(metrics.get('ts_z_unannealed'))

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "references": [
+    {
+      "product_identity": {
+        "id": 108,
+        "brand": "FusRock",
+        "material_name": "ABS-GF",
+        "material_model": "ABS-GF"
+      },
+      "reference": {
+        "raw_reference_mpa": {"XY": "43.44", "Z": "19.02"},
+        "metric_keys": {"XY": "wiki_dry_tensile_break_xy", "Z": "wiki_dry_tensile_break_z"},
+        "source_metric_labels": {
+          "XY": "Tensile breaking strength (X-Y)",
+          "Z": "Tensile breaking strength (Z)"
+        },
+        "source_metric_labels_original": {"XY": "拉伸断裂强度（X-Y）", "Z": "拉伸断裂强度（Z）"},
+        "metric_comparability": "SAME_SOURCE_ENDPOINT_AND_DRY_STATE",
+        "test_state": "DRY",
+        "test_conditions": {
+          "nozzle_mm": 0.4,
+          "nozzle_c": 250,
+          "bed_c": 100,
+          "speed_mm_s": 50,
+          "infill_percent": 100,
+          "infill_angle": "±45°",
+          "moisture_state": "DRY",
+          "annealing_state": "UNKNOWN",
+          "test_standard": "ISO 527"
+        },
+        "source_ref": "https://wiki.fusrock.com/zh/ABS-GF10/ABS-GF10",
+        "source_sha256": "b74c4c73fb2e8f3d831c107b7fa51e5c9b0a68baee806a3d4b3bf64cba976307",
+        "source_checked_at": "2026-10-08",
+        "source_version": "FusRock Wiki page 8, updated 2025-09-22T18:01:44.235Z",
+        "source_locator": "物性表物理-热学-机械-冲击性能; dry mechanical properties and specimen-print conditions",
+        "source_identity_basis": "Official ABS-GF sidebar links ABS-GF10; Wiki and official TDS 108 both name FusFun ABS-GF with 10 wt% glass fibre",
+        "source_property_section_sha256": "c5458161bf31e31c220e8ddfa0f15fd90ff741e9b954f1395d96a8c19cbee6f8",
+        "source_reported_spread_mpa": {"XY": "0.86", "Z": "0.9"},
+        "source_reported_spread_kind": "UNDEFINED",
+        "stress_area_basis": "UNKNOWN",
+        "source_area_description": "PRINTED_TENSILE_COUPON_AREA_DEFINITION_UNCONFIRMED",
+        "source_tensile_test_speed": "UNKNOWN",
+        "source_coupon_dimensions": "UNKNOWN",
+        "actual_moisture_state": "UNKNOWN",
+        "actual_annealing_state": "UNKNOWN"
+      }
+    }
+  ]
+}
