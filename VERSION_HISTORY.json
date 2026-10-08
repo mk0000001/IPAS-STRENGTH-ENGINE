@@ -1,9 +1,9 @@
 {
-  "counting_rule": "Reachable non-merge commits modifying the engine package, excluding _version.py; initial import counts as revision 1. Docs, tests-only and host-app changes excluded. Not individual feature counts.",
-  "version": "0.25.0",
-  "revision_count": 25,
-  "update_count": 24,
-  "source_commit": "03ce183d7e7f9ffa73fe8a0ba2e5bccc68cbec49",
+  "counting_rule": "All reachable non-merge commits (--full-history) modifying the engine package, excluding _version.py; initial import counts as revision 1. Docs, tests-only and host-app changes excluded. Not individual feature counts.",
+  "version": "0.26.0",
+  "revision_count": 26,
+  "update_count": 25,
+  "source_commit": "25a1ba1fcb5021d438e5c2f581f31d823eb7b5d4",
   "commits": [
     {
       "commit": "b8d3aeeabebb80addc05a50ca25e2ad3e000a61d",
@@ -104,9 +104,14 @@
     {
       "commit": "03ce183d7e7f9ffa73fe8a0ba2e5bccc68cbec49",
       "subject": "기준 단면과 동일 제품 다색 출력의 예상 하중 누락 수정"
+    },
+    {
+      "commit": "25a1ba1fcb5021d438e5c2f581f31d823eb7b5d4",
+      "subject": "FusRock ABS-GF 공식 인장 시편 자료로 예상 하중 누락 복구"
     }
   ],
-  "frozen_runtime_source_commit_anchor": "f0656c8f79ccb5ff779cc4babafd7d6ea21e02f9",
+  "frozen_runtime_source_commit_anchor": "03ce183d7e7f9ffa73fe8a0ba2e5bccc68cbec49",
   "frozen_runtime_source_commit_semantics": "Previous published baseline anchor, not this release code commit. Actual executed bytes are identified by the source freeze and image digest.",
-  "source_freeze_identity_sha256": "d81f78dfffc0f3102300c98ba3e59aef546053c6b2b7e063d387e67ec1fc69bf"
+  "source_freeze_identity_sha256": "29b2f9476b7b7ae45a5d622906ab0a1726f4462f25b119e8e09fb1a539a1b6cb",
+  "validated_image_id": "sha256:6233faaaf537a6affbbe6df6292a93675dbdec5ba8565def0f0322e20325fb31"
 }
